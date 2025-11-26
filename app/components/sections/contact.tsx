@@ -84,11 +84,11 @@ export default function Contact() {
             <div className="space-y-6">
               <div>
                 <p className="text-gray-400 text-sm mb-1">Email</p>
-                <p className="text-white font-medium">hello@layernlooms.com</p>
+                <p className="text-white font-medium">layernlooms@gmail.com</p>
               </div>
               <div>
                 <p className="text-gray-400 text-sm mb-1">Location</p>
-                <p className="text-white font-medium">San Francisco, CA</p>
+                <p className="text-white font-medium">India, Maharashtra-Pune</p>
               </div>
             </div>
           </div>
