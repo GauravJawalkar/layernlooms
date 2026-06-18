@@ -190,7 +190,7 @@ export default function PricingPage() {
                     animate={isTrustInView ? "visible" : "hidden"}
                 >
                     {[
-                        { stat: "200+", label: "Projects Delivered" },
+                        { stat: "20+", label: "Projects Delivered" },
                         { stat: "98%", label: "Client Satisfaction" },
                         { stat: "5 yrs", label: "Industry Experience" },
                         { stat: "24/7", label: "Support Available" },

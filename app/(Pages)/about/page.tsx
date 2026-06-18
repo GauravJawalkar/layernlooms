@@ -80,7 +80,7 @@ const coreValues = [
 
 const stats = [
   { value: "10+", label: "Projects Delivered" },
-  { value: "1+", label: "Years in Business" },
+  { value: "2+", label: "Years in Business" },
   { value: "10+", label: "Team Members" },
   { value: "98%", label: "Client Satisfaction" },
 ];
@@ -205,11 +205,11 @@ export default function AboutPage() {
               </div>
               <div className="space-y-4">
                 <p className="text-sm sm:text-base text-textMuted leading-relaxed">
-                  Founded in 2025, LayerNLooms began as a two-person team in a co-working space with a simple belief —
+                  Founded in 2024, LayerNLooms began as a two-person team in a co-working space with a simple belief —
                   that great software comes from deep collaboration and uncompromising quality.
                 </p>
                 <p className="text-sm sm:text-base text-textMuted leading-relaxed">
-                  Today, we are a 30+ member team spanning across India, delivering cutting-edge web, mobile, and AI
+                  Today, we are a 10+ member team spanning across India, delivering cutting-edge web, mobile, and AI
                   solutions to clients worldwide. From YC-backed startups to Fortune 500 enterprises, we&apos;ve helped
                   dozens of organizations transform their digital landscape.
                 </p>
