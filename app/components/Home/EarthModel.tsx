@@ -4,29 +4,43 @@ import { useRef, useMemo, useEffect, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
-const PROC_SIZE = 1024;
+const PROC_RES = 1024;
 
-function resizeToCanvas(img: HTMLImageElement, size: number) {
+function resizePreserveAspect(img: HTMLImageElement) {
+  const aspect = img.width / img.height;
+  let w: number, h: number;
+  if (aspect >= 1) {
+    w = Math.min(img.width, PROC_RES);
+    h = Math.round(w / aspect);
+  } else {
+    h = Math.min(img.height, PROC_RES);
+    w = Math.round(h * aspect);
+  }
+  if (w === img.width && h === img.height) return img;
   const c = document.createElement("canvas");
-  c.width = size;
-  c.height = size;
-  const ctx = c.getContext("2d")!;
-  ctx.drawImage(img, 0, 0, size, size);
+  c.width = w;
+  c.height = h;
+  c.getContext("2d")!.drawImage(img, 0, 0, w, h);
   return c;
 }
 
 function processTextures(specularImage: HTMLImageElement) {
-  const size = PROC_SIZE;
-  const canvas = resizeToCanvas(specularImage, size);
+  const src = resizePreserveAspect(specularImage) as HTMLImageElement | HTMLCanvasElement;
+  const w = src.width;
+  const h = src.height;
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
   const ctx = canvas.getContext("2d")!;
-  const imgData = ctx.getImageData(0, 0, size, size);
+  ctx.drawImage(src, 0, 0);
+  const imgData = ctx.getImageData(0, 0, w, h);
   const d = imgData.data;
 
   const roughCanvas = document.createElement("canvas");
-  roughCanvas.width = size;
-  roughCanvas.height = size;
+  roughCanvas.width = w;
+  roughCanvas.height = h;
   const rCtx = roughCanvas.getContext("2d")!;
-  const rImgData = rCtx.createImageData(size, size);
+  const rImgData = rCtx.createImageData(w, h);
   const rd = rImgData.data;
 
   for (let i = 0; i < d.length; i += 4) {
@@ -46,38 +60,36 @@ function processTextures(specularImage: HTMLImageElement) {
   return { diffuseCanvas: canvas, roughnessCanvas: roughCanvas };
 }
 
-function processClouds(cloudsImage: HTMLImageElement) {
-  const size = PROC_SIZE;
-  const canvas = resizeToCanvas(cloudsImage, size);
+function processImage(img: HTMLImageElement, fn: (d: Uint8ClampedArray, i: number) => void) {
+  const src = resizePreserveAspect(img) as HTMLImageElement | HTMLCanvasElement;
+  const w = src.width;
+  const h = src.height;
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
   const ctx = canvas.getContext("2d")!;
-  const imgData = ctx.getImageData(0, 0, size, size);
+  ctx.drawImage(src, 0, 0);
+  const imgData = ctx.getImageData(0, 0, w, h);
   const d = imgData.data;
-
-  for (let i = 0; i < d.length; i += 4) {
-    const gray = (d[i] + d[i + 1] + d[i + 2]) / 3;
-    d[i] = d[i + 1] = d[i + 2] = 255;
-    d[i + 3] = d[i + 3] < 255 ? d[i + 3] : gray;
-  }
-
+  for (let i = 0; i < d.length; i += 4) fn(d, i);
   ctx.putImageData(imgData, 0, 0);
   return canvas;
 }
 
-function processLights(lightsImage: HTMLImageElement) {
-  const size = PROC_SIZE;
-  const canvas = resizeToCanvas(lightsImage, size);
-  const ctx = canvas.getContext("2d")!;
-  const imgData = ctx.getImageData(0, 0, size, size);
-  const d = imgData.data;
+function processClouds(cloudsImage: HTMLImageElement) {
+  return processImage(cloudsImage, (d, i) => {
+    const gray = (d[i] + d[i + 1] + d[i + 2]) / 3;
+    d[i] = d[i + 1] = d[i + 2] = 255;
+    d[i + 3] = d[i + 3] < 255 ? d[i + 3] : gray;
+  });
+}
 
-  for (let i = 0; i < d.length; i += 4) {
+function processLights(lightsImage: HTMLImageElement) {
+  return processImage(lightsImage, (d, i) => {
     const gray = Math.max(d[i], d[i + 1], d[i + 2]);
     d[i] = d[i + 1] = d[i + 2] = gray;
     d[i + 3] = 255;
-  }
-
-  ctx.putImageData(imgData, 0, 0);
-  return canvas;
+  });
 }
 
 export default function EarthModel() {
@@ -200,17 +212,18 @@ export default function EarthModel() {
         )}
       </mesh>
 
-      <mesh ref={cloudsRef} scale={[1.008, 1.008, 1.008]} rotation={[0.41, 0, 0]} castShadow>
-        <sphereGeometry args={[radius, 32, 32]} />
-        <meshStandardMaterial
-          map={textures?.cloudsMap || null}
-          transparent
-          depthWrite={false}
-          opacity={0.35}
-          wireframe={!textures}
-          blending={THREE.NormalBlending}
-        />
-      </mesh>
+      {textures && (
+        <mesh ref={cloudsRef} scale={[1.008, 1.008, 1.008]} rotation={[0.41, 0, 0]} castShadow>
+          <sphereGeometry args={[radius, 32, 32]} />
+          <meshStandardMaterial
+            map={textures.cloudsMap}
+            transparent
+            depthWrite={false}
+            opacity={0.35}
+            blending={THREE.NormalBlending}
+          />
+        </mesh>
+      )}
 
       <mesh ref={glowRef} scale={[1.02, 1.02, 1.02]}>
         <sphereGeometry args={[radius, 24, 24]} />
