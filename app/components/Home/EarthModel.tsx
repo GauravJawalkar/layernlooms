@@ -109,10 +109,6 @@ export default function EarthModel() {
   } | null>(null);
 
   useEffect(() => {
-    setEntered(true);
-  }, []);
-
-  useEffect(() => {
     if (typeof window === "undefined") return;
     const loader = new THREE.TextureLoader();
     let cancelled = false;
@@ -162,6 +158,7 @@ export default function EarthModel() {
         roughnessMap.colorSpace = THREE.NoColorSpace;
 
         setTextures({ map, normalMap: normal, roughnessMap, cloudsMap, lightsMap });
+        setEntered(true);
       } catch (err) {
         console.error("Failed to load Earth textures:", err);
       }
