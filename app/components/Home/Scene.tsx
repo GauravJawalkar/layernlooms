@@ -24,7 +24,7 @@ export default function Scene() {
       />
       <directionalLight position={[-6, -3, -5]} intensity={0.45} />
       <Suspense fallback={null}>
-        {/* <EarthModel /> */}
+        <EarthModel />
         <ParticleField />
       </Suspense>
     </Canvas>
