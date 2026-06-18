@@ -1,10 +1,10 @@
 "use client";
 
-import { useRef, useMemo, useEffect, useState } from "react";
+import { memo, useRef, useMemo, useEffect, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
-const PROC_RES = 1024;
+const PROC_RES = 512;
 
 function resizePreserveAspect(img: HTMLImageElement) {
   const aspect = img.width / img.height;
@@ -92,7 +92,7 @@ function processLights(lightsImage: HTMLImageElement) {
   });
 }
 
-export default function EarthModel() {
+const EarthModel = memo(function EarthModel() {
   const groupRef = useRef<THREE.Group>(null);
   const earthRef = useRef<THREE.Mesh>(null);
   const cloudsRef = useRef<THREE.Mesh>(null);
@@ -112,6 +112,10 @@ export default function EarthModel() {
     if (typeof window === "undefined") return;
     const loader = new THREE.TextureLoader();
     let cancelled = false;
+
+    const fallback = setTimeout(() => {
+      if (!cancelled) setEntered(true);
+    }, 3000);
 
     async function load() {
       try {
@@ -157,15 +161,18 @@ export default function EarthModel() {
         normal.colorSpace = THREE.NoColorSpace;
         roughnessMap.colorSpace = THREE.NoColorSpace;
 
+        clearTimeout(fallback);
         setTextures({ map, normalMap: normal, roughnessMap, cloudsMap, lightsMap });
         setEntered(true);
       } catch (err) {
         console.error("Failed to load Earth textures:", err);
+        clearTimeout(fallback);
+        if (!cancelled) setEntered(true);
       }
     }
 
     load();
-    return () => { cancelled = true; };
+    return () => { clearTimeout(fallback); cancelled = true; };
   }, []);
 
   const radius = useMemo(() => Math.min(width * 0.55, 3.0), [width]);
@@ -192,7 +199,7 @@ export default function EarthModel() {
   return (
     <group ref={groupRef} position={[0, positionY, 0]} scale={[0, 0, 0]}>
       <mesh ref={earthRef} rotation={[0.41, 0, 0]} castShadow receiveShadow>
-        <sphereGeometry args={[radius, 48, 48]} />
+        <sphereGeometry args={[radius, 32, 32]} />
         {textures ? (
           <meshStandardMaterial
             map={textures.map}
@@ -211,7 +218,7 @@ export default function EarthModel() {
 
       {textures && (
         <mesh ref={cloudsRef} scale={[1.008, 1.008, 1.008]} rotation={[0.41, 0, 0]} castShadow>
-          <sphereGeometry args={[radius, 32, 32]} />
+          <sphereGeometry args={[radius, 16, 16]} />
           <meshStandardMaterial
             map={textures.cloudsMap}
             transparent
@@ -223,7 +230,7 @@ export default function EarthModel() {
       )}
 
       <mesh ref={glowRef} scale={[1.02, 1.02, 1.02]}>
-        <sphereGeometry args={[radius, 24, 24]} />
+        <sphereGeometry args={[radius, 12, 12]} />
         <meshBasicMaterial
           color="#ffffff"
           transparent
@@ -235,4 +242,6 @@ export default function EarthModel() {
       </mesh>
     </group>
   );
-}
+});
+
+export default EarthModel;
