@@ -123,7 +123,7 @@ const Navbar = () => {
             : 'translate-y-6 opacity-0 pointer-events-none'
         }`}
       >
-        {navItems.filter(item => item.name !== 'Pricing').map(({ name, icon: Icon, href }) => {
+        {navItems.filter(item => item.name !== 'Pricing' && item.name !== 'Blog').map(({ name, icon: Icon, href }) => {
           const active = isActive(href);
           return (
             <Link
@@ -181,7 +181,7 @@ const Navbar = () => {
       {/* ─── Mobile Bottom Tab Bar ─── */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/90 dark:bg-neutral-950/90 backdrop-blur-xl border-t border-neutral-200 dark:border-neutral-800 safe-bottom">
         <div className="flex items-center justify-around py-2">
-          {navItems.filter(item => item.name !== 'Pricing').map(({ name, icon: Icon, href }) => {
+          {navItems.filter(item => item.name !== 'Pricing' && item.name !== 'Blog').map(({ name, icon: Icon, href }) => {
             const active = isActive(href);
             return (
               <Link
