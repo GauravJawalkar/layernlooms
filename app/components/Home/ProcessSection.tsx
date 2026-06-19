@@ -117,7 +117,7 @@ export default function ProcessSection() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full bg-neutral-100/50 dark:bg-zinc-950/20 blur-3xl opacity-40" />
       </div>
 
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Title */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -145,7 +145,7 @@ export default function ProcessSection() {
         {/* Timeline Container */}
         <div className="mt-20 relative min-h-[400px] max-w-5xl mx-auto">
           {/* Vertical Timeline Guide Line */}
-          <div className="absolute left-6 lg:left-1/2 lg:-translate-x-[0.5px] top-4 bottom-4 w-[1px] lg:w-[2px] bg-neutral-200 dark:bg-neutral-900 pointer-events-none overflow-hidden">
+          <div className="absolute left-5 lg:left-1/2 lg:-translate-x-[0.5px] top-4 bottom-4 w-[1px] lg:w-[2px] bg-neutral-200 dark:bg-neutral-900 pointer-events-none overflow-hidden">
             <motion.div
               className="absolute left-0 w-full h-32 bg-gradient-to-b from-transparent via-neutral-400 dark:via-white/40 to-transparent"
               animate={{ top: ["-128px", "100%"] }}
@@ -171,11 +171,11 @@ export default function ProcessSection() {
                   key={step.title}
                   ref={(el) => { stepRefs.current[index] = el; }}
                   data-step={index}
-                  className="relative flex flex-col lg:grid lg:grid-cols-2 lg:gap-16 items-center pl-16 lg:pl-0"
+                  className="relative flex flex-col lg:grid lg:grid-cols-2 lg:gap-16 items-center pl-12 lg:pl-0"
                 >
                   {/* Step Indicator Node (Circle with Icon) */}
                   <div
-                    className={`absolute left-0 lg:left-1/2 lg:-translate-x-1/2 top-4 lg:top-1/2 lg:-translate-y-1/2 z-10 w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all duration-500 ${
+                    className={`absolute left-0 lg:left-1/2 lg:-translate-x-1/2 top-4 lg:top-1/2 lg:-translate-y-1/2 z-10 w-10 h-10 lg:w-12 lg:h-12 rounded-full border-2 flex items-center justify-center transition-all duration-500 ${
                       activeStep >= index
                         ? "border-primary/60 dark:border-primary/40 bg-primary/10 dark:bg-primary/10 shadow-[0_0_25px_rgba(var(--primary),0.25)] dark:shadow-[0_0_30px_rgba(var(--primary),0.15)] scale-110"
                         : "border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950"
@@ -206,8 +206,8 @@ export default function ProcessSection() {
                     }`} />
 
                     <motion.div
-                      initial={{ opacity: 0, x: isEven ? -30 : 30 }}
-                      whileInView={{ opacity: 1, x: 0 }}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                       className={`relative rounded-2xl border p-6 lg:p-8 transition-all duration-500 flex flex-col justify-start cursor-default overflow-hidden no-snap w-full ${
@@ -221,7 +221,7 @@ export default function ProcessSection() {
                         activeStep >= index
                           ? "text-primary/10 dark:text-primary/10"
                           : "text-neutral-100 dark:text-neutral-900/50"
-                      } ${isEven ? "left-6 lg:left-6 lg:right-auto right-6" : "right-6"}`}>
+                      } ${isEven ? "right-6 lg:left-6 lg:right-auto" : "right-6"}`}>
                         {stepNumber}
                       </span>
 
@@ -247,8 +247,8 @@ export default function ProcessSection() {
                     }`} />
 
                     <motion.div
-                      initial={{ opacity: 0, x: 30 }}
-                      whileInView={{ opacity: 1, x: 0 }}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                       className={`relative rounded-2xl border p-6 lg:p-8 transition-all duration-500 flex flex-col justify-start cursor-default overflow-hidden no-snap w-full ${
