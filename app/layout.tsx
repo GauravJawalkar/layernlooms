@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
-import Navbar from "./components/navbar";
-import Footer from "./components/footer";
+import LayoutWrapper from "./components/LayoutWrapper";
 import { ThemeProvider } from "./context/ThemeContext";
 import CustomCursor from "./components/CustomCursor";
 import ThemeCustomizer from "./components/ThemeCustomizer";
@@ -103,13 +102,7 @@ export default function RootLayout({
           }}
         />
         <ThemeProvider>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-12">
-            <Navbar />
-            <main className="mt-4">
-              {children}
-            </main>
-          </div>
-          <Footer />
+          <LayoutWrapper>{children}</LayoutWrapper>
           <CustomCursor />
           <ThemeCustomizer />
         </ThemeProvider>
