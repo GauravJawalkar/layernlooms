@@ -46,7 +46,7 @@ export default function ThemeCustomizer() {
   ];
 
   return (
-    <div className="fixed bottom-20 md:bottom-24 lg:bottom-8 right-4 md:right-6 z-40 flex flex-col items-end">
+    <div className="fixed bottom-20 md:bottom-24 lg:bottom-8 right-4 md:right-6 z-40 hidden md:flex flex-col items-end">
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center justify-center w-12 h-12 rounded-full shadow-lg border text-neutral-800 dark:text-neutral-200 bg-white/90 dark:bg-neutral-900/90 backdrop-blur-md border-neutral-200/80 dark:border-neutral-800/80 cursor-pointer hover:scale-105 transition-transform"
