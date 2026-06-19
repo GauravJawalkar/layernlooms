@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Shield, Mail, Lock, Eye, EyeOff, AlertCircle, Loader2 } from "lucide-react";
-import { signIn, signUp } from "../../../lib/admin/auth";
+import { signIn, signUp, signOut } from "../../../lib/admin/auth";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -21,6 +21,7 @@ export default function AdminLoginPage() {
     setLoading(true);
     try {
       if (mode === "login") {
+        await signOut();
         await signIn(email, password);
         router.push("/admin");
       } else {

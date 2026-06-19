@@ -10,11 +10,12 @@ service cloud.firestore {
       // Allow a user to create their own record during signup
       allow create: if request.auth != null && request.auth.uid == userId;
       
-      // Allow updates if the user is authenticated (needed for approving/rejecting users)
-      allow update, delete: if request.auth != null;
+      // Allow updates/deletes only if the requesting user is a superadmin
+      allow update, delete: if request.auth != null && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'superadmin';
     }
 
-   // Contact form submissions
+    // Contact form submissions
     match /contacts/{docId} {
       allow create: if true;
       allow read, update: if request.auth != null;

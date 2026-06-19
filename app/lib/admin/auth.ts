@@ -13,6 +13,7 @@ import {
   query,
   where,
   updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import { auth, db } from "../firebase";
 
@@ -20,16 +21,27 @@ export interface AdminUser {
   uid: string;
   email: string;
   role: "superadmin" | "admin";
-  status: "active" | "pending";
+  status: "active" | "pending" | "suspended";
   createdAt?: any;
 }
 
 export async function signIn(email: string, password: string) {
+  if (auth.currentUser) await firebaseSignOut(auth);
   const cred = await signInWithEmailAndPassword(auth, email, password);
   const userDoc = await getDocFromServer(doc(db, "users", cred.user.uid));
-  if (!userDoc.exists()) throw new Error("User not found. Contact superadmin.");
+  if (!userDoc.exists()) {
+    await firebaseSignOut(auth);
+    throw new Error("User not found. Contact superadmin.");
+  }
   const data = userDoc.data() as AdminUser;
-  if (data.status !== "active") throw new Error("Account pending approval. Contact superadmin.");
+  if (data.status === "pending") {
+    await firebaseSignOut(auth);
+    throw new Error("Account pending approval. Contact superadmin.");
+  }
+  if (data.status === "suspended") {
+    await firebaseSignOut(auth);
+    throw new Error("Account suspended. Contact superadmin.");
+  }
   return data;
 }
 
@@ -77,4 +89,16 @@ export async function approveUser(uid: string) {
 
 export async function rejectUser(uid: string) {
   await updateDoc(doc(db, "users", uid), { status: "rejected" });
+}
+
+export async function blockUser(uid: string) {
+  await updateDoc(doc(db, "users", uid), { status: "suspended" });
+}
+
+export async function unblockUser(uid: string) {
+  await updateDoc(doc(db, "users", uid), { status: "active" });
+}
+
+export async function deleteUserDoc(uid: string) {
+  await deleteDoc(doc(db, "users", uid));
 }

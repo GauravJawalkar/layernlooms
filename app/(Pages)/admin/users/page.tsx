@@ -12,6 +12,9 @@ import {
   Mail,
   Clock,
   AlertCircle,
+  Ban,
+  Trash2,
+  RefreshCw,
 } from "lucide-react";
 import { useAdminAuth } from "../../../context/AdminAuthContext";
 import {
@@ -19,16 +22,21 @@ import {
   getPendingUsers,
   approveUser,
   rejectUser,
+  blockUser,
+  unblockUser,
+  deleteUserDoc,
   AdminUser,
 } from "../../../lib/admin/auth";
 
 export default function AdminUsersPage() {
-  const { isSuperAdmin, loading: authLoading } = useAdminAuth();
+  const { user: currentUser, isSuperAdmin, loading: authLoading } = useAdminAuth();
   const router = useRouter();
   const [users, setUsers] = useState<(AdminUser & { id: string })[]>([]);
   const [pending, setPending] = useState<(AdminUser & { id: string })[]>([]);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [confirmId, setConfirmId] = useState<string | null>(null);
+  const [confirmAction, setConfirmAction] = useState<"suspend" | "unsuspend" | "delete" | null>(null);
 
   useEffect(() => {
     if (!authLoading && !isSuperAdmin) {
@@ -67,6 +75,49 @@ export default function AdminUsersPage() {
       await loadData();
     } catch {}
     setActionLoading(null);
+  }
+
+  async function handleBlock(uid: string) {
+    setActionLoading(uid);
+    try {
+      await blockUser(uid);
+      await loadData();
+    } catch {}
+    setActionLoading(null);
+    setConfirmId(null);
+    setConfirmAction(null);
+  }
+
+  async function handleUnblock(uid: string) {
+    setActionLoading(uid);
+    try {
+      await unblockUser(uid);
+      await loadData();
+    } catch {}
+    setActionLoading(null);
+    setConfirmId(null);
+    setConfirmAction(null);
+  }
+
+  async function handleDelete(uid: string) {
+    setActionLoading(uid);
+    try {
+      await deleteUserDoc(uid);
+      await loadData();
+    } catch {}
+    setActionLoading(null);
+    setConfirmId(null);
+    setConfirmAction(null);
+  }
+
+  function requestConfirm(id: string, action: "suspend" | "unsuspend" | "delete") {
+    setConfirmId(id);
+    setConfirmAction(action);
+  }
+
+  function cancelConfirm() {
+    setConfirmId(null);
+    setConfirmAction(null);
   }
 
   if (authLoading || loading) {
@@ -161,45 +212,114 @@ export default function AdminUsersPage() {
                 <th className="text-left px-5 py-3 font-medium text-textMuted">Email</th>
                 <th className="text-left px-5 py-3 font-medium text-textMuted">Role</th>
                 <th className="text-left px-5 py-3 font-medium text-textMuted">Status</th>
+                <th className="text-right px-5 py-3 font-medium text-textMuted">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {users.map((u, i) => (
-                <tr key={u.id} className="border-b border-border last:border-0 hover:bg-secondary/30 transition-colors">
-                  <td className="px-5 py-3.5">
-                    <div className="flex items-center gap-2">
-                      <Mail className="w-4 h-4 text-textMuted shrink-0" />
-                      <span className="text-foreground font-medium">{u.email}</span>
-                    </div>
-                  </td>
-                  <td className="px-5 py-3.5">
-                    <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium ${
-                      u.role === "superadmin"
-                        ? "bg-primary/10 text-primary"
-                        : "bg-secondary text-textMuted"
-                    }`}>
-                      <Shield className="w-3 h-3" />
-                      {u.role}
-                    </span>
-                  </td>
-                  <td className="px-5 py-3.5">
-                    <span className={`inline-flex items-center gap-1 text-xs font-medium ${
-                      u.status === "active"
-                        ? "text-emerald-500"
-                        : u.status === "pending"
-                        ? "text-amber-500"
-                        : "text-red-500"
-                    }`}>
-                      {u.status === "active" ? (
-                        <CheckCircle className="w-3 h-3" />
+              {users.map((u) => {
+                const isSelf = currentUser?.uid === u.id;
+                const isSuper = u.role === "superadmin";
+                const canAct = isSuperAdmin && !isSelf && !isSuper;
+
+                return (
+                  <tr key={u.id} className="border-b border-border last:border-0 hover:bg-secondary/30 transition-colors">
+                    <td className="px-5 py-3.5">
+                      <div className="flex items-center gap-2">
+                        <Mail className="w-4 h-4 text-textMuted shrink-0" />
+                        <span className="text-foreground font-medium">{u.email}</span>
+                        {isSelf && (
+                          <span className="text-[10px] font-bold tracking-wider uppercase bg-primary/10 text-primary px-1.5 py-0.5 rounded">You</span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-5 py-3.5">
+                      <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium ${
+                        u.role === "superadmin"
+                          ? "bg-primary/10 text-primary"
+                          : "bg-secondary text-textMuted"
+                      }`}>
+                        <Shield className="w-3 h-3" />
+                        {u.role}
+                      </span>
+                    </td>
+                    <td className="px-5 py-3.5">
+                      <span className={`inline-flex items-center gap-1 text-xs font-medium ${
+                        u.status === "active"
+                          ? "text-emerald-500"
+                          : u.status === "pending"
+                          ? "text-amber-500"
+                          : "text-red-500"
+                      }`}>
+                        {u.status === "active" ? (
+                          <CheckCircle className="w-3 h-3" />
+                        ) : (
+                          <AlertCircle className="w-3 h-3" />
+                        )}
+                        {u.status}
+                      </span>
+                    </td>
+                    <td className="px-5 py-3.5 text-right">
+                      {confirmId === u.id && confirmAction ? (
+                        <div className="flex items-center justify-end gap-2">
+                          <span className="text-xs text-textMuted mr-1">
+                            {confirmAction === "suspend" ? "Suspend?" : confirmAction === "unsuspend" ? "Reactivate?" : "Delete?"}
+                          </span>
+                          <button
+                            onClick={confirmAction === "suspend" ? () => handleBlock(u.id) : confirmAction === "unsuspend" ? () => handleUnblock(u.id) : () => handleDelete(u.id)}
+                            disabled={actionLoading === u.id}
+                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-500 text-white text-xs font-medium hover:bg-red-600 transition-colors disabled:opacity-50"
+                          >
+                            {actionLoading === u.id ? (
+                              <Loader2 className="w-3 h-3 animate-spin" />
+                            ) : (
+                              <CheckCircle className="w-3 h-3" />
+                            )}
+                            Yes
+                          </button>
+                          <button
+                            onClick={cancelConfirm}
+                            className="px-3 py-1.5 rounded-lg bg-secondary text-textMuted text-xs font-medium hover:text-foreground transition-colors"
+                          >
+                            No
+                          </button>
+                        </div>
+                      ) : canAct ? (
+                        <div className="flex items-center justify-end gap-1">
+                          {u.status === "suspended" ? (
+                            <button
+                              onClick={() => requestConfirm(u.id, "unsuspend")}
+                              disabled={actionLoading === u.id}
+                              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-500 text-xs font-medium hover:bg-emerald-500/20 transition-colors disabled:opacity-50"
+                            >
+                              <RefreshCw className="w-3 h-3" />
+                              Reactivate
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => requestConfirm(u.id, "suspend")}
+                              disabled={actionLoading === u.id}
+                              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-amber-500/10 text-amber-500 text-xs font-medium hover:bg-amber-500/20 transition-colors disabled:opacity-50"
+                            >
+                              <Ban className="w-3 h-3" />
+                              Suspend
+                            </button>
+                          )}
+                          <button
+                            onClick={() => requestConfirm(u.id, "delete")}
+                            disabled={actionLoading === u.id}
+                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-500/10 text-red-500 text-xs font-medium hover:bg-red-500/20 transition-colors disabled:opacity-50"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                            Delete
+                          </button>
+                        </div>
                       ) : (
-                        <AlertCircle className="w-3 h-3" />
+                        <span className="text-xs text-textMuted">—</span>
                       )}
-                      {u.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
