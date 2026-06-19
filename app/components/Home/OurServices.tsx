@@ -120,7 +120,7 @@ export default function OurServices() {
                   <img
                     src={service.image}
                     alt={service.title}
-                    className="h-full w-full object-cover grayscale transition-all duration-500 group-hover:scale-105 group-hover:grayscale-0"
+                    className="h-full w-full object-cover grayscale max-sm:grayscale-0 transition-all duration-500 group-hover:scale-105 group-hover:grayscale-0"
                   />
                 </div>
                 <h3 className="text-lg font-semibold text-foreground">
