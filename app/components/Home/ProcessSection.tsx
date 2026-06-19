@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Search, PenTool, Code2, Rocket, RefreshCw, Settings } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
 
@@ -58,10 +58,54 @@ const containerVariants = {
 export default function ProcessSection() {
   const { pointerTheme } = useTheme();
   const activeColor = themeColors[pointerTheme as keyof typeof themeColors] || "#a1a1aa";
-  const [hoveredStep, setHoveredStep] = useState<number | null>(null);
+  const [activeStep, setActiveStep] = useState<number>(-1);
+  const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            const idx = Number(entry.target.getAttribute("data-step"));
+            if (!isNaN(idx)) {
+              setActiveStep((prev) => Math.max(prev, idx));
+            }
+          }
+        }
+      },
+      { threshold: 0.4 }
+    );
+
+    stepRefs.current.forEach((ref) => {
+      if (ref) observer.observe(ref);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const topObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting && entry.boundingClientRect.top > 0) {
+          setActiveStep(-1);
+        }
+      },
+      { threshold: 0 }
+    );
+
+    topObserver.observe(el);
+    return () => topObserver.disconnect();
+  }, []);
 
   return (
-    <section className="relative py-24 overflow-hidden transition-colors duration-300">
+    <section ref={sectionRef} className="relative py-24 overflow-hidden transition-colors duration-300">
       {/* 1. Dot Grid Background Pattern */}
       <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#1c1c1c_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none -z-10" />
       
@@ -125,29 +169,31 @@ export default function ProcessSection() {
               return (
                 <div
                   key={step.title}
+                  ref={(el) => { stepRefs.current[index] = el; }}
+                  data-step={index}
                   className="relative flex flex-col lg:grid lg:grid-cols-2 lg:gap-16 items-center pl-16 lg:pl-0"
                 >
                   {/* Step Indicator Node (Circle with Icon) */}
                   <div
-                    className={`absolute left-0 lg:left-1/2 lg:-translate-x-1/2 top-4 lg:top-1/2 lg:-translate-y-1/2 z-10 w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
-                      hoveredStep === index
-                        ? "border-neutral-400 dark:border-white/30 bg-neutral-50 dark:bg-neutral-800 shadow-[0_0_20px_rgba(0,0,0,0.04)] dark:shadow-[0_0_20px_rgba(255,255,255,0.02)] scale-110"
+                    className={`absolute left-0 lg:left-1/2 lg:-translate-x-1/2 top-4 lg:top-1/2 lg:-translate-y-1/2 z-10 w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all duration-500 ${
+                      activeStep >= index
+                        ? "border-primary/60 dark:border-primary/40 bg-primary/10 dark:bg-primary/10 shadow-[0_0_25px_rgba(var(--primary),0.25)] dark:shadow-[0_0_30px_rgba(var(--primary),0.15)] scale-110"
                         : "border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950"
                     }`}
                   >
                     {/* Ripple Halo animation */}
-                    {hoveredStep === index && (
+                    {activeStep >= index && (
                       <motion.div
-                        className="absolute inset-[-4px] rounded-full border border-neutral-400/30 dark:border-white/20 pointer-events-none"
+                        className="absolute inset-[-6px] rounded-full border border-primary/30 dark:border-primary/20 pointer-events-none"
                         initial={{ scale: 0.8, opacity: 0.8 }}
-                        animate={{ scale: 1.3, opacity: 0 }}
+                        animate={{ scale: 1.4, opacity: 0 }}
                         transition={{ duration: 1.5, repeat: Infinity, ease: "easeOut" }}
                       />
                     )}
 
                     <IconComponent
-                      className={`h-5 w-5 transition-colors duration-300 ${
-                        hoveredStep === index ? "text-neutral-900 dark:text-white" : "text-neutral-500 dark:text-neutral-400"
+                      className={`h-5 w-5 transition-colors duration-500 ${
+                        activeStep >= index ? "text-primary" : "text-neutral-500 dark:text-neutral-400"
                       }`}
                     />
                   </div>
@@ -156,7 +202,7 @@ export default function ProcessSection() {
                   <div className={`w-full relative ${isEven ? "lg:text-right block" : "hidden lg:block lg:opacity-0 pointer-events-none"}`}>
                     {/* Horizontal Connector Line (desktop only) */}
                     <div className={`hidden lg:block absolute right-[-32px] top-1/2 -translate-y-1/2 w-8 h-[1.5px] transition-colors duration-300 pointer-events-none ${
-                      hoveredStep === index ? "bg-neutral-400 dark:bg-white/30" : "bg-neutral-200 dark:bg-neutral-900"
+                      activeStep === index ? "bg-neutral-400 dark:bg-white/30" : "bg-neutral-200 dark:bg-neutral-900"
                     }`} />
 
                     <motion.div
@@ -164,12 +210,18 @@ export default function ProcessSection() {
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                      onMouseEnter={() => setHoveredStep(index)}
-                      onMouseLeave={() => setHoveredStep(null)}
-                      className="group relative rounded-2xl border border-neutral-300 dark:border-white/[0.06] bg-gradient-to-br from-white/90 to-neutral-50/90 dark:from-neutral-900 dark:to-neutral-950 backdrop-blur-md p-6 lg:p-8 shadow-[0_8px_30px_rgba(0,0,0,0.01)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.15)] transition-all duration-300 hover:-translate-y-1.5 hover:border-neutral-400 dark:hover:border-white/20 hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)] dark:hover:shadow-[0_20px_50px_rgba(255,255,255,0.02)] flex flex-col justify-start cursor-default overflow-hidden no-snap w-full"
+                      className={`relative rounded-2xl border p-6 lg:p-8 transition-all duration-500 flex flex-col justify-start cursor-default overflow-hidden no-snap w-full ${
+                        activeStep >= index
+                          ? "border-primary/40 dark:border-primary/30 bg-gradient-to-br from-white to-primary/5 dark:from-neutral-900 dark:to-primary/5 shadow-[0_0_30px_rgba(var(--primary),0.15)] dark:shadow-[0_0_40px_rgba(var(--primary),0.1)] -translate-y-1"
+                          : "border-neutral-300 dark:border-white/[0.06] bg-gradient-to-br from-white/90 to-neutral-50/90 dark:from-neutral-900 dark:to-neutral-950 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.01)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.15)]"
+                      } hover:-translate-y-1.5 hover:border-neutral-400 dark:hover:border-white/20 hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)] dark:hover:shadow-[0_20px_50px_rgba(255,255,255,0.02)]`}
                     >
                       {/* Outline Watermark Number */}
-                      <span className={`absolute top-6 font-black text-4xl lg:text-5xl text-neutral-100 dark:text-neutral-900/50 select-none transition-colors duration-300 group-hover:text-neutral-200/80 dark:group-hover:text-neutral-800/80 ${isEven ? "left-6 lg:left-6 lg:right-auto right-6" : "right-6"}`}>
+                      <span className={`absolute top-6 font-black text-4xl lg:text-5xl select-none transition-colors duration-300 ${
+                        activeStep >= index
+                          ? "text-primary/10 dark:text-primary/10"
+                          : "text-neutral-100 dark:text-neutral-900/50"
+                      } ${isEven ? "left-6 lg:left-6 lg:right-auto right-6" : "right-6"}`}>
                         {stepNumber}
                       </span>
 
@@ -191,7 +243,7 @@ export default function ProcessSection() {
                   <div className={`w-full relative ${!isEven ? "block lg:text-left" : "hidden lg:block lg:opacity-0 pointer-events-none"}`}>
                     {/* Horizontal Connector Line (desktop only) */}
                     <div className={`hidden lg:block absolute left-[-32px] top-1/2 -translate-y-1/2 w-8 h-[1.5px] transition-colors duration-300 pointer-events-none ${
-                      hoveredStep === index ? "bg-neutral-400 dark:bg-white/30" : "bg-neutral-200 dark:bg-neutral-900"
+                      activeStep === index ? "bg-neutral-400 dark:bg-white/30" : "bg-neutral-200 dark:bg-neutral-900"
                     }`} />
 
                     <motion.div
@@ -199,12 +251,18 @@ export default function ProcessSection() {
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                      onMouseEnter={() => setHoveredStep(index)}
-                      onMouseLeave={() => setHoveredStep(null)}
-                      className="group relative rounded-2xl border border-neutral-300 dark:border-white/[0.06] bg-gradient-to-br from-white/90 to-neutral-50/90 dark:from-neutral-900 dark:to-neutral-950 backdrop-blur-md p-6 lg:p-8 shadow-[0_8px_30px_rgba(0,0,0,0.01)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.15)] transition-all duration-300 hover:-translate-y-1.5 hover:border-neutral-400 dark:hover:border-white/20 hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)] dark:hover:shadow-[0_20px_50px_rgba(255,255,255,0.02)] flex flex-col justify-start cursor-default overflow-hidden no-snap w-full"
+                      className={`relative rounded-2xl border p-6 lg:p-8 transition-all duration-500 flex flex-col justify-start cursor-default overflow-hidden no-snap w-full ${
+                        activeStep >= index
+                          ? "border-primary/40 dark:border-primary/30 bg-gradient-to-br from-white to-primary/5 dark:from-neutral-900 dark:to-primary/5 shadow-[0_0_30px_rgba(var(--primary),0.15)] dark:shadow-[0_0_40px_rgba(var(--primary),0.1)] -translate-y-1"
+                          : "border-neutral-300 dark:border-white/[0.06] bg-gradient-to-br from-white/90 to-neutral-50/90 dark:from-neutral-900 dark:to-neutral-950 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.01)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.15)]"
+                      } hover:-translate-y-1.5 hover:border-neutral-400 dark:hover:border-white/20 hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)] dark:hover:shadow-[0_20px_50px_rgba(255,255,255,0.02)]`}
                     >
                       {/* Outline Watermark Number */}
-                      <span className="absolute top-6 right-6 font-black text-4xl lg:text-5xl text-neutral-100 dark:text-neutral-900/50 select-none transition-colors duration-300 group-hover:text-neutral-200/80 dark:group-hover:text-neutral-800/80">
+                      <span className={`absolute top-6 right-6 font-black text-4xl lg:text-5xl select-none transition-colors duration-300 ${
+                        activeStep >= index
+                          ? "text-primary/10 dark:text-primary/10"
+                          : "text-neutral-100 dark:text-neutral-900/50"
+                      }`}>
                         {stepNumber}
                       </span>
 
