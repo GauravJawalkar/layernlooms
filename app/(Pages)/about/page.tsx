@@ -198,10 +198,6 @@ export default function AboutPage() {
                   <br />
                   <span className="text-textMuted/30">digital powerhouse</span>
                 </h3>
-                <div className="mt-6 sm:mt-8 relative aspect-[16/9] rounded-xl sm:rounded-2xl overflow-hidden border border-border group lg:hidden grayscale hover:grayscale-0 transition-all duration-700">
-                  <Image src="/about.png" alt="Our journey" fill className="object-cover transition-all duration-700 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent" />
-                </div>
               </div>
               <div className="space-y-4">
                 <p className="text-sm sm:text-base text-textMuted leading-relaxed">
