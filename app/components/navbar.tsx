@@ -13,6 +13,7 @@ import {
   FiMenu,
   FiX,
   FiArrowUp,
+  FiBookOpen,
 } from 'react-icons/fi';
 import { FaServicestack } from 'react-icons/fa';
 import Logo from './Logo';
@@ -30,6 +31,7 @@ const Navbar = () => {
     { name: 'About', icon: FiInfo, href: '/about' },
     { name: 'Services', icon: FaServicestack, href: '/services' },
     { name: 'Portfolio', icon: FiBriefcase, href: '/portfolio' },
+    { name: 'Blog', icon: FiBookOpen, href: '/blog' },
     { name: 'Pricing', icon: FiDollarSign, href: '/pricing' },
     { name: 'Contact', icon: FiMail, href: '/contact' },
   ];
