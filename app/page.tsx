@@ -8,6 +8,7 @@ import EngagementModels from "./components/Home/EngagementModels";
 import ExpertiseSection from "./components/Home/ExpertiseSection";
 import OurServices from "./components/Home/OurServices";
 import TechStackSection from "./components/Home/TechStackSection";
+import BlogSection from "./components/Home/BlogSection";
 
 export default function Home() {
   return (
@@ -24,6 +25,9 @@ export default function Home() {
       </div>
       <div className="rounded-2xl border border-neutral-300 dark:border-white/[0.06] overflow-hidden">
         <TechStackSection />
+      </div>
+      <div className="rounded-2xl border border-neutral-300 dark:border-white/[0.06] overflow-hidden">
+        <BlogSection />
       </div>
       <div className="rounded-2xl border border-neutral-300 dark:border-white/[0.06] overflow-hidden">
         <PartnershipsSection />
