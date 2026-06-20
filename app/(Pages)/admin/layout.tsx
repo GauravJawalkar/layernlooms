@@ -12,6 +12,7 @@ import {
   FolderKanban,
   Briefcase,
   FileText,
+  Settings,
   LogOut,
   ChevronLeft,
   Menu,
@@ -29,6 +30,7 @@ const adminNav = [
   { name: "Blog", icon: FileText, href: "/admin/blog" },
   { name: "Contacts", icon: MessageSquare, href: "/admin/contacts" },
   { name: "Users", icon: Users, href: "/admin/users" },
+  { name: "Settings", icon: Settings, href: "/admin/settings" },
 ];
 
 function AdminLayoutInner({ children }: { children: React.ReactNode }) {
@@ -62,7 +64,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
 
   if (!user) return null;
 
-  const currentNav = adminNav.find((n) => pathname.startsWith(n.href)) || adminNav[0];
+  const currentNav = adminNav.find((n) => n.href === "/admin" ? pathname === "/admin" : pathname.startsWith(n.href)) || adminNav[0];
 
   return (
     <div className="min-h-screen bg-background flex">
@@ -128,7 +130,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
         </nav>
         <div className="border-t border-border pt-4 mt-4">
           <div className="px-3 mb-4">
-            <p className="text-sm font-medium text-foreground truncate">{user.email}</p>
+            <p className="text-sm font-medium text-foreground truncate">{user.displayName || user.email}</p>
             <p className="text-xs text-textMuted capitalize">{user.role}</p>
           </div>
           <button
@@ -158,7 +160,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
             <ThemeToggle />
             <div className="h-5 w-px bg-border" />
             <div className="text-right min-w-0">
-              <p className="text-sm font-medium text-foreground truncate max-w-[160px]" title={user.email}>{user.email}</p>
+              <p className="text-sm font-medium text-foreground truncate max-w-[160px]" title={user.displayName || user.email}>{user.displayName || user.email}</p>
               <p className="text-xs text-textMuted capitalize">{user.role}</p>
             </div>
             <button

@@ -2,6 +2,10 @@ import {
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
   createUserWithEmailAndPassword,
+  updatePassword,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updateProfile,
 } from "firebase/auth";
 import {
   doc,
@@ -20,6 +24,7 @@ import { auth, db } from "../firebase";
 export interface AdminUser {
   uid: string;
   email: string;
+  displayName?: string;
   role: "superadmin" | "admin";
   status: "active" | "pending" | "suspended";
   createdAt?: any;
@@ -101,4 +106,28 @@ export async function unblockUser(uid: string) {
 
 export async function deleteUserDoc(uid: string) {
   await deleteDoc(doc(db, "users", uid));
+}
+
+export async function updateUserProfile(uid: string, data: { displayName?: string }) {
+  await updateDoc(doc(db, "users", uid), data);
+  if (auth.currentUser && data.displayName !== undefined) {
+    await updateProfile(auth.currentUser, { displayName: data.displayName || null });
+  }
+}
+
+export async function reauthenticateUser(currentPassword: string) {
+  if (!auth.currentUser || !auth.currentUser.email) throw new Error("Not authenticated");
+  const cred = EmailAuthProvider.credential(auth.currentUser.email, currentPassword);
+  await reauthenticateWithCredential(auth.currentUser, cred);
+}
+
+export async function changeUserPassword(newPassword: string) {
+  if (!auth.currentUser) throw new Error("Not authenticated");
+  await updatePassword(auth.currentUser, newPassword);
+}
+
+export async function getUserData(uid: string) {
+  const snap = await getDocFromServer(doc(db, "users", uid));
+  if (!snap.exists()) return null;
+  return snap.data() as AdminUser;
 }
