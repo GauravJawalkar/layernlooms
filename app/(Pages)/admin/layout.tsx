@@ -22,6 +22,7 @@ import {
 import Logo from "../../components/Logo";
 import ThemeToggle from "../../components/ThemeToggle";
 import { ToastProvider } from "../../components/admin/Toast";
+import NotificationBell from "../../components/admin/NotificationBell";
 import { AdminAuthProvider, useAdminAuth } from "../../context/AdminAuthContext";
 
 const adminNav = [
@@ -160,7 +161,8 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
           <div className="flex items-center gap-2">
             <span className="text-sm font-medium text-foreground">{currentNav.name}</span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1">
+            <NotificationBell />
             <ThemeToggle />
             <div className="h-5 w-px bg-border" />
             <div className="text-right min-w-0">
@@ -191,6 +193,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
           </button>
           <span className="text-sm font-medium text-foreground">{currentNav.name}</span>
           <div className="flex items-center gap-1">
+            <NotificationBell />
             <ThemeToggle />
             <button
               onClick={async () => { await logout(); router.push("/admin/login"); }}
