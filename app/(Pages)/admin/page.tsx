@@ -69,14 +69,19 @@ export default function AdminDashboardPage() {
 
   return (
     <div>
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
+        <p className="text-sm text-textMuted">Overview of your admin panel</p>
+      </div>
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 p-6 mb-8"
+        className="rounded-2xl bg-gradient-to-b from-primary/5 to-primary/4 border border-primary/20 p-6 mb-8"
       >
-        <h1 className="text-2xl font-bold text-foreground">
-          {greeting()}, {user?.email?.split("@")[0] || "Admin"} 👋
-        </h1>
+        <h2 className="text-xl font-semibold text-foreground">
+          {greeting()}, {user?.displayName || user?.email?.split("@")[0] || "Admin"} 👋
+        </h2>
         <p className="text-sm text-textMuted mt-1">
           Welcome back to the <span className="font-semibold text-foreground">LayerNLooms</span> admin panel.
           {isSuperAdmin
