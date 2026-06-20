@@ -1,57 +1,11 @@
-import { notFound } from "next/navigation";
-import { Metadata } from "next";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import Link from "next/link";
-import { CheckCircle2, ArrowRight, Check, Sparkles, Code2, Layers, Zap, ChevronRight } from "lucide-react";
-import { getAllServices, getServiceBySlug, Service } from "@/app/data/services";
+import { CheckCircle2, ArrowRight, Check, Sparkles, Code2, ChevronRight, Loader2 } from "lucide-react";
+import { getAllServicesFromDb, AdminService } from "@/app/lib/admin/services";
 import ServiceHero from "../../../components/services/ServiceHero";
-
-interface ServicePageProps {
-  params: Promise<{
-    slug: string;
-  }>;
-}
-
-export async function generateMetadata({ params }: ServicePageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const service = getServiceBySlug(slug);
-
-  if (!service) {
-    return {
-      title: "Service Not Found",
-    };
-  }
-
-  return {
-    title: service.title,
-    description: service.description,
-    openGraph: {
-      title: service.title,
-      description: service.description,
-      url: `https://layernlooms.com/services/${slug}`,
-      images: [
-        {
-          url: service.image,
-          width: 1200,
-          height: 630,
-          alt: service.title,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: service.title,
-      description: service.description,
-      images: [service.image],
-    },
-  };
-}
-
-export async function generateStaticParams() {
-  const services = getAllServices();
-  return services.map((service) => ({
-    slug: service.slug,
-  }));
-}
 
 const sectionHeader = (title: string) => (
   <div className="flex items-center gap-3 mb-8">
@@ -60,15 +14,57 @@ const sectionHeader = (title: string) => (
   </div>
 );
 
-export default async function ServiceDetailPage({ params }: ServicePageProps) {
-  const { slug } = await params;
-  const service = getServiceBySlug(slug);
+export default function ServiceDetailPage() {
+  const params = useParams();
+  const slug = params.slug as string;
+  const [service, setService] = useState<AdminService | null>(null);
+  const [allServices, setAllServices] = useState<AdminService[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
-  if (!service) {
-    notFound();
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await getAllServicesFromDb();
+        const found = data.find((s) => s.slug === slug);
+        if (found) {
+          setService(found);
+          setAllServices(data);
+        } else {
+          setNotFound(true);
+        }
+      } catch {
+        setNotFound(true);
+      }
+      setLoading(false);
+    })();
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <Loader2 className="w-6 h-6 animate-spin text-primary" />
+      </div>
+    );
   }
 
-  const allServices = getAllServices().filter(s => s.slug !== slug);
+  if (notFound || !service) {
+    return (
+      <div className="min-h-[60vh] flex flex-col items-center justify-center">
+        <h1 className="text-2xl font-bold text-foreground mb-2">Service Not Found</h1>
+        <p className="text-sm text-textMuted mb-6">The service you're looking for doesn't exist.</p>
+        <Link
+          href="/services"
+          className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-background"
+        >
+          View All Services
+          <ArrowRight className="w-4 h-4" />
+        </Link>
+      </div>
+    );
+  }
+
+  const relatedServices = allServices.filter((s) => s.slug !== slug);
 
   return (
     <>
@@ -94,7 +90,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
                 <div>
                   {sectionHeader("Key Features")}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {service.features.map((feature) => (
+                    {service.features.map((feature: string) => (
                       <div
                         key={feature}
                         className="group flex items-start gap-3 p-4 rounded-xl border border-border bg-card hover:border-primary/20 hover:shadow-md hover:shadow-primary/5 transition-all duration-300"
@@ -114,7 +110,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
                 <div>
                   {sectionHeader("Benefits")}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {service.benefits.map((benefit) => (
+                    {service.benefits.map((benefit: string) => (
                       <div
                         key={benefit}
                         className="group flex items-start gap-3 p-4 rounded-xl border border-border bg-card/50 hover:bg-card hover:border-primary/20 transition-all duration-300"
@@ -134,7 +130,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
                 <div>
                   {sectionHeader("Technologies We Use")}
                   <div className="flex flex-wrap gap-2">
-                    {service.technologies.map((tech) => (
+                    {service.technologies.map((tech: string) => (
                       <span
                         key={tech}
                         className="inline-flex items-center gap-1.5 rounded-full bg-secondary border border-border px-3.5 py-1.5 text-xs font-medium text-foreground/80 hover:border-primary/30 hover:bg-primary/5 transition-all duration-300"
@@ -152,7 +148,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
                 <div>
                   {sectionHeader("FAQs")}
                   <div className="space-y-3">
-                    {service.faqs.map((faq, index) => (
+                    {service.faqs.map((faq: { question: string; answer: string }, index: number) => (
                       <details
                         key={index}
                         className="group rounded-xl border border-border bg-card overflow-hidden"
@@ -223,7 +219,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
       </section>
 
       {/* Related Services */}
-      {allServices.length > 0 && (
+      {relatedServices.length > 0 && (
         <section className="border-t border-border bg-secondary/30 py-12 sm:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-16">
             <div className="text-center mb-10">
@@ -231,7 +227,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
               <p className="mt-3 text-sm sm:text-base text-textMuted">Discover how we can help you with other business needs</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              {allServices.slice(0, 3).map((s) => (
+              {relatedServices.slice(0, 3).map((s) => (
                 <Link key={s.slug} href={`/services/${s.slug}`}>
                   <div className="group rounded-xl sm:rounded-2xl border border-border bg-card p-5 sm:p-6 hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 h-full">
                     <h3 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">{s.title}</h3>

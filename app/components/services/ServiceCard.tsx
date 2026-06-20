@@ -4,11 +4,15 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
-import { Service } from "../../data/services";
-
-
 interface ServiceCardProps {
-    service: Service;
+    service: {
+        slug: string;
+        title: string;
+        subtitle: string;
+        description: string;
+        image: string;
+        features: string[];
+    };
     index: number;
 }
 

@@ -2,13 +2,17 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { Service } from "@/app/data/services";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Sparkles } from "lucide-react";
 
 interface ServiceHeroProps {
-    service: Service;
+    service: {
+        title: string;
+        subtitle: string;
+        longDescription: string;
+        image: string;
+    };
 }
 
 export default function ServiceHero({ service }: ServiceHeroProps) {

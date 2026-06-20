@@ -1,20 +1,33 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { services } from "../../data/services";
+import { ArrowRight, Loader2 } from "lucide-react";
+import { getAllServicesFromDb, AdminService } from "../../lib/admin/services";
 import ServiceCard from "../../components/services/ServiceCard";
 
 
 export default function ServicesPage() {
+  const [services, setServices] = useState<AdminService[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
   const heroRef = useRef(null);
   const servicesRef = useRef(null);
   const ctaRef = useRef(null);
   const isHeroInView = useInView(heroRef, { once: true, amount: 0.1 });
   const isServicesInView = useInView(servicesRef, { once: true, amount: 0.1 });
   const isCtaInView = useInView(ctaRef, { once: true, amount: 0.1 });
+
+  useEffect(() => {
+    getAllServicesFromDb()
+      .then(setServices)
+      .catch((err) => {
+        console.error("Failed to load services:", err);
+        setLoadError("Failed to load services");
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -79,22 +92,52 @@ export default function ServicesPage() {
               }
             }}
           >
-            {services.map((service, index) => (
-              <motion.div
-                key={service.slug}
-                variants={{
-                  hidden: { opacity: 0, y: 30 },
-                  visible: {
-                    opacity: 1,
-                    y: 0,
-                    transition: { duration: 0.5, ease: "easeOut" as const }
-                  }
-                }}
-                whileHover={{ y: -8, transition: { duration: 0.2 } }}
-              >
-                <ServiceCard service={service} index={index} />
-              </motion.div>
-            ))}
+            {loading ? (
+              <div className="col-span-full flex items-center justify-center py-20">
+                <Loader2 className="w-6 h-6 animate-spin text-primary" />
+              </div>
+            ) : loadError ? (
+              <div className="col-span-full text-center py-20">
+                <p className="text-sm text-red-500 mb-4">{loadError}</p>
+                <button
+                  onClick={() => {
+                    setLoading(true);
+                    setLoadError("");
+                    getAllServicesFromDb()
+                      .then(setServices)
+                      .catch((err) => {
+                        console.error("Retry failed:", err);
+                        setLoadError("Failed to load services");
+                      })
+                      .finally(() => setLoading(false));
+                  }}
+                  className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-background"
+                >
+                  Retry
+                </button>
+              </div>
+            ) : services.length === 0 ? (
+              <div className="col-span-full text-center py-20 text-sm text-textMuted">
+                No services available yet.
+              </div>
+            ) : (
+              services.map((service, index) => (
+                <motion.div
+                  key={service.slug}
+                  variants={{
+                    hidden: { opacity: 0, y: 30 },
+                    visible: {
+                      opacity: 1,
+                      y: 0,
+                      transition: { duration: 0.5, ease: "easeOut" as const }
+                    }
+                  }}
+                  whileHover={{ y: -8, transition: { duration: 0.2 } }}
+                >
+                  <ServiceCard service={service} index={index} />
+                </motion.div>
+              ))
+            )}
           </motion.div>
         </div>
       </section>
