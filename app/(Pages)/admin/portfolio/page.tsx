@@ -76,7 +76,7 @@ export default function AdminPortfolioPage() {
 
   async function handleSave() {
     if (!editing) return;
-    if (!editing.title || !editing.slug) return;
+    if (!editing.title || !editing.slug || !editing.category) return;
 
     setSaving(true);
     try {
@@ -141,11 +141,6 @@ export default function AdminPortfolioPage() {
     setEditing({ ...editing, technologies: arr });
   }
 
-  function updateTestimonialField(field: "text" | "author" | "role", value: string) {
-    if (!editing) return;
-    setEditing({ ...editing, testimonial: { ...(editing.testimonial || { text: "", author: "", role: "" }), [field]: value } });
-  }
-
   if (authLoading || loading) {
     return (
       <div className="flex items-center justify-center py-20">
@@ -171,7 +166,7 @@ export default function AdminPortfolioPage() {
             </button>
             <button
               onClick={handleSave}
-              disabled={saving || !editing.title || !editing.slug}
+              disabled={saving || !editing.title || !editing.slug || !editing.category}
               className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-background text-sm font-medium hover:opacity-90 transition-all disabled:opacity-50"
             >
               {saving ? (
@@ -207,7 +202,7 @@ export default function AdminPortfolioPage() {
               />
             </Field>
 
-            <Field label="Category">
+            <Field label="Category" required>
               <input
                 type="text"
                 value={editing.category}
@@ -297,35 +292,7 @@ export default function AdminPortfolioPage() {
               />
             </Field>
 
-            {/* Testimonial */}
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Testimonial (optional)</label>
-              <div className="p-4 rounded-xl border border-border bg-card/50 space-y-3">
-                <input
-                  type="text"
-                  value={editing.testimonial?.text || ""}
-                  onChange={(e) => updateTestimonialField("text", e.target.value)}
-                  placeholder="Testimonial text"
-                  className="w-full border border-border rounded-lg px-3 py-2 text-xs bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-                />
-                <div className="grid grid-cols-2 gap-3">
-                  <input
-                    type="text"
-                    value={editing.testimonial?.author || ""}
-                    onChange={(e) => updateTestimonialField("author", e.target.value)}
-                    placeholder="Author name"
-                    className="w-full border border-border rounded-lg px-3 py-2 text-xs bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-                  />
-                  <input
-                    type="text"
-                    value={editing.testimonial?.role || ""}
-                    onChange={(e) => updateTestimonialField("role", e.target.value)}
-                    placeholder="Role"
-                    className="w-full border border-border rounded-lg px-3 py-2 text-xs bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-                  />
-                </div>
-              </div>
-            </div>
+
           </div>
         </div>
         <div className="mt-6 pt-6 border-t border-border">
