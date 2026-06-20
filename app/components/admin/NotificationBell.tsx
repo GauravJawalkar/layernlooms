@@ -4,9 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bell, MessageSquare, Users, Loader2 } from "lucide-react";
-import {
-  collection, query, where, orderBy, onSnapshot,
-} from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../lib/firebase";
 
 interface Notification {
@@ -24,64 +22,42 @@ export default function NotificationBell() {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setLoading(true);
-    const contactsQuery = query(
-      collection(db, "contacts"),
-      where("read", "==", false)
-    );
-    const pendingQuery = query(
-      collection(db, "users"),
-      where("status", "==", "pending")
-    );
-
-    const state = { contacts: [] as Notification[], users: [] as Notification[] };
-
-    function merge() {
-      const list = [...state.contacts, ...state.users];
-      setNotifications(list.slice(0, 10));
-      setLoading(false);
-    }
-
-    const contactsUnsub = onSnapshot(
-      contactsQuery,
-      (snap) => {
-        state.contacts = snap.docs.map((d) => {
+    async function fetch() {
+      try {
+        const [contactsSnap, usersSnap] = await Promise.all([
+          getDocs(collection(db, "contacts")),
+          getDocs(collection(db, "users")),
+        ]);
+        const list: Notification[] = [];
+        contactsSnap.docs.forEach((d) => {
           const c = d.data();
-          return {
+          if (c.read) return;
+          list.push({
             id: `contact-${d.id}`,
-            type: "contact" as const,
+            type: "contact",
             title: c.name || "Unknown",
             description: (c.message || "").slice(0, 60) + ((c.message || "").length > 60 ? "..." : ""),
             href: "/admin/contacts",
-          };
+          });
         });
-        merge();
-      },
-      () => setLoading(false)
-    );
-
-    const usersUnsub = onSnapshot(
-      pendingQuery,
-      (snap) => {
-        state.users = snap.docs.map((d) => {
+        usersSnap.docs.forEach((d) => {
           const u = d.data();
-          return {
+          if (u.status !== "pending") return;
+          list.push({
             id: `user-${d.id}`,
-            type: "user" as const,
+            type: "user",
             title: u.displayName || (u.email || "").split("@")[0] || "Unknown",
             description: "Pending approval",
             href: "/admin/users",
-          };
+          });
         });
-        merge();
-      },
-      () => setLoading(false)
-    );
-
-    return () => {
-      contactsUnsub();
-      usersUnsub();
-    };
+        setNotifications(list.slice(0, 10));
+      } catch {}
+      setLoading(false);
+    }
+    fetch();
+    const interval = setInterval(fetch, 10000);
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
