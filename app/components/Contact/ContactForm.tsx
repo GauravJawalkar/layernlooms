@@ -63,6 +63,11 @@ export default function ContactForm() {
         try {
             const { saveContact } = await import("../../lib/admin/contacts");
             await saveContact(form);
+            fetch("/api/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(form),
+            }).catch((err) => console.error("Failed to send email notification:", err));
             setSubmitted(true);
             setForm({ name: "", email: "", company: "", projectType: "", budget: "", message: "" });
             setProjectTypes(defaultProjectTypes);
