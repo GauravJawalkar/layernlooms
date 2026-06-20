@@ -5,6 +5,8 @@ import LayoutWrapper from "./components/LayoutWrapper";
 import { ThemeProvider } from "./context/ThemeContext";
 import CustomCursor from "./components/CustomCursor";
 import ThemeCustomizer from "./components/ThemeCustomizer";
+import GoogleAnalytics from "./components/GoogleAnalytics";
+
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -85,6 +87,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head />
       <body className={`${spaceGrotesk.className} ${spaceGrotesk.variable} antialiased`}>
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
         <script
           suppressHydrationWarning
           dangerouslySetInnerHTML={{
