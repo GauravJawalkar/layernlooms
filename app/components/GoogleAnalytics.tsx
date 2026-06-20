@@ -1,7 +1,7 @@
 import Script from "next/script";
 
 interface GoogleAnalyticsProps {
-  gaId: string;
+  gaId?: string;
 }
 
 export default function GoogleAnalytics({ gaId }: GoogleAnalyticsProps) {
