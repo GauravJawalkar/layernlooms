@@ -37,7 +37,7 @@ export default function OurServices() {
 
   useEffect(() => {
     getAllServicesFromDb()
-      .then(setServices)
+      .then((data) => setServices(data.filter((s) => s.visible !== false)))
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);

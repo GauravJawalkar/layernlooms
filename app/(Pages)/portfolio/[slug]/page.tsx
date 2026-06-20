@@ -17,8 +17,8 @@ export default function ProjectDetailPage() {
   useEffect(() => {
     (async () => {
       try {
-        const data = await getAllProjectsFromDb();
-        const found = data.find((p) => p.slug === slug);
+const data = await getAllProjectsFromDb();
+const found = data.find((p) => p.slug === slug && p.visible !== false);
         if (found) {
           setProject(found);
         } else {

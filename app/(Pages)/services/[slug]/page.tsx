@@ -25,8 +25,8 @@ export default function ServiceDetailPage() {
   useEffect(() => {
     (async () => {
       try {
-        const data = await getAllServicesFromDb();
-        const found = data.find((s) => s.slug === slug);
+const data = await getAllServicesFromDb();
+const found = data.find((s) => s.slug === slug && s.visible !== false);
         if (found) {
           setService(found);
           setAllServices(data);

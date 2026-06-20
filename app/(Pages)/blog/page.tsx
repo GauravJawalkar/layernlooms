@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, Calendar, Clock, User, Loader2 } from "lucide-react";
+import { ArrowRight, Calendar, Clock, FileText, Loader2 } from "lucide-react";
 import { getAllBlogPostsFromDb, AdminBlogPost } from "../../lib/admin/blog";
 
 export default function BlogPage() {
@@ -23,7 +23,7 @@ export default function BlogPage() {
     (async () => {
       try {
         const data = await getAllBlogPostsFromDb();
-        setPosts(data);
+        setPosts(data.filter((p) => p.visible === undefined || p.visible !== false));
       } catch (err) {
         console.error("Failed to load posts:", err);
       }
@@ -71,25 +71,26 @@ export default function BlogPage() {
             Insights, tutorials, and stories from the team — covering web development, AI, design, and more.
           </p>
 
-          {/* Category Filter */}
-          <div className="flex flex-wrap justify-center gap-3">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setActiveCategory(category)}
-                className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${activeCategory === category
-                    ? "bg-primary text-background shadow-lg"
-                    : "bg-secondary text-textMuted hover:bg-secondary/80"
-                  }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
+          {!loading && posts.length > 0 && (
+            <div className="flex flex-wrap justify-center gap-3">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setActiveCategory(category)}
+                  className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${activeCategory === category
+                      ? "bg-primary text-background shadow-lg"
+                      : "bg-secondary text-textMuted hover:bg-secondary/80"
+                    }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          )}
         </motion.div>
       </section>
 
-      {/* Blog Posts Grid */}
+      {/* Blog Posts / Empty State */}
       <section
         ref={postsRef}
         className="py-24 transition-colors duration-300 bg-background px-6 lg:px-8"
@@ -98,6 +99,16 @@ export default function BlogPage() {
           {loading ? (
             <div className="flex items-center justify-center py-20">
               <Loader2 className="w-6 h-6 animate-spin text-primary" />
+            </div>
+          ) : filteredPosts.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-16">
+              <div className="w-16 h-16 rounded-2xl bg-secondary flex items-center justify-center mb-5">
+                <FileText className="w-7 h-7 text-textMuted" />
+              </div>
+              <h3 className="text-xl font-semibold text-foreground mb-2">No blogs available</h3>
+              <p className="text-textMuted text-sm max-w-sm text-center">
+                Blog posts will appear here once published. Check back later for updates and insights.
+              </p>
             </div>
           ) : (
           <motion.div

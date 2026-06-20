@@ -21,7 +21,7 @@ export default function ServicesPage() {
 
   useEffect(() => {
     getAllServicesFromDb()
-      .then(setServices)
+      .then((data) => setServices(data.filter((s) => s.visible !== false)))
       .catch((err) => {
         console.error("Failed to load services:", err);
         setLoadError("Failed to load services");
@@ -104,7 +104,7 @@ export default function ServicesPage() {
                     setLoading(true);
                     setLoadError("");
                     getAllServicesFromDb()
-                      .then(setServices)
+                      .then((data) => setServices(data.filter((s) => s.visible !== false)))
                       .catch((err) => {
                         console.error("Retry failed:", err);
                         setLoadError("Failed to load services");

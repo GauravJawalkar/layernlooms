@@ -22,11 +22,13 @@ export interface AdminBlogPost {
   tags: string[];
   image: string;
   readTime: string;
+  visible?: boolean;
   createdAt?: any;
   updatedAt?: any;
 }
 
 export const defaultBlogPost: Omit<AdminBlogPost, "id"> = {
+  visible: true,
   slug: "",
   title: "",
   excerpt: "",

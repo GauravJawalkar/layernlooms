@@ -25,8 +25,8 @@ export default function PortfolioPage() {
     setLoading(true);
     setLoadError("");
     try {
-      const data = await getAllProjectsFromDb();
-      setProjects(data);
+const data = await getAllProjectsFromDb();
+setProjects(data.filter((p) => p.visible !== false));
     } catch (err: any) {
       console.error("Failed to load projects:", err);
       setLoadError("Failed to load portfolio items. Please try again.");

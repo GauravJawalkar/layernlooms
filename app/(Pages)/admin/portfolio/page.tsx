@@ -324,6 +324,21 @@ export default function AdminPortfolioPage() {
             </div>
           </div>
         </div>
+        <div className="mt-6 pt-6 border-t border-border">
+          <label className="flex items-center gap-3 cursor-pointer">
+            <button
+              type="button"
+              onClick={() => updateField("visible", editing.visible === false ? true : false)}
+              className={`relative w-10 h-5 rounded-full transition-colors shrink-0 ${editing.visible !== false ? 'bg-primary' : 'bg-border'}`}
+            >
+              <div className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-background shadow-sm transition-transform ${editing.visible !== false ? 'translate-x-5' : ''}`} />
+            </button>
+            <div>
+              <p className="text-sm font-medium text-foreground">Visible on website</p>
+              <p className="text-xs text-textMuted">Toggle to show or hide on the public site</p>
+            </div>
+          </label>
+        </div>
       </div>
     );
   }
@@ -381,7 +396,12 @@ export default function AdminPortfolioPage() {
                     </div>
                   )}
                   <div className="min-w-0">
-                    <p className="font-medium text-foreground truncate">{p.title}</p>
+                    <div className="flex items-center gap-2">
+                      <p className="font-medium text-foreground truncate">{p.title}</p>
+                      {p.visible === false && (
+                        <span className="text-[10px] font-medium text-textMuted bg-secondary px-1.5 py-0.5 rounded shrink-0">Hidden</span>
+                      )}
+                    </div>
                     <p className="text-xs text-textMuted truncate">/{p.slug}</p>
                   </div>
                 </div>

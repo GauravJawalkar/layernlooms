@@ -19,8 +19,8 @@ export default function BlogPostPage() {
   useEffect(() => {
     (async () => {
       try {
-        const data = await getAllBlogPostsFromDb();
-        const found = data.find((p) => p.slug === slug);
+const data = await getAllBlogPostsFromDb();
+const found = data.find((p) => p.slug === slug && p.visible !== false);
         if (found) {
           setPost(found);
           setAllPosts(data);

@@ -31,11 +31,13 @@ export interface AdminService {
     question: string;
     answer: string;
   }[];
+  visible?: boolean;
   createdAt?: any;
   updatedAt?: any;
 }
 
 export const defaultService: Omit<AdminService, "id"> = {
+  visible: true,
   slug: "",
   title: "",
   subtitle: "",

@@ -38,9 +38,9 @@ export default function BlogSection() {
   useEffect(() => {
     (async () => {
       try {
-        const data = await getAllBlogPostsFromDb();
-        setPosts(
-          [...data].sort((a, b) => {
+const data = await getAllBlogPostsFromDb();
+setPosts(
+  data.filter((p) => p.visible !== false).sort((a, b) => {
             const da = a.createdAt?.toMillis?.() ?? new Date(a.date).getTime();
             const db = b.createdAt?.toMillis?.() ?? new Date(b.date).getTime();
             return db - da;

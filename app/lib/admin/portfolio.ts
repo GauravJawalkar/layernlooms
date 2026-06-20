@@ -29,11 +29,13 @@ export interface AdminProject {
     author: string;
     role: string;
   };
+  visible?: boolean;
   createdAt?: any;
   updatedAt?: any;
 }
 
 export const defaultProject: Omit<AdminProject, "id"> = {
+  visible: true,
   slug: "",
   title: "",
   category: "",
