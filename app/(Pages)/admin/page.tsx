@@ -1,0 +1,116 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import {
+  Users,
+  ShieldCheck,
+  Clock,
+  Activity,
+} from "lucide-react";
+import { useAdminAuth } from "../../context/AdminAuthContext";
+import { getAllUsers, getPendingUsers, AdminUser } from "../../lib/admin/auth";
+
+export default function AdminDashboardPage() {
+  const { user, isSuperAdmin } = useAdminAuth();
+  const [stats, setStats] = useState({
+    total: 0,
+    active: 0,
+    pending: 0,
+  });
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const all = await getAllUsers();
+        const pending = await getPendingUsers();
+        setStats({
+          total: all.length,
+          active: all.filter((u) => u.status === "active").length,
+          pending: pending.length,
+        });
+      } catch {}
+    })();
+  }, []);
+
+  const greeting = () => {
+    const h = new Date().getHours();
+    if (h < 12) return "Good morning";
+    if (h < 17) return "Good afternoon";
+    return "Good evening";
+  };
+
+  const cards = [
+    { icon: Users, label: "Total Users", value: stats.total, color: "text-blue-500 bg-blue-500/10" },
+    { icon: ShieldCheck, label: "Active Admins", value: stats.active, color: "text-emerald-500 bg-emerald-500/10" },
+    { icon: Clock, label: "Pending Approval", value: stats.pending, color: "text-amber-500 bg-amber-500/10" },
+    { icon: Activity, label: "Your Role", value: user?.role ?? "-", color: "text-primary bg-primary/10" },
+  ];
+
+  return (
+    <div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 p-6 mb-8"
+      >
+        <h1 className="text-2xl font-bold text-foreground">
+          {greeting()}, {user?.email?.split("@")[0] || "Admin"} 👋
+        </h1>
+        <p className="text-sm text-textMuted mt-1">
+          Welcome back to the <span className="font-semibold text-foreground">LayerNLooms</span> admin panel.
+          {isSuperAdmin
+            ? " You have full control over the system."
+            : " You have access to the dashboard."}
+        </p>
+        <div className="flex items-center gap-2 mt-4">
+          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
+            <Activity className="w-3 h-3" />
+            {user?.role === "superadmin" ? "Super Admin" : "Admin"}
+          </span>
+          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-xs font-medium">
+            <ShieldCheck className="w-3 h-3" />
+            Active
+          </span>
+        </div>
+      </motion.div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {cards.map((card, i) => (
+          <motion.div
+            key={card.label}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.1 }}
+            className="rounded-2xl border border-border bg-card p-5"
+          >
+            <div className={`inline-flex w-10 h-10 rounded-xl items-center justify-center ${card.color} mb-3`}>
+              <card.icon className="w-5 h-5" />
+            </div>
+            <p className="text-2xl font-bold text-foreground">{card.value}</p>
+            <p className="text-xs text-textMuted mt-0.5">{card.label}</p>
+          </motion.div>
+        ))}
+      </div>
+
+      {isSuperAdmin && stats.pending > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="mt-8 rounded-2xl border border-amber-500/20 bg-amber-500/5 p-5"
+        >
+          <div className="flex items-start gap-3">
+            <Clock className="w-5 h-5 text-amber-500 mt-0.5 shrink-0" />
+            <div>
+              <h3 className="font-semibold text-foreground">Pending Approvals</h3>
+              <p className="text-sm text-textMuted mt-1">
+                {stats.pending} user{stats.pending > 1 ? "s" : ""} pending your approval.
+              </p>
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </div>
+  );
+}

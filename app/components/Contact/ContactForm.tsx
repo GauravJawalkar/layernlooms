@@ -58,10 +58,18 @@ export default function ContactForm() {
         setForm({ ...form, projectType: "" });
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setSubmitted(true);
-        setTimeout(() => setSubmitted(false), 5000);
+        try {
+            const { saveContact } = await import("../../lib/admin/contacts");
+            await saveContact(form);
+            setSubmitted(true);
+            setForm({ name: "", email: "", company: "", projectType: "", budget: "", message: "" });
+            setProjectTypes(defaultProjectTypes);
+            setTimeout(() => setSubmitted(false), 5000);
+        } catch (err) {
+            console.error("Failed to save contact:", err);
+        }
     };
 
     return (
