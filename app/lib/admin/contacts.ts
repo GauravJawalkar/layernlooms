@@ -7,6 +7,7 @@ import {
   serverTimestamp,
   updateDoc,
   doc,
+  deleteDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -39,4 +40,8 @@ export async function getAllContacts() {
 
 export async function markContactRead(id: string) {
   await updateDoc(doc(db, "contacts", id), { read: true });
+}
+
+export async function deleteContact(id: string) {
+  await deleteDoc(doc(db, "contacts", id));
 }

@@ -14,15 +14,19 @@ import {
   ChevronDown,
   ChevronUp,
   AlertCircle,
+  Trash2,
 } from "lucide-react";
-import { getAllContacts, markContactRead, ContactSubmission } from "../../../lib/admin/contacts";
+import { getAllContacts, markContactRead, deleteContact, ContactSubmission } from "../../../lib/admin/contacts";
+import { useAdminAuth } from "../../../context/AdminAuthContext";
 
 export default function AdminContactsPage() {
+  const { isSuperAdmin } = useAdminAuth();
   const [contacts, setContacts] = useState<ContactSubmission[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [expanded, setExpanded] = useState<string | null>(null);
   const [readState, setReadState] = useState<Record<string, boolean>>({});
+  const [deleteId, setDeleteId] = useState<string | null>(null);
 
   useEffect(() => {
     loadContacts();
@@ -49,6 +53,15 @@ export default function AdminContactsPage() {
       await markContactRead(id);
       setReadState((prev) => ({ ...prev, [id]: true }));
     } catch {}
+  }
+
+  async function handleDelete(id: string) {
+    try {
+      await deleteContact(id);
+      setContacts((prev) => prev.filter((c) => c.id !== id));
+      setReadState((prev) => { const { [id]: _, ...rest } = prev; return rest; });
+    } catch {}
+    setDeleteId(null);
   }
 
   const unreadCount = Object.values(readState).filter((r) => !r).length;
@@ -169,15 +182,44 @@ export default function AdminContactsPage() {
                       <p className="text-xs font-bold tracking-widest uppercase text-textMuted mb-2">Message</p>
                       <p className="text-sm text-foreground bg-secondary/50 rounded-xl p-4 whitespace-pre-wrap">{c.message || "—"}</p>
                     </div>
-                    {!readState[c.id] && (
-                      <button
-                        onClick={() => handleMarkRead(c.id)}
-                        className="mt-4 inline-flex items-center gap-1.5 text-xs font-medium text-textMuted hover:text-foreground transition-colors"
-                      >
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                        Mark as read
-                      </button>
-                    )}
+                    <div className="mt-4 flex items-center gap-3">
+                      {!readState[c.id] && (
+                        <button
+                          onClick={() => handleMarkRead(c.id)}
+                          className="inline-flex items-center gap-1.5 text-xs font-medium text-textMuted hover:text-foreground transition-colors"
+                        >
+                          <CheckCircle2 className="w-3.5 h-3.5" />
+                          Mark as read
+                        </button>
+                      )}
+                      {isSuperAdmin && (
+                        deleteId === c.id ? (
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs text-textMuted">Delete?</span>
+                            <button
+                              onClick={() => handleDelete(c.id)}
+                              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-red-500 text-white text-xs font-medium hover:bg-red-600 transition-colors"
+                            >
+                              Yes
+                            </button>
+                            <button
+                              onClick={() => setDeleteId(null)}
+                              className="px-2.5 py-1 rounded-lg bg-secondary text-textMuted text-xs font-medium hover:text-foreground transition-colors"
+                            >
+                              No
+                            </button>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => setDeleteId(c.id)}
+                            className="inline-flex items-center gap-1.5 text-xs font-medium text-red-500 hover:text-red-400 transition-colors"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                            Delete
+                          </button>
+                        )
+                      )}
+                    </div>
                   </div>
                 </motion.div>
               )}
