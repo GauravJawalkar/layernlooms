@@ -23,10 +23,12 @@ import {
   AdminBlogPost,
   defaultBlogPost,
 } from "../../../lib/admin/blog";
+import { useToast } from "../../../components/admin/Toast";
 import CloudinaryUpload from "../../../components/admin/CloudinaryUpload";
 import MarkdownEditor from "../../../components/admin/MarkdownEditor";
 
 export default function AdminBlogPage() {
+  const { success, error } = useToast();
   const authCtx = useAdminAuth();
   const authLoading = authCtx.loading;
   const [posts, setPosts] = useState<AdminBlogPost[]>([]);
@@ -76,19 +78,19 @@ export default function AdminBlogPage() {
     if (!editing.title || !editing.slug) return;
 
     setSaving(true);
-    setSaveError("");
     try {
       const { id: _, createdAt: _c, updatedAt: _u, ...clean } = editing as any;
       if (isNew) {
         await createBlogPost(clean);
+        success("Post created");
       } else {
         await updateBlogPost(editing.id, clean);
+        success("Post updated");
       }
       await loadPosts();
       cancelEdit();
     } catch (err: any) {
-      setSaveError(err?.message || "Failed to save.");
-      console.error("Save error:", err);
+      error(err?.message || "Failed to save");
     }
     setSaving(false);
   }
@@ -97,8 +99,9 @@ export default function AdminBlogPage() {
     try {
       await deleteBlogPost(id);
       setPosts((prev) => prev.filter((p) => p.id !== id));
+      success("Post deleted");
     } catch (err) {
-      console.error("Delete error:", err);
+      error("Failed to delete");
     }
     setDeleteId(null);
   }
@@ -138,11 +141,6 @@ export default function AdminBlogPage() {
   if (editing) {
     return (
       <div>
-        {saveError && (
-          <div className="mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-sm text-red-500">
-            {saveError}
-          </div>
-        )}
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-foreground">
             {isNew ? "New Post" : "Edit Post"}

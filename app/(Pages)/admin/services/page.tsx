@@ -24,9 +24,11 @@ import {
   AdminService,
   defaultService,
 } from "../../../lib/admin/services";
+import { useToast } from "../../../components/admin/Toast";
 import CloudinaryUpload from "../../../components/admin/CloudinaryUpload";
 
 export default function AdminServicesPage() {
+  const { success, error } = useToast();
   const authCtx = useAdminAuth();
   const authLoading = authCtx.loading;
   const [services, setServices] = useState<AdminService[]>([]);
@@ -35,7 +37,6 @@ export default function AdminServicesPage() {
   const [editing, setEditing] = useState<AdminService | null>(null);
   const [isNew, setIsNew] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [saveError, setSaveError] = useState("");
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
@@ -51,7 +52,7 @@ export default function AdminServicesPage() {
       setServices(data);
     } catch (err: any) {
       setLoadError(err?.message || "Failed to load services. Check Firestore rules.");
-      console.error("Load error:", err);
+      error("Failed to load services");
     }
     setLoading(false);
   }
@@ -76,19 +77,19 @@ export default function AdminServicesPage() {
     if (!editing.title || !editing.slug) return;
 
     setSaving(true);
-    setSaveError("");
     try {
       const { id: _, createdAt: _c, updatedAt: _u, ...clean } = editing as any;
       if (isNew) {
         await createService(clean);
+        success("Service created");
       } else {
         await updateService(editing.id, clean);
+        success("Service updated");
       }
       await loadServices();
       cancelEdit();
     } catch (err: any) {
-      setSaveError(err?.message || "Failed to save. Check console for details.");
-      console.error("Save error:", err);
+      error(err?.message || "Failed to save");
     }
     setSaving(false);
   }
@@ -97,8 +98,9 @@ export default function AdminServicesPage() {
     try {
       await deleteService(id);
       setServices((prev) => prev.filter((s) => s.id !== id));
+      success("Service deleted");
     } catch (err) {
-      console.error("Delete error:", err);
+      error("Failed to delete");
     }
     setDeleteId(null);
   }
@@ -157,11 +159,6 @@ export default function AdminServicesPage() {
   if (editing) {
     return (
       <div>
-        {saveError && (
-          <div className="mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-sm text-red-500">
-            {saveError}
-          </div>
-        )}
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-foreground">
             {isNew ? "New Service" : "Edit Service"}

@@ -16,6 +16,7 @@ import {
   Trash2,
   RefreshCw,
 } from "lucide-react";
+import { useToast } from "../../../components/admin/Toast";
 import { useAdminAuth } from "../../../context/AdminAuthContext";
 import {
   getAllUsers,
@@ -29,6 +30,7 @@ import {
 } from "../../../lib/admin/auth";
 
 export default function AdminUsersPage() {
+  const { success, error } = useToast();
   const { user: currentUser, isSuperAdmin, loading: authLoading } = useAdminAuth();
   const router = useRouter();
   const [users, setUsers] = useState<(AdminUser & { id: string })[]>([]);
@@ -63,8 +65,9 @@ export default function AdminUsersPage() {
     setActionLoading(uid);
     try {
       await approveUser(uid);
+      success("User approved");
       await loadData();
-    } catch {}
+    } catch { error("Failed to approve"); }
     setActionLoading(null);
   }
 
@@ -72,8 +75,9 @@ export default function AdminUsersPage() {
     setActionLoading(uid);
     try {
       await rejectUser(uid);
+      success("User rejected");
       await loadData();
-    } catch {}
+    } catch { error("Failed to reject"); }
     setActionLoading(null);
   }
 
@@ -81,8 +85,9 @@ export default function AdminUsersPage() {
     setActionLoading(uid);
     try {
       await blockUser(uid);
+      success("User suspended");
       await loadData();
-    } catch {}
+    } catch { error("Failed to suspend"); }
     setActionLoading(null);
     setConfirmId(null);
     setConfirmAction(null);
@@ -92,8 +97,9 @@ export default function AdminUsersPage() {
     setActionLoading(uid);
     try {
       await unblockUser(uid);
+      success("User reactivated");
       await loadData();
-    } catch {}
+    } catch { error("Failed to reactivate"); }
     setActionLoading(null);
     setConfirmId(null);
     setConfirmAction(null);
@@ -103,8 +109,9 @@ export default function AdminUsersPage() {
     setActionLoading(uid);
     try {
       await deleteUserDoc(uid);
+      success("User deleted");
       await loadData();
-    } catch {}
+    } catch { error("Failed to delete"); }
     setActionLoading(null);
     setConfirmId(null);
     setConfirmAction(null);

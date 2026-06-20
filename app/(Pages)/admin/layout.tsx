@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import Logo from "../../components/Logo";
 import ThemeToggle from "../../components/ThemeToggle";
+import { ToastProvider } from "../../components/admin/Toast";
 import { AdminAuthProvider, useAdminAuth } from "../../context/AdminAuthContext";
 
 const adminNav = [
@@ -234,7 +235,9 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <AdminAuthProvider>
-      <AdminLayoutInner>{children}</AdminLayoutInner>
+      <ToastProvider>
+        <AdminLayoutInner>{children}</AdminLayoutInner>
+      </ToastProvider>
     </AdminAuthProvider>
   );
 }

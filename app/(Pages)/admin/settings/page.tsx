@@ -14,6 +14,7 @@ import {
   EyeOff,
   AlertCircle,
 } from "lucide-react";
+import { useToast } from "../../../components/admin/Toast";
 import { useAdminAuth } from "../../../context/AdminAuthContext";
 import {
   updateUserProfile,
@@ -22,17 +23,16 @@ import {
 } from "../../../lib/admin/auth";
 
 export default function AdminSettingsPage() {
+  const { success, error } = useToast();
   const { user } = useAdminAuth();
   const [displayName, setDisplayName] = useState(user?.displayName || "");
   const [saving, setSaving] = useState(false);
-  const [saveMsg, setSaveMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPw, setShowPw] = useState(false);
   const [changingPw, setChangingPw] = useState(false);
-  const [pwMsg, setPwMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
   useEffect(() => {
     if (user?.displayName) setDisplayName(user.displayName);
@@ -41,36 +41,34 @@ export default function AdminSettingsPage() {
   async function handleSaveProfile() {
     if (!user) return;
     setSaving(true);
-    setSaveMsg(null);
     try {
       await updateUserProfile(user.uid, { displayName: displayName || "" });
-      setSaveMsg({ type: "success", text: "Profile updated successfully." });
+      success("Profile updated");
     } catch (err: any) {
-      setSaveMsg({ type: "error", text: err?.message || "Failed to update profile." });
+      error(err?.message || "Failed to update profile");
     }
     setSaving(false);
   }
 
   async function handleChangePassword() {
     if (!newPassword || newPassword.length < 6) {
-      setPwMsg({ type: "error", text: "Password must be at least 6 characters." });
+      error("Password must be at least 6 characters");
       return;
     }
     if (newPassword !== confirmPassword) {
-      setPwMsg({ type: "error", text: "Passwords do not match." });
+      error("Passwords do not match");
       return;
     }
     setChangingPw(true);
-    setPwMsg(null);
     try {
       await reauthenticateUser(currentPassword);
       await changeUserPassword(newPassword);
-      setPwMsg({ type: "success", text: "Password changed successfully." });
+      success("Password changed");
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
     } catch (err: any) {
-      setPwMsg({ type: "error", text: err?.message || "Failed to change password." });
+      error(err?.message || "Failed to change password");
     }
     setChangingPw(false);
   }
@@ -90,17 +88,6 @@ export default function AdminSettingsPage() {
           <User className="w-4 h-4" />
           Profile
         </h2>
-
-        {saveMsg && (
-          <div className={`mb-4 p-3 rounded-xl text-sm flex items-center gap-2 ${
-            saveMsg.type === "success"
-              ? "bg-emerald-500/10 border border-emerald-500/20 text-emerald-500"
-              : "bg-red-500/10 border border-red-500/20 text-red-500"
-          }`}>
-            {saveMsg.type === "success" ? <CheckCircle2 className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
-            {saveMsg.text}
-          </div>
-        )}
 
         <div className="space-y-4">
           <div>
@@ -154,17 +141,6 @@ export default function AdminSettingsPage() {
           <Lock className="w-4 h-4" />
           Change Password
         </h2>
-
-        {pwMsg && (
-          <div className={`mb-4 p-3 rounded-xl text-sm flex items-center gap-2 ${
-            pwMsg.type === "success"
-              ? "bg-emerald-500/10 border border-emerald-500/20 text-emerald-500"
-              : "bg-red-500/10 border border-red-500/20 text-red-500"
-          }`}>
-            {pwMsg.type === "success" ? <CheckCircle2 className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
-            {pwMsg.text}
-          </div>
-        )}
 
         <div className="space-y-4">
           <div>
