@@ -1,11 +1,13 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
+import { getAllServicesFromDb, AdminService } from "../../lib/admin/services";
 
-const themeColors = {
+const themeColors: Record<string, string> = {
   zinc: "#a1a1aa",
   purple: "#a78bfa",
   green: "#34d399",
@@ -13,45 +15,6 @@ const themeColors = {
   amber: "#fb923c",
   pink: "#f472b6",
 };
-
-const services = [
-  {
-    image: "/web-dev.png",
-    title: "Web Development",
-    description: "Custom web applications, SaaS platforms, and enterprise portals built with modern frameworks.",
-    href: "/services/web-development",
-  },
-  {
-    image: "/mobile-app.png",
-    title: "Mobile App Development",
-    description: "Native iOS, Android, and cross-platform mobile solutions with exceptional UX.",
-    href: "/services/mobile-app-development",
-  },
-  {
-    image: "/ai-ml.png",
-    title: "AI & ML Solutions",
-    description: "Intelligent automation, predictive analytics, and custom machine learning models.",
-    href: "/services/ai-ml-solutions",
-  },
-  {
-    image: "/cloud-infra.png",
-    title: "Cloud Infrastructure",
-    description: "Scalable cloud architecture, migration, and managed infrastructure services.",
-    href: "/services/cloud-infrastructure",
-  },
-  {
-    image: "/data-eng.png",
-    title: "Data Engineering",
-    description: "Data pipelines, warehousing, visualization, and business intelligence solutions.",
-    href: "/services/data-engineering",
-  },
-  {
-    image: "/cybersecurity.png",
-    title: "Cybersecurity",
-    description: "Security audits, penetration testing, compliance, and threat monitoring.",
-    href: "/services/cybersecurity",
-  },
-];
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -69,6 +32,15 @@ const itemVariants = {
 export default function OurServices() {
   const { pointerTheme } = useTheme();
   const activeColor = themeColors[pointerTheme] || "#a1a1aa";
+  const [services, setServices] = useState<AdminService[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getAllServicesFromDb()
+      .then(setServices)
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <section className="relative py-20 bg-secondary/30 dark:bg-zinc-950/20 overflow-hidden">
@@ -109,37 +81,47 @@ export default function OurServices() {
           viewport={{ once: true }}
           className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
         >
-          {services.map((service) => (
-            <motion.div
-              key={service.title}
-              variants={itemVariants}
-              className="group relative rounded-2xl border border-neutral-200/50 dark:border-white/[0.05] bg-white/60 dark:bg-white/[0.02] backdrop-blur-md p-6 shadow-[0_8px_30px_rgb(0,0,0,0.01)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)] transition-all duration-300 hover:-translate-y-1 hover:bg-white/80 dark:hover:bg-white/[0.05] hover:border-neutral-300 dark:hover:border-white/[0.12] hover:shadow-[0_20px_50px_rgba(0,0,0,0.04)] dark:hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex flex-col justify-between"
-            >
-              <div>
-                <div className="relative w-full aspect-video overflow-hidden rounded-xl bg-neutral-100/50 dark:bg-white/[0.02] border border-neutral-200/30 dark:border-white/[0.05] mb-6">
-                  <img
-                    src={service.image}
-                    alt={service.title}
-                    className="h-full w-full object-cover grayscale max-sm:grayscale-0 transition-all duration-500 group-hover:scale-105 group-hover:grayscale-0"
-                  />
+          {loading ? (
+            <div className="col-span-full flex items-center justify-center py-16">
+              <Loader2 className="w-5 h-5 animate-spin text-primary" />
+            </div>
+          ) : services.length === 0 ? (
+            <div className="col-span-full text-center py-16 text-sm text-textMuted">
+              No services available yet.
+            </div>
+          ) : (
+            services.map((s) => (
+              <motion.div
+                key={s.id}
+                variants={itemVariants}
+                className="group relative rounded-2xl border border-neutral-200/50 dark:border-white/[0.05] bg-white/60 dark:bg-white/[0.02] backdrop-blur-md p-6 shadow-[0_8px_30px_rgb(0,0,0,0.01)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)] transition-all duration-300 hover:-translate-y-1 hover:bg-white/80 dark:hover:bg-white/[0.05] hover:border-neutral-300 dark:hover:border-white/[0.12] hover:shadow-[0_20px_50px_rgba(0,0,0,0.04)] dark:hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex flex-col justify-between"
+              >
+                <div>
+                  <div className="relative w-full aspect-video overflow-hidden rounded-xl bg-neutral-100/50 dark:bg-white/[0.02] border border-neutral-200/30 dark:border-white/[0.05] mb-6">
+                    <img
+                      src={s.image}
+                      alt={s.title}
+                      className="h-full w-full object-cover grayscale max-sm:grayscale-0 transition-all duration-500 group-hover:scale-105 group-hover:grayscale-0"
+                    />
+                  </div>
+                  <h3 className="text-lg font-semibold text-foreground">
+                    {s.title}
+                  </h3>
+                  <p className="mt-3 text-sm text-textMuted leading-relaxed">
+                    {s.description}
+                  </p>
                 </div>
-                <h3 className="text-lg font-semibold text-foreground">
-                  {service.title}
-                </h3>
-                <p className="mt-3 text-sm text-textMuted leading-relaxed">
-                  {service.description}
-                </p>
-              </div>
-              <div className="mt-6">
-                <Link
-                  href={service.href}
-                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-neutral-800 dark:text-neutral-200 transition-all hover:text-primary dark:hover:text-white hover:gap-2.5"
-                >
-                  Learn More <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-            </motion.div>
-          ))}
+                <div className="mt-6">
+                  <Link
+                    href={`/services/${s.slug}`}
+                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-neutral-800 dark:text-neutral-200 transition-all hover:text-primary dark:hover:text-white hover:gap-2.5"
+                  >
+                    Learn More <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </div>
+              </motion.div>
+            ))
+          )}
         </motion.div>
 
         <motion.div
