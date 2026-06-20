@@ -10,9 +10,10 @@ import {
   Users,
   MessageSquare,
   LogOut,
-  Shield,
   ChevronLeft,
 } from "lucide-react";
+import Logo from "../../components/Logo";
+import ThemeToggle from "../../components/ThemeToggle";
 import { AdminAuthProvider, useAdminAuth } from "../../context/AdminAuthContext";
 
 const adminNav = [
@@ -51,9 +52,8 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen bg-background flex">
       {/* Sidebar */}
       <aside className="w-64 border-r border-border bg-card p-6 hidden md:flex flex-col">
-        <Link href="/admin" className="flex items-center gap-2 mb-8">
-          <Shield className="w-5 h-5 text-primary" />
-          <span className="font-bold text-foreground">Admin Panel</span>
+        <Link href="/admin" className="flex justify-center mb-8">
+          <Logo className="w-auto h-17" />
         </Link>
 
         <nav className="flex-1 space-y-1">
@@ -78,9 +78,14 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
         </nav>
 
         <div className="border-t border-border pt-4 mt-4">
-          <div className="px-3 mb-3">
-            <p className="text-sm font-medium text-foreground truncate">{user.email}</p>
-            <p className="text-xs text-textMuted capitalize">{user.role}</p>
+          <div className="px-3 mb-4 flex flex-col gap-3">
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-foreground truncate" title={user.email}>{user.email}</p>
+              <p className="text-xs text-textMuted capitalize">{user.role}</p>
+            </div>
+            <div className="flex justify-start">
+              <ThemeToggle />
+            </div>
           </div>
           <button
             onClick={async () => { await logout(); router.push("/admin/login"); }}
@@ -102,11 +107,11 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
       {/* Mobile header */}
       <div className="flex-1 flex flex-col">
         <header className="md:hidden flex items-center justify-between px-4 py-3 border-b border-border bg-card">
-          <Link href="/admin" className="flex items-center gap-2">
-            <Shield className="w-5 h-5 text-primary" />
-            <span className="font-bold text-foreground text-sm">Admin</span>
+          <Link href="/admin">
+            <Logo className="w-auto h-7" />
           </Link>
           <div className="flex items-center gap-2">
+            <ThemeToggle />
             <button
               onClick={async () => { await logout(); router.push("/admin/login"); }}
               className="p-2 rounded-xl text-red-500 hover:bg-red-500/10 transition-all"
