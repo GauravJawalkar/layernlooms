@@ -1,134 +1,60 @@
-import { notFound } from "next/navigation";
-import { Metadata } from "next";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Calendar, Clock, User, Tag } from "lucide-react";
-import { blogPosts, getBlogPostBySlug } from "../../../data/blogs";
+import { ArrowLeft, ArrowRight, Calendar, Clock, User, Tag, Loader2 } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { getAllBlogPostsFromDb, AdminBlogPost } from "../../../lib/admin/blog";
 
-interface BlogPageProps {
-  params: Promise<{
-    slug: string;
-  }>;
-}
+export default function BlogPostPage() {
+  const params = useParams();
+  const slug = params.slug as string;
+  const [post, setPost] = useState<AdminBlogPost | null>(null);
+  const [allPosts, setAllPosts] = useState<AdminBlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
-export async function generateMetadata({ params }: BlogPageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const post = getBlogPostBySlug(slug);
-
-  if (!post) return { title: "Post Not Found" };
-
-  return {
-    title: post.title,
-    description: post.excerpt,
-    openGraph: {
-      title: post.title,
-      description: post.excerpt,
-      url: `https://layernlooms.com/blog/${slug}`,
-      images: post.image
-        ? [
-            {
-              url: post.image,
-              width: 1200,
-              height: 630,
-              alt: post.title,
-            },
-          ]
-        : [],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: post.title,
-      description: post.excerpt,
-      images: post.image ? [post.image] : [],
-    },
-  };
-}
-
-export async function generateStaticParams() {
-  return blogPosts.map((post) => ({
-    slug: post.slug,
-  }));
-}
-
-function formatContent(content: string) {
-  return content.split("\n\n").map((block, index) => {
-    if (block.startsWith("## ")) {
-      return (
-        <h2 key={index} className="text-2xl font-bold text-foreground mt-12 mb-4">
-          {block.replace("## ", "")}
-        </h2>
-      );
-    }
-    if (block.startsWith("- **")) {
-      const items = block.split("\n").map((item, i) => {
-        const cleaned = item.replace(/^- \*\*/, "").replace(/\*\*:/, ":");
-        if (cleaned.startsWith("- ")) {
-          return <li key={i} className="text-textMuted leading-relaxed">{cleaned.replace("- ", "")}</li>;
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await getAllBlogPostsFromDb();
+        const found = data.find((p) => p.slug === slug);
+        if (found) {
+          setPost(found);
+          setAllPosts(data);
+        } else {
+          setNotFound(true);
         }
-        return <li key={i} className="text-textMuted leading-relaxed">{cleaned}</li>;
-      });
-      return <ul key={index} className="space-y-2 mb-6 list-disc pl-5">{items}</ul>;
-    }
-    if (block.startsWith("```")) {
-      const lines = block.split("\n");
-      const code = lines.slice(1, -1).join("\n");
-      return (
-        <pre key={index} className="bg-secondary border border-border rounded-xl p-4 overflow-x-auto mb-6 text-sm">
-          <code>{code}</code>
-        </pre>
-      );
-    }
-    if (block.startsWith("1. **")) {
-      const items = block.split("\n").map((item, i) => {
-        const cleaned = item.replace(/^\d+\. \*\*/, "").replace(/\*\*/g, "");
-        const colonIdx = cleaned.indexOf(": ");
-        if (colonIdx > 0) {
-          const title = cleaned.substring(0, colonIdx);
-          const desc = cleaned.substring(colonIdx + 2);
-          return (
-            <li key={i} className="text-textMuted leading-relaxed">
-              <strong className="text-foreground">{title}:</strong> {desc}
-            </li>
-          );
-        }
-        return <li key={i} className="text-textMuted leading-relaxed">{cleaned}</li>;
-      });
-      return <ol key={index} className="space-y-2 mb-6 list-decimal pl-5">{items}</ol>;
-    }
-    if (block.startsWith("### ")) {
-      return (
-        <h3 key={index} className="text-xl font-bold text-foreground mt-8 mb-3">
-          {block.replace("### ", "")}
-        </h3>
-      );
-    }
-    if (block.startsWith("- ")) {
-      const items = block.split("\n").map((item, i) => (
-        <li key={i} className="text-textMuted leading-relaxed">{item.replace("- ", "")}</li>
-      ));
-      return <ul key={index} className="space-y-2 mb-6 list-disc pl-5">{items}</ul>;
-    }
-    if (block.startsWith("> ")) {
-      return (
-        <blockquote key={index} className="border-l-4 border-primary pl-4 italic text-textMuted my-6">
-          {block.replace(/^> /gm, "").replace(/^>/gm, "")}
-        </blockquote>
-      );
-    }
+      } catch (err) {
+        console.error("Failed to load post:", err);
+        setNotFound(true);
+      }
+      setLoading(false);
+    })();
+  }, [slug]);
+
+  if (loading) {
     return (
-      <p key={index} className="text-textMuted leading-relaxed mb-4">
-        {block}
-      </p>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="w-6 h-6 animate-spin text-primary" />
+      </div>
     );
-  });
-}
+  }
 
-export default async function BlogPostPage({ params }: BlogPageProps) {
-  const { slug } = await params;
-  const post = getBlogPostBySlug(slug);
+  if (notFound || !post) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4">
+        <h1 className="text-2xl font-bold text-foreground">Post Not Found</h1>
+        <Link href="/blog" className="text-primary hover:underline text-sm">
+          Back to Blog
+        </Link>
+      </div>
+    );
+  }
 
-  if (!post) notFound();
-
-  const relatedPosts = blogPosts
+  const relatedPosts = allPosts
     .filter((p) => p.slug !== slug && p.category === post.category)
     .slice(0, 3);
 
@@ -137,7 +63,6 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
       {/* Hero Section */}
       <section className="relative pt-10 pb-16 overflow-hidden bg-background">
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-          {/* Back Button */}
           <div className="mb-8">
             <Link
               href="/blog"
@@ -148,7 +73,6 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
             </Link>
           </div>
 
-          {/* Hero Image */}
           <div className="relative aspect-[21/9] w-full rounded-2xl overflow-hidden shadow-xl border border-border mb-10">
             <img
               src={post.image}
@@ -157,16 +81,13 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
             />
           </div>
 
-          {/* Post Meta */}
           <div className="max-w-3xl mx-auto">
             <div className="inline-flex items-center rounded-full bg-secondary px-3 py-1 text-sm font-medium text-foreground mb-4">
               {post.category}
             </div>
-
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground leading-tight mb-6">
               {post.title}
             </h1>
-
             <div className="flex flex-wrap items-center gap-5 text-sm text-textMuted mb-8">
               <span className="flex items-center gap-2">
                 <User className="w-4 h-4" />
@@ -188,11 +109,105 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
       {/* Content */}
       <section className="pb-20 px-6 lg:px-8 bg-background">
         <div className="max-w-3xl mx-auto">
-          <article className="prose prose-lg max-w-none">
-            {formatContent(post.content)}
+          <article className="max-w-none">
+            <div className="markdown-content">
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  h1: ({ children }) => (
+                    <h1 className="text-3xl font-bold text-foreground mt-14 mb-6 leading-tight">{children}</h1>
+                  ),
+                  h2: ({ children }) => (
+                    <h2 className="text-2xl font-bold text-foreground mt-12 mb-4">{children}</h2>
+                  ),
+                  h3: ({ children }) => (
+                    <h3 className="text-xl font-bold text-foreground mt-8 mb-3">{children}</h3>
+                  ),
+                  h4: ({ children }) => (
+                    <h4 className="text-lg font-bold text-foreground mt-6 mb-2">{children}</h4>
+                  ),
+                  p: ({ children }) => (
+                    <p className="text-textMuted leading-relaxed mb-5">{children}</p>
+                  ),
+                  a: ({ href, children }) => (
+                    <a href={href} className="text-primary hover:underline font-medium" target="_blank" rel="noopener noreferrer">{children}</a>
+                  ),
+                  ul: ({ children }) => (
+                    <ul className="space-y-2 mb-6 list-disc pl-6">{children}</ul>
+                  ),
+                  ol: ({ children }) => (
+                    <ol className="space-y-2 mb-6 list-decimal pl-6">{children}</ol>
+                  ),
+                  li: ({ children }) => (
+                    <li className="text-textMuted leading-relaxed">{children}</li>
+                  ),
+                  blockquote: ({ children }) => (
+                    <blockquote className="border-l-4 border-primary pl-5 italic text-textMuted my-6 py-2">{children}</blockquote>
+                  ),
+                  code: ({ className, children, ...props }) => {
+                    const isInline = !className;
+                    if (isInline) {
+                      return (
+                        <code className="bg-secondary border border-border px-1.5 py-0.5 rounded-md text-sm font-mono text-foreground" {...props}>
+                          {children}
+                        </code>
+                      );
+                    }
+                    return (
+                      <pre className="bg-secondary border border-border rounded-xl p-4 overflow-x-auto mb-6 text-sm">
+                        <code className={className} {...props}>{children}</code>
+                      </pre>
+                    );
+                  },
+                  pre: ({ children }) => (
+                    <>{children}</>
+                  ),
+                  img: ({ src, alt }) => {
+                    if (!src) return null;
+                    return (
+                      <img
+                        src={src}
+                        alt={alt || ""}
+                        className="w-full rounded-xl border border-border my-8"
+                      />
+                    );
+                  },
+                  table: ({ children }) => (
+                    <div className="overflow-x-auto mb-6 rounded-xl border border-border">
+                      <table className="w-full text-sm">{children}</table>
+                    </div>
+                  ),
+                  thead: ({ children }) => (
+                    <thead className="bg-secondary">{children}</thead>
+                  ),
+                  tbody: ({ children }) => (
+                    <tbody className="divide-y divide-border">{children}</tbody>
+                  ),
+                  tr: ({ children }) => (
+                    <tr className="divide-x divide-border">{children}</tr>
+                  ),
+                  th: ({ children }) => (
+                    <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-foreground">{children}</th>
+                  ),
+                  td: ({ children }) => (
+                    <td className="px-4 py-3 text-textMuted">{children}</td>
+                  ),
+                  hr: () => (
+                    <hr className="border-border my-10" />
+                  ),
+                  strong: ({ children }) => (
+                    <strong className="font-bold text-foreground">{children}</strong>
+                  ),
+                  em: ({ children }) => (
+                    <em className="italic text-foreground">{children}</em>
+                  ),
+                }}
+              >
+                {post.content}
+              </ReactMarkdown>
+            </div>
           </article>
 
-          {/* Tags */}
           <div className="mt-12 pt-8 border-t border-border">
             <div className="flex items-center gap-2 flex-wrap">
               <Tag className="w-4 h-4 text-textMuted" />

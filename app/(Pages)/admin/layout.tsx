@@ -11,6 +11,7 @@ import {
   MessageSquare,
   FolderKanban,
   Briefcase,
+  FileText,
   LogOut,
   ChevronLeft,
 } from "lucide-react";
@@ -22,6 +23,7 @@ const adminNav = [
   { name: "Dashboard", icon: LayoutDashboard, href: "/admin" },
   { name: "Services", icon: FolderKanban, href: "/admin/services" },
   { name: "Portfolio", icon: Briefcase, href: "/admin/portfolio" },
+  { name: "Blog", icon: FileText, href: "/admin/blog" },
   { name: "Contacts", icon: MessageSquare, href: "/admin/contacts" },
   { name: "Users", icon: Users, href: "/admin/users" },
 ];

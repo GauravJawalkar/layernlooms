@@ -1,15 +1,15 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, Calendar, Clock, User } from "lucide-react";
-import { blogPosts, getBlogCategories } from "../../data/blogs";
-
-const categories = getBlogCategories();
+import { ArrowRight, Calendar, Clock, User, Loader2 } from "lucide-react";
+import { getAllBlogPostsFromDb, AdminBlogPost } from "../../lib/admin/blog";
 
 export default function BlogPage() {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [posts, setPosts] = useState<AdminBlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const heroRef = useRef(null);
   const postsRef = useRef(null);
@@ -19,9 +19,23 @@ export default function BlogPage() {
   const isPostsInView = useInView(postsRef, { once: true, amount: 0.1 });
   const isCtaInView = useInView(ctaRef, { once: true, amount: 0.1 });
 
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await getAllBlogPostsFromDb();
+        setPosts(data);
+      } catch (err) {
+        console.error("Failed to load posts:", err);
+      }
+      setLoading(false);
+    })();
+  }, []);
+
+  const categories = ["All", ...Array.from(new Set(posts.map((p) => p.category)))];
+
   const filteredPosts = activeCategory === "All"
-    ? blogPosts
-    : blogPosts.filter((p) => p.category === activeCategory);
+    ? posts
+    : posts.filter((p) => p.category === activeCategory);
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -81,6 +95,11 @@ export default function BlogPage() {
         className="py-24 transition-colors duration-300 bg-background px-6 lg:px-8"
       >
         <div className="mx-auto max-w-7xl">
+          {loading ? (
+            <div className="flex items-center justify-center py-20">
+              <Loader2 className="w-6 h-6 animate-spin text-primary" />
+            </div>
+          ) : (
           <motion.div
             layout
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10"
@@ -150,6 +169,7 @@ export default function BlogPage() {
               ))}
             </AnimatePresence>
           </motion.div>
+          )}
         </div>
       </section>
 
