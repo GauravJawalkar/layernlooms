@@ -7,9 +7,15 @@ import {
   ShieldCheck,
   Clock,
   Activity,
+  FolderKanban,
+  Briefcase,
+  FileText,
 } from "lucide-react";
 import { useAdminAuth } from "../../context/AdminAuthContext";
 import { getAllUsers, getPendingUsers, AdminUser } from "../../lib/admin/auth";
+import { getAllBlogPostsFromDb } from "../../lib/admin/blog";
+import { getAllServicesFromDb } from "../../lib/admin/services";
+import { getAllProjectsFromDb } from "../../lib/admin/portfolio";
 
 export default function AdminDashboardPage() {
   const { user, isSuperAdmin } = useAdminAuth();
@@ -17,17 +23,28 @@ export default function AdminDashboardPage() {
     total: 0,
     active: 0,
     pending: 0,
+    services: 0,
+    projects: 0,
+    blogPosts: 0,
   });
 
   useEffect(() => {
     (async () => {
       try {
-        const all = await getAllUsers();
-        const pending = await getPendingUsers();
+        const [all, pending, services, projects, blogPosts] = await Promise.all([
+          getAllUsers(),
+          getPendingUsers(),
+          getAllServicesFromDb(),
+          getAllProjectsFromDb(),
+          getAllBlogPostsFromDb(),
+        ]);
         setStats({
           total: all.length,
           active: all.filter((u) => u.status === "active").length,
           pending: pending.length,
+          services: services.length,
+          projects: projects.length,
+          blogPosts: blogPosts.length,
         });
       } catch {}
     })();
@@ -45,6 +62,9 @@ export default function AdminDashboardPage() {
     { icon: ShieldCheck, label: "Active Admins", value: stats.active, color: "text-emerald-500 bg-emerald-500/10" },
     { icon: Clock, label: "Pending Approval", value: stats.pending, color: "text-amber-500 bg-amber-500/10" },
     { icon: Activity, label: "Your Role", value: user?.role ?? "-", color: "text-primary bg-primary/10" },
+    { icon: FolderKanban, label: "Services", value: stats.services, color: "text-purple-500 bg-purple-500/10" },
+    { icon: Briefcase, label: "Portfolio Projects", value: stats.projects, color: "text-cyan-500 bg-cyan-500/10" },
+    { icon: FileText, label: "Blog Posts", value: stats.blogPosts, color: "text-rose-500 bg-rose-500/10" },
   ];
 
   return (
