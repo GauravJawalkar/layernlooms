@@ -122,23 +122,23 @@ export default function AdminPortfolioPage() {
     setEditing({ ...editing, [field]: value });
   }
 
-  function updateArrayField(field: "services" | "technologies", index: number, value: string) {
+  function updateTechnologies(index: number, value: string) {
     if (!editing) return;
-    const arr = [...(editing[field] || [])];
+    const arr = [...(editing.technologies || [])];
     arr[index] = value;
-    setEditing({ ...editing, [field]: arr });
+    setEditing({ ...editing, technologies: arr });
   }
 
-  function addArrayField(field: "services" | "technologies") {
+  function addTechnology() {
     if (!editing) return;
-    setEditing({ ...editing, [field]: [...(editing[field] || []), ""] });
+    setEditing({ ...editing, technologies: [...(editing.technologies || []), ""] });
   }
 
-  function removeArrayField(field: "services" | "technologies", index: number) {
+  function removeTechnology(index: number) {
     if (!editing) return;
-    const arr = [...(editing[field] || [])];
+    const arr = [...(editing.technologies || [])];
     arr.splice(index, 1);
-    setEditing({ ...editing, [field]: arr });
+    setEditing({ ...editing, technologies: arr });
   }
 
   function updateTestimonialField(field: "text" | "author" | "role", value: string) {
@@ -279,20 +279,11 @@ export default function AdminPortfolioPage() {
           {/* Right Column */}
           <div className="space-y-5">
             <ArrayEditor
-              label="Services"
-              items={editing.services || []}
-              onAdd={() => addArrayField("services")}
-              onChange={(i, v) => updateArrayField("services", i, v)}
-              onRemove={(i) => removeArrayField("services", i)}
-              placeholder="e.g. Web Development"
-            />
-
-            <ArrayEditor
               label="Technologies"
               items={editing.technologies || []}
-              onAdd={() => addArrayField("technologies")}
-              onChange={(i, v) => updateArrayField("technologies", i, v)}
-              onRemove={(i) => removeArrayField("technologies", i)}
+              onAdd={addTechnology}
+              onChange={updateTechnologies}
+              onRemove={removeTechnology}
               placeholder="e.g. React"
             />
 
@@ -481,24 +472,20 @@ export default function AdminPortfolioPage() {
 
               {expandedId === p.id && (
                 <div className="px-4 pb-4 pt-0 border-t border-border">
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-3 text-xs">
-                    <div>
-                      <p className="text-textMuted">Category</p>
-                      <p className="font-medium text-foreground">{p.category}</p>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-3 text-xs">
+                      <div>
+                        <p className="text-textMuted">Category</p>
+                        <p className="font-medium text-foreground">{p.category}</p>
+                      </div>
+                      <div>
+                        <p className="text-textMuted">Technologies</p>
+                        <p className="font-medium text-foreground">{p.technologies?.length || 0}</p>
+                      </div>
+                      <div>
+                        <p className="text-textMuted">Year</p>
+                        <p className="font-medium text-foreground">{p.year}</p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-textMuted">Services</p>
-                      <p className="font-medium text-foreground">{p.services?.length || 0}</p>
-                    </div>
-                    <div>
-                      <p className="text-textMuted">Technologies</p>
-                      <p className="font-medium text-foreground">{p.technologies?.length || 0}</p>
-                    </div>
-                    <div>
-                      <p className="text-textMuted">Year</p>
-                      <p className="font-medium text-foreground">{p.year}</p>
-                    </div>
-                  </div>
                   {p.description && (
                     <p className="text-xs text-textMuted mt-3 line-clamp-2">{p.description}</p>
                   )}

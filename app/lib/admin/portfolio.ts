@@ -21,7 +21,6 @@ export interface AdminProject {
   client: string;
   year: string;
   url?: string;
-  services: string[];
   technologies: string[];
   result: string;
   testimonial?: {
@@ -44,7 +43,6 @@ export const defaultProject: Omit<AdminProject, "id"> = {
   image: "",
   client: "",
   year: new Date().getFullYear().toString(),
-  services: [],
   technologies: [],
   result: "",
 };
