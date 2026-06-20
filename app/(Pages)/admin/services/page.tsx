@@ -14,6 +14,8 @@ import {
   Save,
   ChevronDown,
   ChevronUp,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import { useAdminAuth } from "../../../context/AdminAuthContext";
 import {
@@ -39,6 +41,7 @@ export default function AdminServicesPage() {
   const [saving, setSaving] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [togglingId, setTogglingId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!authLoading) loadServices();
@@ -103,6 +106,16 @@ export default function AdminServicesPage() {
       error("Failed to delete");
     }
     setDeleteId(null);
+  }
+
+  async function handleToggleVisibility(s: AdminService) {
+    setTogglingId(s.id);
+    try {
+      const newVal = s.visible === false ? true : false;
+      await updateService(s.id, { visible: newVal });
+      setServices((prev) => prev.map((item) => item.id === s.id ? { ...item, visible: newVal } : item));
+    } catch { error("Failed to toggle visibility"); }
+    setTogglingId(null);
   }
 
   function updateField(field: string, value: any) {
@@ -422,6 +435,24 @@ export default function AdminServicesPage() {
                   </div>
                 </div>
                 <div className="flex items-center gap-1 shrink-0">
+                  <button
+                    onClick={() => handleToggleVisibility(s)}
+                    disabled={togglingId === s.id}
+                    className={`p-2 rounded-xl transition-all ${
+                      s.visible === false
+                        ? "text-textMuted hover:text-foreground hover:bg-secondary"
+                        : "text-primary hover:bg-primary/10"
+                    }`}
+                    title={s.visible === false ? "Show on website" : "Hide from website"}
+                  >
+                    {togglingId === s.id ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : s.visible === false ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
+                  </button>
                   <button
                     onClick={() => startEdit(s)}
                     className="p-2 rounded-xl text-textMuted hover:text-foreground hover:bg-secondary transition-all"
