@@ -156,8 +156,8 @@ export default function AdminUsersPage() {
                     <Mail className="w-5 h-5 text-amber-500" />
                   </div>
                   <div className="min-w-0">
-                    <p className="font-medium text-foreground truncate">{u.email}</p>
-                    <p className="text-xs text-textMuted capitalize">Requesting admin access</p>
+                    <p className="font-medium text-foreground truncate">{u.displayName || u.email}</p>
+                    <p className="text-xs text-textMuted">{u.displayName ? u.email : "Requesting admin access"}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
@@ -226,7 +226,10 @@ export default function AdminUsersPage() {
                     <td className="px-5 py-3.5">
                       <div className="flex items-center gap-2">
                         <Mail className="w-4 h-4 text-textMuted shrink-0" />
-                        <span className="text-foreground font-medium">{u.email}</span>
+                        <div className="min-w-0">
+                          <p className="text-foreground font-medium truncate">{u.displayName || u.email}</p>
+                          {u.displayName && <p className="text-xs text-textMuted truncate">{u.email}</p>}
+                        </div>
                         {isSelf && (
                           <span className="text-[10px] font-bold tracking-wider uppercase bg-primary/10 text-primary px-1.5 py-0.5 rounded">You</span>
                         )}
@@ -285,7 +288,7 @@ export default function AdminUsersPage() {
                         </div>
                       ) : canAct ? (
                         <div className="flex items-center justify-end gap-1">
-                          {u.status === "suspended" ? (
+                          {u.status === "suspended" || u.status === "rejected" ? (
                             <button
                               onClick={() => requestConfirm(u.id, "unsuspend")}
                               disabled={actionLoading === u.id}

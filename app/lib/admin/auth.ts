@@ -26,7 +26,7 @@ export interface AdminUser {
   email: string;
   displayName?: string;
   role: "superadmin" | "admin";
-  status: "active" | "pending" | "suspended";
+  status: "active" | "pending" | "suspended" | "rejected";
   createdAt?: any;
 }
 
@@ -47,14 +47,19 @@ export async function signIn(email: string, password: string) {
     await firebaseSignOut(auth);
     throw new Error("Account suspended. Contact superadmin.");
   }
+  if (data.status === "rejected") {
+    await firebaseSignOut(auth);
+    throw new Error("Your access request has been rejected. Please contact the superadmin.");
+  }
   return data;
 }
 
-export async function signUp(email: string, password: string) {
+export async function signUp(email: string, password: string, displayName?: string) {
   const cred = await createUserWithEmailAndPassword(auth, email, password);
   await setDoc(doc(db, "users", cred.user.uid), {
     uid: cred.user.uid,
     email,
+    displayName: displayName || "",
     role: "admin",
     status: "pending",
     createdAt: serverTimestamp(),

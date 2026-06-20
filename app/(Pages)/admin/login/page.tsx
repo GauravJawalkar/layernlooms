@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Shield, Mail, Lock, Eye, EyeOff, AlertCircle, Loader2 } from "lucide-react";
+import { Shield, Mail, Lock, Eye, EyeOff, AlertCircle, Loader2, User } from "lucide-react";
 import { signIn, signUp, signOut } from "../../../lib/admin/auth";
 
 export default function AdminLoginPage() {
@@ -11,6 +11,7 @@ export default function AdminLoginPage() {
   const [mode, setMode] = useState<"login" | "register">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [displayName, setDisplayName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -25,11 +26,12 @@ export default function AdminLoginPage() {
         await signIn(email, password);
         router.push("/admin");
       } else {
-        await signUp(email, password);
+        await signUp(email, password, displayName || undefined);
         setMode("login");
         setError("Registration submitted! Wait for superadmin approval.");
         setEmail("");
         setPassword("");
+        setDisplayName("");
       }
     } catch (err: any) {
       const msg = err?.message || "";
@@ -78,6 +80,22 @@ export default function AdminLoginPage() {
               />
             </div>
           </div>
+
+          {mode === "register" && (
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-1.5">Display Name</label>
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-textMuted" />
+                <input
+                  type="text"
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  placeholder="Your name"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-border bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                />
+              </div>
+            </div>
+          )}
 
           <div>
             <label className="block text-sm font-medium text-foreground mb-1.5">Password</label>
