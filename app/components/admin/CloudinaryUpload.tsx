@@ -7,9 +7,10 @@ import { uploadToCloudinary } from "../../lib/admin/cloudinary";
 interface Props {
   value: string;
   onChange: (url: string) => void;
+  folder?: string;
 }
 
-export default function CloudinaryUpload({ value, onChange }: Props) {
+export default function CloudinaryUpload({ value, onChange, folder = "layernlooms/services" }: Props) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -25,7 +26,7 @@ export default function CloudinaryUpload({ value, onChange }: Props) {
     setUploading(true);
     setError("");
     try {
-      const url = await uploadToCloudinary(file);
+      const url = await uploadToCloudinary(file, folder);
       onChange(url);
     } catch (err: any) {
       setError(err?.message || "Upload failed");
@@ -38,7 +39,7 @@ export default function CloudinaryUpload({ value, onChange }: Props) {
     <div className="space-y-2">
       <div className="flex items-center gap-1.5 text-[10px] font-bold tracking-wider uppercase text-textMuted mb-1">
         <FolderOpen className="w-3 h-3" />
-        layernlooms/services/
+        {folder}/
       </div>
       <div className="flex items-start gap-3">
         <div className="flex-1">

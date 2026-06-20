@@ -1,64 +1,59 @@
-import { notFound } from "next/navigation";
-import { Metadata } from "next";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, CheckCircle2, ArrowRight } from "lucide-react";
-import { projects, getProjectBySlug } from "../../../data/portfolio";
+import { ArrowLeft, CheckCircle2, ArrowRight, Loader2 } from "lucide-react";
+import { getAllProjectsFromDb, AdminProject } from "../../../lib/admin/portfolio";
 
-interface ProjectPageProps {
-  params: Promise<{
-    slug: string;
-  }>;
-}
+export default function ProjectDetailPage() {
+  const params = useParams();
+  const slug = params.slug as string;
+  const [project, setProject] = useState<AdminProject | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
-export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const project = getProjectBySlug(slug);
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await getAllProjectsFromDb();
+        const found = data.find((p) => p.slug === slug);
+        if (found) {
+          setProject(found);
+        } else {
+          setNotFound(true);
+        }
+      } catch (err) {
+        console.error("Failed to load project:", err);
+        setNotFound(true);
+      }
+      setLoading(false);
+    })();
+  }, [slug]);
 
-  if (!project) return { title: "Project Not Found" };
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="w-6 h-6 animate-spin text-primary" />
+      </div>
+    );
+  }
 
-  return {
-    title: project.title,
-    description: project.description,
-    openGraph: {
-      title: project.title,
-      description: project.description,
-      url: `https://layernlooms.com/portfolio/${slug}`,
-      images: project.image
-        ? [
-            {
-              url: project.image,
-              width: 1200,
-              height: 630,
-              alt: project.title,
-            },
-          ]
-        : [],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: project.title,
-      description: project.description,
-      images: project.image ? [project.image] : [],
-    },
-  };
-}
-
-export async function generateStaticParams() {
-  return projects.map((project) => ({
-    slug: project.slug,
-  }));
-}
-
-export default async function ProjectDetailPage({ params }: ProjectPageProps) {
-  const { slug } = await params;
-  const project = getProjectBySlug(slug);
-
-  if (!project) notFound();
+  if (notFound || !project) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4">
+        <h1 className="text-2xl font-bold text-foreground">Project Not Found</h1>
+        <Link href="/portfolio" className="text-primary hover:underline text-sm">
+          Back to Portfolio
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section - Matching ServiceHero Style */}
+      {/* Hero Section */}
       <section className="relative pt-10 pb-20 overflow-hidden bg-background">
         <div className="absolute inset-0 bg-grid-slate-900/[0.04] [mask-image:linear-gradient(0deg,transparent,white)]" />
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
@@ -132,7 +127,6 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             {/* Left Column - Main Content */}
             <div className="lg:col-span-2">
-              {/* Challenge */}
               <div className="prose prose-lg max-w-none ">
                 <h2 className="text-3xl font-bold text-foreground mb-6">About </h2>
                 <p className="text-textMuted leading-relaxed mb-12">
@@ -143,7 +137,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 <div className="bg-secondary rounded-2xl p-8 mb-12 border border-border flex items-start gap-4">
                   <CheckCircle2 className="h-6 w-6 text-emerald-500 mt-1 flex-shrink-0" />
                   <p className="text-xl text-foreground font-medium italic">
-                    "{project.result}"
+                    &quot;{project.result}&quot;
                   </p>
                 </div>
               </div>
@@ -153,7 +147,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 <div className="mt-16 pt-16 border-t border-border">
                   <h3 className="text-sm font-bold uppercase tracking-widest text-textMuted mb-8">Client Feedback</h3>
                   <p className="text-2xl font-light text-foreground italic mb-8">
-                    "{project.testimonial.text}"
+                    &quot;{project.testimonial.text}&quot;
                   </p>
                   <div className="flex items-center gap-4">
                     <div className="h-12 w-12 rounded-full bg-secondary" />
@@ -212,7 +206,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 <div className="bg-primary rounded-2xl p-8 text-background shadow-2xl shadow-primary/20">
                   <h3 className="text-xl font-bold mb-2">Want results like this?</h3>
                   <p className="opacity-80 text-sm mb-6">
-                    Let's discuss how we can apply these strategies to your business.
+                    Let&apos;s discuss how we can apply these strategies to your business.
                   </p>
                   <Link
                     href="/contact"
@@ -234,7 +228,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
             Explore More Work
           </h2>
           <p className="mt-4 text-lg text-textMuted">
-            See how we've helped other clients achieve their digital goals.
+            See how we&apos;ve helped other clients achieve their digital goals.
           </p>
           <div className="mt-8">
             <Link

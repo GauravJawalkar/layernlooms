@@ -10,6 +10,7 @@ import {
   Users,
   MessageSquare,
   FolderKanban,
+  Briefcase,
   LogOut,
   ChevronLeft,
 } from "lucide-react";
@@ -20,6 +21,7 @@ import { AdminAuthProvider, useAdminAuth } from "../../context/AdminAuthContext"
 const adminNav = [
   { name: "Dashboard", icon: LayoutDashboard, href: "/admin" },
   { name: "Services", icon: FolderKanban, href: "/admin/services" },
+  { name: "Portfolio", icon: Briefcase, href: "/admin/portfolio" },
   { name: "Contacts", icon: MessageSquare, href: "/admin/contacts" },
   { name: "Users", icon: Users, href: "/admin/users" },
 ];

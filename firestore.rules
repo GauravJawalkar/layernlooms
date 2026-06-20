@@ -20,5 +20,19 @@ service cloud.firestore {
       allow create: if true;
       allow read, update: if request.auth != null;
     }
+
+    // Services (public read, admin write)
+    match /services/{docId} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'superadmin';
+    }
+
+    // Portfolio projects (public read, admin write)
+    match /portfolio/{docId} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'superadmin';
+    }
   }
 }

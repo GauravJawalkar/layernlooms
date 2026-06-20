@@ -1,16 +1,17 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ExternalLink, Filter } from "lucide-react";
-import { projects } from "../../data/portfolio";
-
-const categories = ["All", ...Array.from(new Set(projects.map((p) => p.category)))];
+import { ArrowRight, ExternalLink, Filter, Loader2 } from "lucide-react";
+import { getAllProjectsFromDb, AdminProject } from "../../lib/admin/portfolio";
 
 export default function PortfolioPage() {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [projects, setProjects] = useState<AdminProject[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
 
   const heroRef = useRef(null);
   const projectsRef = useRef(null);
@@ -19,6 +20,26 @@ export default function PortfolioPage() {
   const isHeroInView = useInView(heroRef, { once: true, amount: 0.1 });
   const isProjectsInView = useInView(projectsRef, { once: true, amount: 0.1 });
   const isCtaInView = useInView(ctaRef, { once: true, amount: 0.1 });
+
+  const fetchProjects = async () => {
+    setLoading(true);
+    setLoadError("");
+    try {
+      const data = await getAllProjectsFromDb();
+      setProjects(data);
+    } catch (err: any) {
+      console.error("Failed to load projects:", err);
+      setLoadError("Failed to load portfolio items. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  const categories = ["All", ...Array.from(new Set(projects.map((p) => p.category)))];
 
   const filteredProjects = activeCategory === "All"
     ? projects
@@ -60,20 +81,22 @@ export default function PortfolioPage() {
           </p>
 
           {/* Category Filter */}
-          <div className="flex flex-wrap justify-center gap-3">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setActiveCategory(category)}
-                className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${activeCategory === category
-                    ? "bg-primary text-background shadow-lg"
-                    : "bg-secondary text-textMuted hover:bg-secondary/80"
-                  }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
+          {!loadError && projects.length > 0 && (
+            <div className="flex flex-wrap justify-center gap-3">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setActiveCategory(category)}
+                  className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${activeCategory === category
+                      ? "bg-primary text-background shadow-lg"
+                      : "bg-secondary text-textMuted hover:bg-secondary/80"
+                    }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          )}
         </motion.div>
       </section>
 
@@ -83,85 +106,106 @@ export default function PortfolioPage() {
         className="py-24 transition-colors duration-300 bg-background px-6 lg:px-8"
       >
         <div className="mx-auto max-w-7xl">
-          <motion.div
-            layout
-            className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12"
-            initial="hidden"
-            animate={isProjectsInView ? "visible" : "hidden"}
-            variants={{
-              hidden: { opacity: 0 },
-              visible: {
-                opacity: 1,
-                transition: {
-                  staggerChildren: 0.1,
-                  delayChildren: 0.2
+          {loading ? (
+            <div className="flex items-center justify-center py-20">
+              <Loader2 className="w-6 h-6 animate-spin text-primary" />
+            </div>
+          ) : loadError ? (
+            <div className="text-center py-20 max-w-md mx-auto">
+              <p className="text-sm text-red-500 mb-4">{loadError}</p>
+              <button
+                onClick={fetchProjects}
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-background hover:opacity-90 transition-all cursor-pointer"
+              >
+                Retry
+              </button>
+            </div>
+          ) : filteredProjects.length === 0 ? (
+            <div className="text-center py-20 max-w-md mx-auto border border-dashed border-border rounded-3xl p-10 bg-card/30 animate-pulse">
+              <p className="text-sm font-medium text-foreground mb-2">No Portfolio Available</p>
+              <p className="text-xs text-textMuted">We are currently updating our portfolio. Please check back later!</p>
+            </div>
+          ) : (
+            <motion.div
+              layout
+              className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12"
+              initial="hidden"
+              animate={isProjectsInView ? "visible" : "hidden"}
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: 0.1,
+                    delayChildren: 0.2
+                  }
                 }
-              }
-            }}
-          >
-            <AnimatePresence mode="popLayout">
-              {filteredProjects.map((project, index) => (
-                <motion.div
-                  key={project.slug}
-                  layout
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.4 }}
-                  whileHover={{ y: -8, transition: { duration: 0.2 } }}
-                  className="group relative"
-                >
-                  <div className="relative aspect-[16/9] overflow-hidden rounded-3xl bg-secondary border border-border shadow-sm">
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      className="object-fit"
-                    />
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center gap-3">
-                      <Link
-                        href={`/portfolio/${project.slug}`}
-                        className="bg-background text-foreground px-5 py-2.5 rounded-full font-medium text-sm flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500"
-                      >
-                        Case Study
-                        <ArrowRight className="w-4 h-4" />
-                      </Link>
-                      {project.url && (
-                        <a
-                          href={project.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="bg-white/20 backdrop-blur-sm text-white px-5 py-2.5 rounded-full font-medium text-sm flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 hover:bg-white/30"
+              }}
+            >
+              <AnimatePresence mode="popLayout">
+                {filteredProjects.map((project, index) => (
+                  <motion.div
+                    key={project.slug}
+                    layout
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.4 }}
+                    whileHover={{ y: -8, transition: { duration: 0.2 } }}
+                    className="group relative"
+                  >
+                    <div className="relative aspect-[16/9] overflow-hidden rounded-3xl bg-secondary border border-border shadow-sm">
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        className="object-fit"
+                      />
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center gap-3">
+                        <Link
+                          href={`/portfolio/${project.slug}`}
+                          className="bg-background text-foreground px-5 py-2.5 rounded-full font-medium text-sm flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500"
                         >
-                          Live Site
+                          Case Study
                           <ArrowRight className="w-4 h-4" />
-                        </a>
-                      )}
+                        </Link>
+                        {project.url && (
+                          <a
+                            href={project.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bg-white/20 backdrop-blur-sm text-white px-5 py-2.5 rounded-full font-medium text-sm flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 hover:bg-white/30"
+                          >
+                            Live Site
+                            <ArrowRight className="w-4 h-4" />
+                          </a>
+                        )}
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="mt-6">
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className="text-xs font-bold uppercase tracking-widest text-primary">
-                        {project.category}
-                      </span>
-                      <span className="w-1 h-1 bg-border rounded-full" />
-                      <span className="text-xs font-medium text-textMuted/60">
-                        {project.year}
-                      </span>
+                    <div className="mt-6">
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className="text-xs font-bold uppercase tracking-widest text-primary">
+                          {project.category}
+                        </span>
+                        <span className="w-1 h-1 bg-border rounded-full" />
+                        <span className="text-xs font-medium text-textMuted/60">
+                          {project.year}
+                        </span>
+                      </div>
+                      <h3 className="text-2xl font-bold text-foreground mb-2 transition-colors">
+                        {project.title}
+                      </h3>
+                      <p className="text-textMuted leading-relaxed">
+                        {project.description}
+                      </p>
                     </div>
-                    <h3 className="text-2xl font-bold text-foreground mb-2 transition-colors">
-                      {project.title}
-                    </h3>
-                    <p className="text-textMuted leading-relaxed">
-                      {project.description}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </motion.div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </motion.div>
+          )}
         </div>
       </section>
 
