@@ -60,7 +60,10 @@ export default function AdminContactsPage() {
       await deleteContact(id);
       setContacts((prev) => prev.filter((c) => c.id !== id));
       setReadState((prev) => { const { [id]: _, ...rest } = prev; return rest; });
-    } catch {}
+    } catch (err) {
+      console.error("Failed to delete contact:", err);
+      return;
+    }
     setDeleteId(null);
   }
 

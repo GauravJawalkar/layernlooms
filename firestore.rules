@@ -19,6 +19,8 @@ service cloud.firestore {
     match /contacts/{docId} {
       allow create: if true;
       allow read, update: if request.auth != null;
+      allow delete: if request.auth != null &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'superadmin';
     }
 
     // Services (public read, admin write)
