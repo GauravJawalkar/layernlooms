@@ -1,18 +1,41 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Blog",
+  title: "Blog | Insights on Software Development & AI",
   description:
-    "Insights, tutorials, and updates from the LayerNLooms team on web development, AI, design, and technology.",
+    "Insights, tutorials, and engineering articles from the LayerNLooms team on web development, React, Next.js, microservices, cloud migration, and AI integration.",
+  keywords: [
+    "LayerNLooms blog",
+    "software engineering blog",
+    "web development tutorials",
+    "AI development articles",
+    "Next.js best practices",
+    "microservices guide",
+  ],
+  alternates: {
+    canonical: "https://layernlooms.com/blog",
+  },
   openGraph: {
-    title: "Blog | LayerNLooms",
+    type: "website",
+    url: "https://layernlooms.com/blog",
+    title: "Blog & Technical Insights | LayerNLooms",
     description:
-      "Insights and tutorials from the LayerNLooms team on web development, AI, design, and technology.",
+      "Deep dives into software architecture, AI engineering, modern frontend frameworks, and cloud infrastructure.",
+    images: [
+      {
+        url: "https://layernlooms.com/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "LayerNLooms Blog & Articles",
+      },
+    ],
   },
   twitter: {
-    title: "Blog | LayerNLooms",
+    card: "summary_large_image",
+    title: "Blog & Technical Insights | LayerNLooms",
     description:
-      "Insights and tutorials from the LayerNLooms team on web development, AI, design, and technology.",
+      "Deep dives into software architecture, AI engineering, modern frontend frameworks, and cloud infrastructure.",
+    images: ["https://layernlooms.com/twitter-image.png"],
   },
 };
 

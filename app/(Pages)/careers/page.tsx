@@ -3,10 +3,12 @@
 import { motion } from "framer-motion";
 import { Briefcase, ArrowRight, Send } from "lucide-react";
 import Link from "next/link";
+import JsonLd, { getBreadcrumbSchema } from "@/app/components/JsonLd";
 
 export default function CareersPage() {
   return (
     <main className="min-h-screen bg-background flex items-center justify-center px-6">
+      <JsonLd data={getBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "Careers", url: "/careers" }])} />
       <div className="max-w-2xl mx-auto text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

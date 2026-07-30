@@ -5,6 +5,7 @@ import { motion, AnimatePresence, useInView } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, Calendar, Clock, FileText, Loader2 } from "lucide-react";
 import { getAllBlogPostsFromDb, AdminBlogPost } from "../../lib/admin/blog";
+import JsonLd, { getBreadcrumbSchema } from "@/app/components/JsonLd";
 
 export default function BlogPage() {
   const [activeCategory, setActiveCategory] = useState("All");
@@ -48,6 +49,7 @@ export default function BlogPage() {
 
   return (
     <div className="min-h-screen bg-background">
+      <JsonLd data={getBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "Blog", url: "/blog" }])} />
       {/* Hero Section */}
       <section
         ref={heroRef}

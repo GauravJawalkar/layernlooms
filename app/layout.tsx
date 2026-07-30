@@ -6,7 +6,7 @@ import { ThemeProvider } from "./context/ThemeContext";
 import CustomCursor from "./components/CustomCursor";
 import ThemeCustomizer from "./components/ThemeCustomizer";
 import GoogleAnalytics from "./components/GoogleAnalytics";
-
+import JsonLd, { organizationSchema, websiteSchema } from "./components/JsonLd";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -34,11 +34,24 @@ export const metadata: Metadata = {
     "custom web development",
     "iOS Android app development",
     "machine learning solutions",
+    "Next.js agency",
+    "React Native development",
+    "cloud infrastructure services",
   ],
-  authors: [{ name: "LayerNLooms" }],
+  authors: [{ name: "LayerNLooms", url: "https://layernlooms.com" }],
   creator: "LayerNLooms",
   publisher: "LayerNLooms",
-  robots: "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -52,7 +65,7 @@ export const metadata: Metadata = {
         url: "https://layernlooms.com/og-image.png",
         width: 1200,
         height: 630,
-        alt: "LayerNLooms - Software Development Agency",
+        alt: "LayerNLooms - Custom Software Development & AI Agency",
       },
     ],
   },
@@ -85,7 +98,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head />
+      <head>
+        <JsonLd data={[organizationSchema, websiteSchema]} />
+      </head>
       <body className={`${spaceGrotesk.className} ${spaceGrotesk.variable} antialiased`}>
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
         <script

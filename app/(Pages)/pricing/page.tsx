@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
+import JsonLd, { getBreadcrumbSchema, getFAQPageSchema } from "@/app/components/JsonLd";
 
 
 const plans = [
@@ -96,6 +97,7 @@ export default function PricingPage() {
 
     return (
         <main className="w-full min-h-screen transition-colors duration-300 bg-background">
+            <JsonLd data={[getBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "Pricing", url: "/pricing" }]), getFAQPageSchema(faqs.map(f => ({ question: f.q, answer: f.a })))]} />
 
             {/* ── HERO ── */}
             <section ref={heroRef} className="pt-24 pb-4 text-center px-6">

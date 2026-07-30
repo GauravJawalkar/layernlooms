@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { Plus } from "lucide-react";
+import JsonLd, { getFAQPageSchema } from "../JsonLd";
 
 const faqs = [
   {
@@ -52,6 +53,7 @@ export default function FAQSection() {
 
   return (
     <section className="relative py-16 sm:py-20 bg-secondary/60 dark:bg-zinc-950/20 overflow-hidden">
+      <JsonLd data={getFAQPageSchema(faqs)} />
       <div className="absolute inset-0 pointer-events-none -z-10">
         <div className="absolute top-1/2 -left-40 h-[400px] w-[400px] rounded-full bg-neutral-200/40 dark:bg-zinc-900/10 blur-3xl opacity-75" />
         <div className="absolute bottom-1/2 -right-40 h-[400px] w-[400px] rounded-full bg-neutral-200/40 dark:bg-zinc-900/10 blur-3xl opacity-75" />

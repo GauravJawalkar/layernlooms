@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { getAllServicesFromDb, AdminService } from "../../lib/admin/services";
 import ServiceCard from "../../components/services/ServiceCard";
+import JsonLd, { getBreadcrumbSchema } from "@/app/components/JsonLd";
 
 
 export default function ServicesPage() {
@@ -40,6 +41,7 @@ export default function ServicesPage() {
 
   return (
     <>
+      <JsonLd data={getBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "Services", url: "/services" }])} />
       {/* Hero Section */}
       <section
         ref={heroRef}

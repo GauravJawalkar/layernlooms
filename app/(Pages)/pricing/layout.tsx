@@ -1,18 +1,40 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Pricing",
+  title: "Pricing | Flexible Software Development Plans",
   description:
-    "Explore LayerNLooms flexible pricing plans — fixed project, hourly, and dedicated team models tailored to your needs.",
+    "Explore transparent LayerNLooms pricing options — Fixed Project Scope, Hourly Engagement, and Dedicated Engineering Team models designed to match your budget and scale.",
+  keywords: [
+    "software development pricing",
+    "custom web app cost",
+    "dedicated development team pricing",
+    "hourly developer rates",
+    "software agency pricing models",
+  ],
+  alternates: {
+    canonical: "https://layernlooms.com/pricing",
+  },
   openGraph: {
-    title: "Pricing | LayerNLooms",
+    type: "website",
+    url: "https://layernlooms.com/pricing",
+    title: "Pricing Plans | LayerNLooms",
     description:
-      "Transparent pricing for custom software development. Fixed project, hourly, or dedicated team — choose what fits.",
+      "Transparent, flexible pricing models for web, mobile, and AI software engineering projects.",
+    images: [
+      {
+        url: "https://layernlooms.com/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "LayerNLooms Pricing & Engagement Models",
+      },
+    ],
   },
   twitter: {
-    title: "Pricing | LayerNLooms",
+    card: "summary_large_image",
+    title: "Pricing Plans | LayerNLooms",
     description:
-      "Transparent pricing for custom software development. Fixed project, hourly, or dedicated team — choose what fits.",
+      "Transparent, flexible pricing models for web, mobile, and AI software engineering projects.",
+    images: ["https://layernlooms.com/twitter-image.png"],
   },
 };
 

@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ExternalLink, Filter, Loader2 } from "lucide-react";
 import { getAllProjectsFromDb, AdminProject } from "../../lib/admin/portfolio";
+import JsonLd, { getBreadcrumbSchema } from "@/app/components/JsonLd";
 
 export default function PortfolioPage() {
   const [activeCategory, setActiveCategory] = useState("All");
@@ -56,6 +57,7 @@ setProjects(data.filter((p) => p.visible !== false));
 
   return (
     <div className="min-h-screen bg-background">
+      <JsonLd data={getBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "Portfolio", url: "/portfolio" }])} />
       {/* Hero Section */}
       <section
         ref={heroRef}

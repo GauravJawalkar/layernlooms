@@ -5,6 +5,7 @@ import ContactForm from "../../components/Contact/ContactForm";
 import { StepsCard } from "../../components/Contact/ContactCard";
 import { Linkedin, Facebook, Twitter, Instagram, Mail, MapPin, Phone, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import JsonLd, { getBreadcrumbSchema } from "@/app/components/JsonLd";
 
 const socialLinks = [
     { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com/company/layernlooms", color: "hover:text-[#0077b5]" },
@@ -35,6 +36,7 @@ export default function ContactPage() {
 
     return (
         <div className="min-h-screen bg-background selection:bg-primary selection:text-background">
+            <JsonLd data={getBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "Contact", url: "/contact" }])} />
             {/* ── Background Elements ── */}
             <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
                 <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/3 rounded-full blur-[150px] translate-x-1/3 -translate-y-1/3" />
