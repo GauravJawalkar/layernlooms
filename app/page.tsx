@@ -12,7 +12,7 @@ import BlogSection from "./components/Home/BlogSection";
 
 export default function Home() {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 bg-background text-foreground transition-colors duration-300">
       <HeroSection />
       <div className="rounded-2xl border border-neutral-300 dark:border-white/[0.06] overflow-hidden">
         <WhyChooseUs />

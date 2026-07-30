@@ -54,7 +54,7 @@ export default function Footer() {
   const iconColor = "text-textMuted";
 
   return (
-    <footer className={`relative border-t transition-colors duration-300 my-6 sm:my-8 lg:my-10 ${bg} ${borderTop}`}>
+    <footer className={`relative rounded-3xl border transition-colors duration-300 my-6 sm:my-8 lg:my-10 ${bg} ${borderTop}`}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-16">
 
         {/* Main grid */}
