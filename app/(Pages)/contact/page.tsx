@@ -3,15 +3,14 @@
 import { motion } from "framer-motion";
 import ContactForm from "../../components/Contact/ContactForm";
 import { StepsCard } from "../../components/Contact/ContactCard";
-import { Linkedin, Facebook, Twitter, Instagram, Mail, MapPin, Phone, ArrowUpRight } from "lucide-react";
+import { Linkedin, Twitter, Instagram, Mail, MapPin, Phone, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import JsonLd, { getBreadcrumbSchema } from "@/app/components/JsonLd";
 
 const socialLinks = [
     { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com/company/layernlooms", color: "hover:text-[#0077b5]" },
-    { name: "Facebook", icon: Facebook, href: "https://facebook.com/layernlooms", color: "hover:text-[#1877f2]" },
+    { name: "Instagram", icon: Instagram, href: "https://www.instagram.com/layernlooms", color: "hover:text-[#e4405f]" },
     { name: "Twitter", icon: Twitter, href: "#", color: "hover:text-[#1da1f2]" },
-    { name: "Instagram", icon: Instagram, href: "#", color: "hover:text-[#e4405f]" },
 ];
 
 const contactInfo = [
