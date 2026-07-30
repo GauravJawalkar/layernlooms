@@ -107,7 +107,7 @@ setPosts(
                     <img
                       src={post.image}
                       alt={post.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="w-full h-full object-cover grayscale-0 md:grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
                     />
                     <div className="absolute top-3 left-3">
                       <span className="bg-primary text-background text-[10px] font-bold px-2.5 py-1 rounded-full">

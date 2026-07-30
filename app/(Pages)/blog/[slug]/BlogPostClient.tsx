@@ -81,7 +81,7 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
             <img
               src={post.image}
               alt={post.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover grayscale-0 md:grayscale hover:grayscale-0 transition-all duration-500"
             />
           </div>
 
@@ -242,7 +242,7 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
                     <img
                       src={rp.image}
                       alt={rp.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="w-full h-full object-cover grayscale-0 md:grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
                     />
                   </div>
                   <div className="flex items-center gap-3 text-xs text-textMuted mb-2">
