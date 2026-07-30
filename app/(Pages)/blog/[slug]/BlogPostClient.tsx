@@ -77,7 +77,7 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
             </Link>
           </div>
 
-          <div className="relative aspect-[21/9] w-full rounded-2xl overflow-hidden shadow-xl border border-border mb-10">
+          <div className="relative aspect-[16/9] sm:aspect-[21/9] w-full rounded-2xl overflow-hidden shadow-xl border border-border mb-10">
             <img
               src={post.image}
               alt={post.title}

@@ -127,8 +127,8 @@ export default function PricingPage() {
                             variants={cardVariants}
                             initial="hidden"
                             animate={isCardsInView ? "visible" : "hidden"}
-                            className={`rounded-2xl p-8 flex flex-col gap-6 transition-colors duration-300 ${plan.featured
-                                ? "bg-primary text-background scale-105 shadow-2xl z-10"
+                            className={`rounded-2xl p-6 sm:p-8 flex flex-col gap-6 transition-colors duration-300 ${plan.featured
+                                ? "bg-primary text-background md:scale-105 shadow-2xl z-10"
                                 : "bg-card border border-border shadow-sm hover:shadow-lg text-foreground"
                                 }`}
                             whileHover={!plan.featured ? { y: -4, transition: { duration: 0.2 } } : {}}

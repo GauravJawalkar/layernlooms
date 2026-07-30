@@ -29,7 +29,7 @@ export default function HeroSection() {
         >
      
 
-          <h1 className="text-center text-4xl font-bold leading-tight tracking-tighter text-white sm:text-6xl md:text-7xl lg:text-8xl">
+          <h1 className="text-center text-3xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-tight tracking-tighter text-white">
             Weaving Digital
             <span className="mt-2 block bg-gradient-to-r from-zinc-300 to-zinc-500 bg-clip-text text-transparent">
               Excellence
