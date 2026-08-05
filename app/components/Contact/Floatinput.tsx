@@ -36,7 +36,7 @@ export default function FloatInput({
             {/* Label */}
             <label
                 htmlFor={name}
-                className={`absolute left-4 transition-all duration-200 pointer-events-none z-10 ${
+                className={`absolute left-4 max-w-[calc(100%-2rem)] truncate transition-all duration-200 pointer-events-none z-10 ${
                     active
                         ? `top-2 text-[10px] tracking-widest uppercase font-bold ${
                             focused === name ? "text-primary" : "text-textMuted"
@@ -71,7 +71,7 @@ export default function FloatInput({
                 autoComplete="off"
                 placeholder={active ? placeholder : ""}
                 required={required}
-                className={`w-full rounded-2xl px-4 py-3 text-sm outline-none transition-all duration-200 bg-secondary/30 text-foreground placeholder:text-textMuted/50 placeholder:text-sm
+                className={`w-full border rounded-2xl px-4 py-3 text-sm outline-none transition-all duration-200 bg-secondary/30 text-foreground placeholder:text-textMuted/50 placeholder:text-sm
                     ${active ? "pt-7 pb-3" : "pt-3 pb-3"}
                     ${icon ? "pl-10" : "px-4"}
                     ${suffix ? "pr-16" : "pr-4"}

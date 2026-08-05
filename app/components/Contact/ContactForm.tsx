@@ -156,15 +156,15 @@ export default function ContactForm() {
                         className="overflow-hidden"
                     >
                         <div className="p-4 rounded-xl sm:rounded-2xl bg-secondary border border-border">
-                            <div className="flex gap-3 items-center">
-                                <div className="flex-1">
+                            <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
+                                <div className="w-full sm:flex-1">
                                     <FloatInput label="Describe Specialty" name="customType" type="text" value={customType} focused={focused} onChange={(e) => setCustomType(e.target.value)} onFocus={() => setFocused("customType")} onBlur={() => setFocused(null)} />
                                 </div>
-                                <div className="flex gap-2">
-                                    <button type="button" onClick={handleCancelCustom} className="p-3 rounded-xl bg-card border border-border text-textMuted hover:text-foreground transition-colors">
-                                        <X className="w-4 h-4" />
+                                <div className="flex gap-2 justify-end sm:w-auto">
+                                    <button type="button" onClick={handleCancelCustom} className="flex items-center justify-center p-3 sm:p-3 rounded-xl bg-card border border-border text-textMuted hover:text-foreground transition-colors">
+                                        <X className="w-5 h-5 sm:w-4 sm:h-4" />
                                     </button>
-                                    <button type="button" onClick={handleAddCustomType} className="px-5 rounded-xl bg-primary text-background font-bold text-xs uppercase tracking-widest hover:opacity-90 transition-colors">
+                                    <button type="button" onClick={handleAddCustomType} className="flex items-center justify-center px-6 py-3 rounded-xl bg-primary text-background font-bold text-sm sm:text-xs uppercase tracking-widest hover:opacity-90 transition-colors">
                                         Add
                                     </button>
                                 </div>
