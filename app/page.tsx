@@ -9,6 +9,7 @@ import ExpertiseSection from "./components/Home/ExpertiseSection";
 import OurServices from "./components/Home/OurServices";
 import TechStackSection from "./components/Home/TechStackSection";
 import BlogSection from "./components/Home/BlogSection";
+import CTASection from "./components/Home/CTASection";
 
 export default function Home() {
   return (
@@ -38,6 +39,7 @@ export default function Home() {
       <div className="rounded-2xl border border-neutral-300 dark:border-white/[0.06] overflow-hidden">
         <FAQSection />
       </div>
+      <CTASection />
     </div>
   );
 }
