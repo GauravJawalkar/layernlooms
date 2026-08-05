@@ -168,8 +168,13 @@ export default function Footer() {
           transition={{ delay: 0.4 }}
         >
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6 text-center md:text-left">
-            <div className={`text-xs sm:text-sm transition-colors duration-300 ${bodyText}`}>
-              © {currentYear} {footerData.company.name}. All rights reserved.
+            <div className={`flex flex-col sm:flex-row items-center gap-3 sm:gap-6 text-xs sm:text-sm transition-colors duration-300 ${bodyText}`}>
+              <span>© {currentYear} {footerData.company.name}. All rights reserved.</span>
+              <div className="flex items-center gap-4">
+                <Link href="/privacy" className={`transition-colors duration-300 ${hoverText}`}>Privacy Policy</Link>
+                <span className="hidden sm:inline opacity-50">|</span>
+                <Link href="/terms" className={`transition-colors duration-300 ${hoverText}`}>Terms & Conditions</Link>
+              </div>
             </div>
 
             {/* Right Group: ThemeToggle + Socials */}
