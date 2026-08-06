@@ -40,6 +40,11 @@ const reasons = [
     title: "Driven by Growth",
     description: "Empowering you to scale operations, reach new heights, and exceed market expectations. We engineer flexible digital systems built to evolve alongside your expanding vision.",
   },
+  {
+    type: "security",
+    title: "Security & Compliance",
+    description: "Shielding your product with enterprise-grade security, compliance-ready architecture, and proactive monitoring layered into every stage of development.",
+  },
 ];
 
 // MICRO-ANIMATED DETAILED ICON COMPONENTS
@@ -310,6 +315,108 @@ function GrowthIllustration({ color, isHovered }: { color: string; isHovered: bo
   );
 }
 
+function SecurityIllustration({ color, isHovered }: { color: string; isHovered: boolean }) {
+  return (
+    <div className="h-[140px] sm:h-[185px] w-full relative overflow-hidden rounded-2xl bg-neutral-50/50 dark:bg-black/30 border border-neutral-200/50 dark:border-neutral-800/60 flex items-center justify-center shadow-inner">
+      <div className="relative w-[160px] sm:w-[180px] h-[100px] sm:h-[120px] flex items-center justify-center">
+        {/* Scanning line */}
+        <motion.div
+          animate={{ y: isHovered ? [-30, 30, -30] : [-14, 14, -14] }}
+          transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut" }}
+          className="absolute w-[130px] h-px"
+          style={{ background: `linear-gradient(to right, transparent, ${color}aa, transparent)`, boxShadow: `0 0 8px ${color}66` }}
+        />
+        {/* Lock padlock */}
+        <motion.div
+          animate={{ y: isHovered ? -4 : 0, scale: isHovered ? 1.05 : 1 }}
+          className="absolute w-14 h-14 rounded-2xl bg-white dark:bg-zinc-900 border flex items-center justify-center shadow-xl z-10"
+          style={{ borderColor: `${color}30` }}
+        >
+          <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" style={{ color: color }}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+        </motion.div>
+        {/* Side data chips */}
+        <motion.div
+          animate={{ x: isHovered ? 6 : 0, opacity: isHovered ? 1 : 0.7 }}
+          className="absolute left-6 top-4 w-9 h-9 rounded-xl bg-white dark:bg-zinc-950 border border-neutral-200 dark:border-neutral-800 flex items-center justify-center shadow-md"
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" style={{ color: color }}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </motion.div>
+        <motion.div
+          animate={{ x: isHovered ? -6 : 0, opacity: isHovered ? 1 : 0.7 }}
+          className="absolute right-6 top-4 w-9 h-9 rounded-xl bg-white dark:bg-zinc-950 border border-neutral-200 dark:border-neutral-800 flex items-center justify-center shadow-md"
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" style={{ color: color }}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </motion.div>
+        {/* Base floor */}
+        <motion.div
+          animate={{ width: isHovered ? 130 : 100 }}
+          className="absolute bottom-3 h-[3px] rounded-full"
+          style={{ background: `linear-gradient(to right, transparent, ${color}66, transparent)` }}
+        />
+      </div>
+    </div>
+  );
+}
+
+function SupportIllustration({ color, isHovered }: { color: string; isHovered: boolean }) {
+  return (
+    <div className="h-[140px] sm:h-[185px] w-full relative overflow-hidden rounded-2xl bg-neutral-50/50 dark:bg-black/30 border border-neutral-200/50 dark:border-neutral-800/60 flex items-center justify-center shadow-inner">
+      <div className="relative w-[160px] sm:w-[180px] h-[100px] sm:h-[120px] flex items-center justify-center">
+        {/* Radiating rings */}
+        <motion.div
+          animate={{ scale: isHovered ? [1, 1.25, 1] : 1, opacity: isHovered ? 0.25 : 0.12 }}
+          transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
+          className="absolute w-16 h-16 rounded-full border"
+          style={{ borderColor: `${color}55` }}
+        />
+        <motion.div
+          animate={{ scale: isHovered ? [1, 1.18, 1] : 1, opacity: isHovered ? 0.2 : 0.08 }}
+          transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut", delay: 0.4 }}
+          className="absolute w-24 h-24 rounded-full border"
+          style={{ borderColor: `${color}44` }}
+        />
+        {/* Headset center */}
+        <motion.div
+          animate={{ y: isHovered ? -5 : 0, rotate: isHovered ? 6 : 0 }}
+          className="absolute w-14 h-14 rounded-2xl bg-white dark:bg-zinc-900 border flex items-center justify-center shadow-xl z-10"
+          style={{ borderColor: `${color}30` }}
+        >
+          <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" style={{ color: color }}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M4 14a8 8 0 0116 0v2a2 2 0 01-2 2h-2v-6h2a6 6 0 00-12 0h2v6H6a2 2 0 01-2-2v-2zm2 2v2a2 2 0 002 2h2" />
+          </svg>
+          <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-60" style={{ backgroundColor: color }} />
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5" style={{ backgroundColor: color }} />
+          </span>
+        </motion.div>
+        {/* Floating chat bubbles */}
+        <motion.div
+          animate={{ y: isHovered ? [-3, 2, -3] : 0 }}
+          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+          className="absolute top-2 left-5 w-12 h-7 rounded-lg bg-white dark:bg-zinc-950 border border-neutral-200 dark:border-neutral-800 flex items-center gap-1 px-2 shadow-md"
+        >
+          <div className="w-2 h-2 rounded-full" style={{ backgroundColor: `${color}55` }} />
+          <div className="w-2 h-2 rounded-full" style={{ backgroundColor: `${color}33` }} />
+          <div className="w-2 h-2 rounded-full" style={{ backgroundColor: `${color}22` }} />
+        </motion.div>
+        <motion.div
+          animate={{ y: isHovered ? [2, -3, 2] : 0 }}
+          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut", delay: 0.3 }}
+          className="absolute bottom-3 right-5 w-10 h-6 rounded-lg bg-white dark:bg-zinc-950 border border-neutral-200 dark:border-neutral-800 px-2 flex items-center shadow-md"
+        >
+          <div className="w-6 h-1 rounded-full" style={{ backgroundColor: `${color}44` }} />
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
 function ValueCard({
   title,
   description,
@@ -327,25 +434,32 @@ function ValueCard({
     <motion.div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="group relative flex flex-col justify-start w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.33%-16px)] rounded-3xl border border-neutral-200/50 dark:border-white/[0.04] bg-white dark:bg-zinc-950/40 p-4 sm:p-6 shadow-xs dark:shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-neutral-300 dark:hover:border-white/[0.12] hover:shadow-md dark:hover:shadow-[0_20px_50px_rgba(0,0,0,0.35)]"
+      className="group relative flex flex-col h-full rounded-3xl border border-neutral-200/50 dark:border-white/[0.05] bg-white dark:bg-zinc-950/40 p-5 sm:p-6 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl dark:hover:shadow-[0_24px_60px_rgba(0,0,0,0.4)] hover:border-neutral-300 dark:hover:border-white/[0.14]"
     >
-      {/* 1. Illustration Container goes at the TOP */}
+      <div
+        className="absolute inset-x-0 top-0 h-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        style={{ background: `linear-gradient(to right, transparent, ${activeColor}, transparent)` }}
+      />
+      <div
+        className="absolute -top-10 -right-10 h-28 w-28 rounded-full blur-3xl opacity-0 group-hover:opacity-[0.15] transition-opacity duration-500 pointer-events-none"
+        style={{ backgroundColor: activeColor }}
+      />
+
       {type === "trust" && <TrustIllustration color={activeColor} isHovered={isHovered} />}
       {type === "innovation" && <InnovationIllustration color={activeColor} isHovered={isHovered} />}
       {type === "reliability" && <ReliabilityIllustration color={activeColor} isHovered={isHovered} />}
       {type === "expertise" && <ExpertiseIllustration color={activeColor} isHovered={isHovered} />}
       {type === "growth" && <GrowthIllustration color={activeColor} isHovered={isHovered} />}
+      {type === "security" && <SecurityIllustration color={activeColor} isHovered={isHovered} />}
+      {type === "support" && <SupportIllustration color={activeColor} isHovered={isHovered} />}
 
-      {/* 2. Text layout goes at the BOTTOM */}
-      <div className="mt-6 space-y-3">
-        <div className="flex items-center gap-2.5">
-          <h3
-            className="text-lg font-bold text-foreground tracking-tight transition-colors duration-300"
-            style={{ color: isHovered ? activeColor : undefined }}
-          >
-            {title}
-          </h3>
-        </div>
+      <div className="mt-5 flex-1 space-y-2.5">
+        <h3
+          className="text-lg font-bold text-foreground tracking-tight transition-colors duration-300"
+          style={{ color: isHovered ? activeColor : undefined }}
+        >
+          {title}
+        </h3>
         <p className="text-sm text-textMuted leading-relaxed">
           {description}
         </p>
@@ -381,7 +495,11 @@ export default function WhyChooseUs() {
           transition={{ duration: 0.5 }}
           className="text-center"
         >
-          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
+          <span className="inline-flex items-center gap-2 rounded-full border border-neutral-200/60 dark:border-white/[0.08] bg-white/50 dark:bg-white/[0.03] backdrop-blur-md px-3.5 py-1.5 text-xs font-semibold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
+            <span className="h-1.5 w-1.5 rounded-full animate-pulse" style={{ backgroundColor: activeColor }} />
+            Why Choose Us
+          </span>
+          <h2 className="mt-5 text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
             What Drives Our{" "}
             <span
               className="bg-clip-text text-transparent transition-all duration-500 font-extrabold"
@@ -402,7 +520,7 @@ export default function WhyChooseUs() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="mt-10 sm:mt-16 flex flex-wrap justify-center gap-4 sm:gap-6"
+          className="mt-10 sm:mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 items-stretch"
         >
           {reasons.map((reason) => (
             <ValueCard
