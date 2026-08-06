@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, Loader2 } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
 import { getAllServicesFromDb, AdminService } from "../../lib/admin/services";
 
@@ -79,25 +79,44 @@ export default function OurServices() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
+          className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
         >
           {loading ? (
-            <div className="col-span-full flex items-center justify-center py-16">
-              <Loader2 className="w-5 h-5 animate-spin text-primary" />
+            <div className="col-span-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="rounded-2xl border border-neutral-200/60 dark:border-white/[0.06] bg-white/70 dark:bg-white/[0.03] p-6 animate-pulse"
+                >
+                  <div className="aspect-video rounded-xl bg-neutral-200/60 dark:bg-white/[0.06] mb-5" />
+                  <div className="h-4 w-3/4 rounded-md bg-neutral-200/70 dark:bg-white/[0.06]" />
+                  <div className="mt-3 space-y-2">
+                    <div className="h-3 w-full rounded-md bg-neutral-200/60 dark:bg-white/[0.05]" />
+                    <div className="h-3 w-5/6 rounded-md bg-neutral-200/60 dark:bg-white/[0.05]" />
+                  </div>
+                  <div className="mt-6 flex items-center justify-between border-t border-neutral-200/50 dark:border-white/[0.06] pt-4">
+                    <div className="h-3 w-6 rounded-md bg-neutral-200/60 dark:bg-white/[0.05]" />
+                    <div className="h-3 w-20 rounded-md bg-neutral-200/60 dark:bg-white/[0.05]" />
+                  </div>
+                </div>
+              ))}
             </div>
           ) : services.length === 0 ? (
             <div className="col-span-full text-center py-16 text-sm text-textMuted">
               No services available yet.
             </div>
           ) : (
-            services.map((s) => (
+            services.map((s, i) => (
               <motion.div
                 key={s.id}
                 variants={itemVariants}
-                className="group relative rounded-2xl border border-neutral-200/50 dark:border-white/[0.05] bg-white/60 dark:bg-white/[0.02] backdrop-blur-md p-6 shadow-[0_8px_30px_rgb(0,0,0,0.01)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)] transition-all duration-300 hover:-translate-y-1 hover:bg-white/80 dark:hover:bg-white/[0.05] hover:border-neutral-300 dark:hover:border-white/[0.12] hover:shadow-[0_20px_50px_rgba(0,0,0,0.04)] dark:hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex flex-col justify-between"
+                className="group relative rounded-2xl border border-neutral-200/60 dark:border-white/[0.06] bg-white/70 dark:bg-white/[0.03] backdrop-blur-md p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_60px_rgba(0,0,0,0.06)] dark:hover:shadow-[0_24px_60px_rgba(0,0,0,0.35)] hover:border-neutral-300 dark:hover:border-white/[0.14] flex flex-col justify-between overflow-hidden"
               >
+                <div className="absolute inset-x-0 top-0 h-px opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                  style={{ background: `linear-gradient(to right, transparent, ${activeColor}88, transparent)` }}
+                />
                 <div>
-                  <div className="relative w-full aspect-video overflow-hidden rounded-xl bg-neutral-100/50 dark:bg-white/[0.02] border border-neutral-200/30 dark:border-white/[0.05] mb-6">
+                  <div className="relative w-full aspect-video overflow-hidden rounded-xl bg-neutral-100/50 dark:bg-white/[0.02] border border-neutral-200/30 dark:border-white/[0.05] mb-5">
                     <img
                       src={s.image}
                       alt={s.title}
@@ -107,11 +126,14 @@ export default function OurServices() {
                   <h3 className="text-lg font-semibold text-foreground">
                     {s.title}
                   </h3>
-                  <p className="mt-3 text-sm text-textMuted leading-relaxed">
+                  <p className="mt-2 text-sm text-textMuted leading-relaxed line-clamp-3">
                     {s.description}
                   </p>
                 </div>
-                <div className="mt-6">
+                <div className="mt-6 flex items-center justify-between border-t border-neutral-200/50 dark:border-white/[0.06] pt-4">
+                  <span className="text-xs font-medium uppercase tracking-wider text-neutral-400 dark:text-neutral-500">
+                    0{i + 1}
+                  </span>
                   <Link
                     href={`/services/${s.slug}`}
                     className="inline-flex items-center gap-1.5 text-sm font-semibold text-neutral-800 dark:text-neutral-200 transition-all hover:text-primary dark:hover:text-white hover:gap-2.5"
