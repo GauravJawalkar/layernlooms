@@ -6,16 +6,20 @@ import { StepsCard } from "../../components/Contact/ContactCard";
 import { Linkedin, Instagram, Mail, MapPin, Phone, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import JsonLd, { getBreadcrumbSchema } from "@/app/components/JsonLd";
+import { GoogleIcon, WhatsAppIcon } from "@/app/components/Icons";
 
 const socialLinks = [
     { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com/company/layernlooms", color: "hover:text-[#0077b5]" },
     { name: "Instagram", icon: Instagram, href: "https://www.instagram.com/layernlooms", color: "hover:text-[#e4405f]" },
+    { name: "Google Business", icon: GoogleIcon, href: "https://share.google/S46H7wVpxAKJO4Eom", color: "hover:text-[#4285F4]" },
+    { name: "WhatsApp", icon: WhatsAppIcon, href: "https://wa.me/9511864578", color: "hover:text-[#25D366]" },
 ];
 
 const contactInfo = [
     { icon: Mail, label: "Email", value: "info@layernlooms.com", href: "mailto:info@layernlooms.com" },
     { icon: Phone, label: "Phone", value: "+91 9730516224", href: "tel:+919730516224" },
-    { icon: MapPin, label: "Location", value: "Pune, Maharashtra, India", href: null },
+    { icon: WhatsAppIcon, label: "WhatsApp", value: "+91 9511864578", href: "https://wa.me/9511864578" },
+    { icon: MapPin, label: "Location", value: "Pune, Maharashtra, India", href: "https://share.google/S46H7wVpxAKJO4Eom" },
 ];
 
 export default function ContactPage() {
@@ -118,6 +122,8 @@ export default function ContactPage() {
                                                 {info.href ? (
                                                     <Link
                                                         href={info.href}
+                                                        target={info.href.startsWith("http") ? "_blank" : undefined}
+                                                        rel={info.href.startsWith("http") ? "noopener noreferrer" : undefined}
                                                         className="text-sm sm:text-base font-semibold text-foreground hover:text-primary transition-colors flex items-center gap-2 break-all"
                                                     >
                                                         {info.value}
@@ -141,6 +147,9 @@ export default function ContactPage() {
                                     <Link
                                         key={social.name}
                                         href={social.href}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label={social.name}
                                         className={`w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center rounded-xl sm:rounded-2xl bg-secondary border border-border shadow-sm transition-all duration-300 group ${social.color}`}
                                     >
                                         <social.icon className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:scale-110 text-foreground" />

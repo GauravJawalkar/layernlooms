@@ -6,6 +6,7 @@ import { Linkedin, Instagram, Mail, Phone, MapPin, ArrowRight } from "lucide-rea
 import Logo from "./Logo";
 import { useState } from "react";
 import ThemeToggle from "./ThemeToggle";
+import { GoogleIcon, WhatsAppIcon } from "./Icons";
 
 const footerData = {
   company: {
@@ -27,11 +28,15 @@ const footerData = {
   contact: {
     email: "info@layernlooms.com",
     phone: "+91 9730516224",
+    whatsapp: "https://wa.me/9511864578",
     address: "Pune, Maharashtra, India",
+    googleBusiness: "https://share.google/S46H7wVpxAKJO4Eom",
   },
   social: [
     { name: "LinkedIn", href: "https://linkedin.com/company/layernlooms", icon: Linkedin },
     { name: "Instagram", href: "https://www.instagram.com/layernlooms", icon: Instagram },
+    { name: "Google Business", href: "https://share.google/S46H7wVpxAKJO4Eom", icon: GoogleIcon },
+    { name: "WhatsApp", href: "https://wa.me/9511864578", icon: WhatsAppIcon },
   ],
 };
 
@@ -89,10 +94,15 @@ export default function Footer() {
                 <Phone className={`h-4 w-4 shrink-0 group-hover:scale-110 transition-transform ${iconColor}`} />
                 <span>{footerData.contact.phone}</span>
               </Link>
-              <div className={`flex items-start gap-3 text-xs sm:text-sm ${bodyText}`}>
-                <MapPin className={`h-4 w-4 mt-0.5 shrink-0 ${iconColor}`} />
+              <a
+                href={footerData.contact.googleBusiness}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`flex items-start gap-3 text-xs sm:text-sm transition-colors group ${bodyText} ${hoverText}`}
+              >
+                <MapPin className={`h-4 w-4 mt-0.5 shrink-0 group-hover:scale-110 transition-transform ${iconColor}`} />
                 <span>{footerData.contact.address}</span>
-              </div>
+              </a>
             </div>
           </motion.div>
 

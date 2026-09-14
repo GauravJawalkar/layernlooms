@@ -1,4 +1,4 @@
-"use client";
+    "use client";
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -83,7 +83,7 @@ export default function ContactForm() {
             className="w-full relative overflow-hidden rounded-2xl sm:rounded-[2.5rem] border border-border bg-card/80 backdrop-blur-2xl p-5 sm:p-8 lg:p-10 shadow-2xl shadow-primary/5 flex flex-col gap-6 sm:gap-7"
         >
             {/* Decorative gradient */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary/60 via-primary/20 to-transparent" />
+            <div className="absolute top-0 left-0 right-0" />
             <div className="absolute top-0 right-0 w-40 h-40 bg-secondary/50 rounded-full blur-[80px] -mr-20 -mt-20" />
 
             {/* Form Header */}

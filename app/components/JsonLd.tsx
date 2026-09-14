@@ -24,7 +24,9 @@ export const organizationSchema = {
   "sameAs": [
     "https://twitter.com/layernlooms",
     "https://linkedin.com/company/layernlooms",
-    "https://github.com/layernlooms"
+    "https://instagram.com/layernlooms",
+    "https://share.google/S46H7wVpxAKJO4Eom",
+    "https://wa.me/9511864578"
   ],
   "contactPoint": {
     "@type": "ContactPoint",
