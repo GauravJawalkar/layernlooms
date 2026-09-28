@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
-import { CheckCircle2, ArrowRight, Check, Sparkles, Code2, ChevronRight, Loader2, ListChecks, Route, Users2 } from "lucide-react";
-import { getAllServicesFromDb, AdminService } from "@/app/lib/admin/services";
+import { CheckCircle2, ArrowRight, Check, Sparkles, Code2, ChevronRight, ListChecks, Route, Users2 } from "lucide-react";
+import { getAllServices, Service } from "@/app/data/services";
 import { getServiceContent } from "@/app/data/service-content";
 import ServiceHero from "../../../components/services/ServiceHero";
 
@@ -16,44 +15,14 @@ const sectionHeader = (title: string) => (
 
 interface ServiceDetailClientProps {
   slug: string;
-  initialService?: AdminService | null;
+  initialService?: Service | null;
 }
 
 export default function ServiceDetailClient({ slug, initialService }: ServiceDetailClientProps) {
-  const [service, setService] = useState<AdminService | null>(initialService || null);
-  const [allServices, setAllServices] = useState<AdminService[]>([]);
-  const [loading, setLoading] = useState(!initialService);
-  const [notFound, setNotFound] = useState(false);
+  const allServices = getAllServices();
+  const service = initialService ?? allServices.find((s) => s.slug === slug) ?? null;
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const data = await getAllServicesFromDb();
-        const found = data.find((s) => s.slug === slug && s.visible !== false);
-        if (found) {
-          setService(found);
-          setAllServices(data);
-        } else if (!initialService) {
-          setNotFound(true);
-        } else {
-          setAllServices(data);
-        }
-      } catch {
-        if (!initialService) setNotFound(true);
-      }
-      setLoading(false);
-    })();
-  }, [slug, initialService]);
-
-  if (loading) {
-    return (
-      <div className="min-h-[60vh] flex items-center justify-center">
-        <Loader2 className="w-6 h-6 animate-spin text-primary" />
-      </div>
-    );
-  }
-
-  if (notFound || !service) {
+  if (!service) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center">
         <h1 className="text-2xl font-bold text-foreground mb-2">Service Not Found</h1>

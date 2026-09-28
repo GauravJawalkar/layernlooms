@@ -5,19 +5,16 @@ import JsonLd, { getBreadcrumbSchema, getServiceSchema, getFAQPageSchema } from 
 import { pickMetaDescription } from "@/app/lib/seo";
 import { site } from "@/app/lib/site";
 import { getServiceContent } from "@/app/data/service-content";
-import {
-  getPublishedServiceBySlug,
-  getPublishedServices,
-} from "@/app/lib/firestore-content";
+import { getServiceBySlug, getAllServiceSlugs } from "@/app/data/services";
 
 export const revalidate = 3600;
 
 type Faq = { question: string; answer: string };
 
 /**
- * Editorial FAQs from the static content module are richer than anything in
- * the CMS, but an editor may still have added their own. Merge both, keyed on
- * the question text, so FAQPage schema covers the full set without repeating.
+ * Editorial FAQs from the static content module are richer than the short pair
+ * carried on the service record, so both are merged on the question text and
+ * FAQPage schema covers the full set without repeating an entry.
  */
 function collectFaqs(slug: string, cmsFaqs?: Faq[]): Faq[] {
   const combined: Faq[] = [...(getServiceContent(slug)?.faqs ?? [])];
@@ -36,14 +33,13 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-  const services = await getPublishedServices();
-  return services.map((service) => ({ slug: service.slug }));
+export function generateStaticParams() {
+  return getAllServiceSlugs();
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const service = await getPublishedServiceBySlug(slug);
+  const service = getServiceBySlug(slug);
 
   if (!service) {
     return {
@@ -89,7 +85,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ServiceDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const service = await getPublishedServiceBySlug(slug);
+  const service = getServiceBySlug(slug);
 
   if (!service) notFound();
 

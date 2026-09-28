@@ -9,7 +9,6 @@ import {
   LayoutDashboard,
   Users,
   MessageSquare,
-  FolderKanban,
   Briefcase,
   FileText,
   Settings,
@@ -27,7 +26,6 @@ import { AdminAuthProvider, useAdminAuth } from "../../context/AdminAuthContext"
 
 const adminNav = [
   { name: "Dashboard", icon: LayoutDashboard, href: "/admin" },
-  { name: "Services", icon: FolderKanban, href: "/admin/services" },
   { name: "Portfolio", icon: Briefcase, href: "/admin/portfolio" },
   { name: "Blog", icon: FileText, href: "/admin/blog" },
   { name: "Contacts", icon: MessageSquare, href: "/admin/contacts" },

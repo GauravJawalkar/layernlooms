@@ -1,34 +1,20 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, Loader2 } from "lucide-react";
-import { getAllServicesFromDb, AdminService } from "../../lib/admin/services";
+import { ArrowRight } from "lucide-react";
+import { getAllServices } from "@/app/data/services";
 import ServiceCard from "../../components/services/ServiceCard";
 import JsonLd, { getBreadcrumbSchema } from "@/app/components/JsonLd";
 
 
 export default function ServicesPage() {
-  const [services, setServices] = useState<AdminService[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [loadError, setLoadError] = useState("");
-  const heroRef = useRef(null);
+  const services = getAllServices();
   const servicesRef = useRef(null);
   const ctaRef = useRef(null);
-  const isHeroInView = useInView(heroRef, { once: true, amount: 0.1 });
   const isServicesInView = useInView(servicesRef, { once: true, amount: 0.1 });
   const isCtaInView = useInView(ctaRef, { once: true, amount: 0.1 });
-
-  useEffect(() => {
-    getAllServicesFromDb()
-      .then((data) => setServices(data.filter((s) => s.visible !== false)))
-      .catch((err) => {
-        console.error("Failed to load services:", err);
-        setLoadError("Failed to load services");
-      })
-      .finally(() => setLoading(false));
-  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -42,36 +28,10 @@ export default function ServicesPage() {
   return (
     <>
       <JsonLd data={getBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "Services", url: "/services" }])} />
-      {/* Hero Section */}
-      <section
-        ref={heroRef}
-        className="pt-24 pb-4 text-center px-6 transition-colors duration-300 bg-background"
-      >
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={isHeroInView ? "visible" : "hidden"}
-        >
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-none mb-4 transition-colors duration-300 text-foreground">
-            Our Services
-          </h1>
-          <motion.div
-            className="mx-auto w-20 h-1 rounded-full mb-6 transition-colors duration-300 bg-primary"
-            initial={{ width: 0 }}
-            animate={isHeroInView ? { width: 80 } : { width: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          />
-          <p className="text-lg max-w-xl mx-auto transition-colors duration-300 text-textMuted">
-            Comprehensive solutions to transform your business and drive
-            digital innovation.
-          </p>
-        </motion.div>
-      </section>
-
       {/* Services Grid */}
       <section
         ref={servicesRef}
-        className="relative py-24 transition-colors duration-300 bg-background overflow-hidden"
+        className="relative pt-24 pb-24 transition-colors duration-300 bg-background overflow-hidden"
       >
         {/* Ambient glassmorphic glows */}
         <div className="absolute inset-0 pointer-events-none -z-10">
@@ -94,31 +54,7 @@ export default function ServicesPage() {
               }
             }}
           >
-            {loading ? (
-              <div className="col-span-full flex items-center justify-center py-20">
-                <Loader2 className="w-6 h-6 animate-spin text-primary" />
-              </div>
-            ) : loadError ? (
-              <div className="col-span-full text-center py-20">
-                <p className="text-sm text-red-500 mb-4">{loadError}</p>
-                <button
-                  onClick={() => {
-                    setLoading(true);
-                    setLoadError("");
-                    getAllServicesFromDb()
-                      .then((data) => setServices(data.filter((s) => s.visible !== false)))
-                      .catch((err) => {
-                        console.error("Retry failed:", err);
-                        setLoadError("Failed to load services");
-                      })
-                      .finally(() => setLoading(false));
-                  }}
-                  className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-background"
-                >
-                  Retry
-                </button>
-              </div>
-            ) : services.length === 0 ? (
+            {services.length === 0 ? (
               <div className="col-span-full text-center py-20 text-sm text-textMuted">
                 No services available yet.
               </div>

@@ -3,17 +3,15 @@ import { collection, getDocsFromServer } from "firebase/firestore";
 import { db } from "./firebase.server";
 import type { AdminBlogPost } from "./admin/blog";
 import type { AdminProject } from "./admin/portfolio";
-import type { AdminService } from "./admin/services";
 
 export type PostDoc = AdminBlogPost;
 export type ProjectDoc = AdminProject;
-export type ServiceDoc = AdminService;
 
 /**
- * The index pages have always hidden anything with `visible === false`, and
- * they read Firestore. A hidden document therefore has no presence in the
- * static data modules, so the sitemap has to apply the same filter or it would
- * advertise URLs that render as not-found for visitors.
+ * The blog and portfolio index pages have always hidden anything with
+ * `visible === false`, and they read Firestore. A hidden document therefore has
+ * no presence in the static data modules, so the sitemap has to apply the same
+ * filter or it would advertise URLs that render as not-found for visitors.
  */
 function isPublished(doc: { slug?: unknown; visible?: unknown }): boolean {
   return typeof doc.slug === "string" && doc.slug.trim().length > 0 && doc.visible !== false;
@@ -28,10 +26,6 @@ export const getPublishedPosts = cache(async (): Promise<PostDoc[]> =>
   (await fetchCollection<PostDoc>("blog")).filter(isPublished)
 );
 
-export const getPublishedServices = cache(async (): Promise<ServiceDoc[]> =>
-  (await fetchCollection<ServiceDoc>("services")).filter(isPublished)
-);
-
 export const getPublishedProjects = cache(async (): Promise<ProjectDoc[]> =>
   (await fetchCollection<ProjectDoc>("portfolio")).filter(isPublished)
 );
@@ -39,11 +33,6 @@ export const getPublishedProjects = cache(async (): Promise<ProjectDoc[]> =>
 export const getPublishedPostBySlug = cache(
   async (slug: string): Promise<PostDoc | null> =>
     (await getPublishedPosts()).find((post) => post.slug === slug) ?? null
-);
-
-export const getPublishedServiceBySlug = cache(
-  async (slug: string): Promise<ServiceDoc | null> =>
-    (await getPublishedServices()).find((service) => service.slug === slug) ?? null
 );
 
 export const getPublishedProjectBySlug = cache(

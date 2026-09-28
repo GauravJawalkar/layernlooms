@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
-import { getAllServicesFromDb, AdminService } from "../../lib/admin/services";
+import { getAllServices } from "@/app/data/services";
 
 const themeColors: Record<string, string> = {
   zinc: "#a1a1aa",
@@ -32,15 +31,7 @@ const itemVariants = {
 export default function OurServices() {
   const { pointerTheme } = useTheme();
   const activeColor = themeColors[pointerTheme] || "#a1a1aa";
-  const [services, setServices] = useState<AdminService[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    getAllServicesFromDb()
-      .then((data) => setServices(data.filter((s) => s.visible !== false)))
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, []);
+  const services = getAllServices();
 
   return (
     <section className="relative py-20 bg-secondary/30 dark:bg-zinc-950/20 overflow-hidden">
@@ -81,34 +72,14 @@ export default function OurServices() {
           viewport={{ once: true }}
           className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
         >
-          {loading ? (
-            <div className="col-span-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {Array.from({ length: 4 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="rounded-2xl border border-neutral-200/60 dark:border-white/[0.06] bg-white/70 dark:bg-white/[0.03] p-6 animate-pulse"
-                >
-                  <div className="aspect-video rounded-xl bg-neutral-200/60 dark:bg-white/[0.06] mb-5" />
-                  <div className="h-4 w-3/4 rounded-md bg-neutral-200/70 dark:bg-white/[0.06]" />
-                  <div className="mt-3 space-y-2">
-                    <div className="h-3 w-full rounded-md bg-neutral-200/60 dark:bg-white/[0.05]" />
-                    <div className="h-3 w-5/6 rounded-md bg-neutral-200/60 dark:bg-white/[0.05]" />
-                  </div>
-                  <div className="mt-6 flex items-center justify-between border-t border-neutral-200/50 dark:border-white/[0.06] pt-4">
-                    <div className="h-3 w-6 rounded-md bg-neutral-200/60 dark:bg-white/[0.05]" />
-                    <div className="h-3 w-20 rounded-md bg-neutral-200/60 dark:bg-white/[0.05]" />
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : services.length === 0 ? (
+          {services.length === 0 ? (
             <div className="col-span-full text-center py-16 text-sm text-textMuted">
               No services available yet.
             </div>
           ) : (
             services.map((s, i) => (
               <motion.div
-                key={s.id}
+                key={s.slug}
                 variants={itemVariants}
                 className="group relative rounded-2xl border border-neutral-200/60 dark:border-white/[0.06] bg-white/70 dark:bg-white/[0.03] backdrop-blur-md p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_60px_rgba(0,0,0,0.06)] dark:hover:shadow-[0_24px_60px_rgba(0,0,0,0.35)] hover:border-neutral-300 dark:hover:border-white/[0.14] flex flex-col justify-between overflow-hidden"
               >
@@ -116,13 +87,6 @@ export default function OurServices() {
                   style={{ background: `linear-gradient(to right, transparent, ${activeColor}88, transparent)` }}
                 />
                 <div>
-                  <div className="relative w-full aspect-video overflow-hidden rounded-xl bg-neutral-100/50 dark:bg-white/[0.02] border border-neutral-200/30 dark:border-white/[0.05] mb-5">
-                    <img
-                      src={s.image}
-                      alt={s.title}
-                      className="h-full w-full object-cover grayscale max-sm:grayscale-0 transition-all duration-500 group-hover:scale-105 group-hover:grayscale-0"
-                    />
-                  </div>
                   <h3 className="text-lg font-semibold text-foreground">
                     {s.title}
                   </h3>

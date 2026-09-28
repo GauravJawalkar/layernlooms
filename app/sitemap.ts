@@ -1,19 +1,20 @@
 import { MetadataRoute } from "next";
 import { site } from "@/app/lib/site";
+import { getAllServiceSlugs } from "@/app/data/services";
 import {
   getPublishedPosts,
   getPublishedProjects,
-  getPublishedServices,
   resolveLastModified,
 } from "@/app/lib/firestore-content";
 
 export const revalidate = 3600;
 
 /**
- * The public index pages render from Firestore, so the sitemap has to as well.
- * Otherwise a post published in the admin panel is linked from /blog and
- * carries a self-referencing canonical, but is absent from the sitemap and from
- * generateStaticParams.
+ * The blog and portfolio index pages render from Firestore, so the sitemap has
+ * to as well. Otherwise a post published in the admin panel is linked from
+ * /blog and carries a self-referencing canonical, but is absent from the
+ * sitemap and from generateStaticParams. Services are static, so their routes
+ * are known at build time and carry no lastmod.
  *
  * `lastModified` is omitted for the fixed routes on purpose. These pages only
  * change when someone edits a file, and a build timestamp is not that. Google
@@ -43,17 +44,14 @@ function toEntry(path: string, lastModified: Date | null): MetadataRoute.Sitemap
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [posts, services, projects] = await Promise.all([
+  const [posts, projects] = await Promise.all([
     getPublishedPosts(),
-    getPublishedServices(),
     getPublishedProjects(),
   ]);
 
   return [
     ...staticRoutes,
-    ...services.map((service) =>
-      toEntry(`/services/${service.slug}`, resolveLastModified(service))
-    ),
+    ...getAllServiceSlugs().map((service) => ({ url: `${site.url}/services/${service.slug}` })),
     ...projects.map((project) =>
       toEntry(`/portfolio/${project.slug}`, resolveLastModified(project))
     ),

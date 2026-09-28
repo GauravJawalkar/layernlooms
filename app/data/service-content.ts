@@ -1,11 +1,11 @@
 /**
  * Long-form editorial content for service pages.
  *
- * This lives outside `services.ts` on purpose. The service detail page
- * hydrates from Firestore and replaces its state with the CMS record, so
- * anything stored only in `services.ts` is discarded in the browser once the
- * Firestore query resolves. Keeping editorial content in its own module makes
- * it immune to that overwrite.
+ * This lives outside `services.ts` on purpose. `services.ts` carries the
+ * scannable record a card or a schema needs; everything here is the depth that
+ * only the detail page has room for. Keeping them apart means adding a service
+ * does not mean rewriting a wall of prose, and a rewrite of the summary never
+ * costs you the detailed version.
  *
  * Nothing here is a client claim. No project counts, no outcome metrics, no
  * testimonials. Every statement is about how the work is delivered and what
@@ -674,9 +674,9 @@ export function getServiceContent(slug: string): ServiceContent | undefined {
 
   if (!content && process.env.NODE_ENV !== "production") {
     console.warn(
-      `[service-content] No editorial content for slug "${slug}". Service slugs now come from ` +
-        `Firestore, so this key is missing. The page will fall back to CMS copy and lose its ` +
-        `deliverables, process, timeline, support and editorial FAQ sections.`
+      `[service-content] No editorial content for slug "${slug}". The page will fall back to the ` +
+        `short copy on the service record and lose its deliverables, process, timeline, support ` +
+        `and editorial FAQ sections.`
     );
   }
 
