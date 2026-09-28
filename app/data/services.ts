@@ -4,11 +4,13 @@ export interface Service {
     subtitle: string;
     description: string;
     longDescription: string;
+    metaDescription?: string;
     icon: string;
     image: string;
     features: string[];
     benefits: string[];
     technologies: string[];
+    isCoreService?: boolean;
     pricing?: {
         starter?: string;
         professional?: string;
@@ -26,7 +28,9 @@ export const services: Service[] = [
         title: "Web Development",
         subtitle: "Modern, Scalable Web Applications",
         description: "Build powerful web applications with cutting-edge technologies",
+        isCoreService: true,
         longDescription: "Our web development services deliver high-performance, scalable, and secure web applications tailored to your business needs. We use the latest frameworks and best practices to ensure your web presence stands out.",
+        metaDescription: "Custom web application development in React, Next.js and Node.js. Scalable, secure, SEO-first builds from $5,000. Book a free scoping call.",
         icon: "/icons/web-dev.svg",
         image: "/web-dev.png",
         features: [
@@ -70,7 +74,9 @@ export const services: Service[] = [
         title: "Mobile App Development",
         subtitle: "Native & Cross-Platform Mobile Apps",
         description: "Create engaging mobile experiences for iOS and Android",
+        isCoreService: true,
         longDescription: "We develop high-quality mobile applications that deliver exceptional user experiences. Whether you need native iOS/Android apps or cross-platform solutions, we've got you covered.",
+        metaDescription: "Native and cross-platform mobile app development for iOS and Android using React Native, Flutter, Swift and Kotlin. From $10,000.",
         icon: "/icons/mobile-dev.svg",
         image: "/mobile-app.png",
         features: [
@@ -104,7 +110,9 @@ export const services: Service[] = [
         title: "AI & ML Solutions",
         subtitle: "Intelligent Automation & Insights",
         description: "Leverage artificial intelligence for business transformation",
+        isCoreService: true,
         longDescription: "Harness the power of artificial intelligence and machine learning to automate processes, gain insights, and create intelligent products that learn and adapt.",
+        metaDescription: "Custom AI and machine learning solutions: LLM integrations, RAG systems, NLP, computer vision and predictive models built into production products.",
         icon: "/icons/ai-ml.svg",
         image: "/ai-ml.png",
         features: [
@@ -133,7 +141,9 @@ export const services: Service[] = [
         title: "Cloud Infrastructure",
         subtitle: "Scalable & Secure Cloud Solutions",
         description: "Modern cloud architecture and DevOps services",
+        isCoreService: true,
         longDescription: "Transform your infrastructure with cloud-native solutions. We help you leverage the full potential of cloud computing for scalability, reliability, and cost efficiency.",
+        metaDescription: "Cloud infrastructure and DevOps engineering on AWS, Azure and GCP. Kubernetes, Terraform, CI/CD pipelines and cost optimisation for production workloads.",
         icon: "/icons/cloud.svg",
         image: "/cloud-infra.png",
         features: [
@@ -163,6 +173,7 @@ export const services: Service[] = [
         subtitle: "Beautiful, Intuitive Interfaces",
         description: "Design exceptional user experiences that delight",
         longDescription: "Our design team creates beautiful, intuitive interfaces that users love. We focus on user-centered design to ensure your product is both functional and aesthetically pleasing.",
+        metaDescription: "User-centred UI/UX design and design systems in Figma. Wireframes, prototypes and usability testing that raise conversion and cut rework.",
         icon: "/icons/design.svg",
         image: "/ui-ux.png",
         features: [
@@ -192,6 +203,7 @@ export const services: Service[] = [
         subtitle: "Data-Driven Growth Strategies",
         description: "Accelerate growth with strategic digital marketing",
         longDescription: "Drive traffic, engagement, and conversions with our comprehensive digital marketing services. We use data-driven strategies to achieve measurable results.",
+        metaDescription: "Technical SEO, content marketing, PPC and lifecycle campaigns for B2B software companies. Analytics-first, reported against pipeline not impressions.",
         icon: "/icons/marketing.svg",
         image: "/digital-marketing.png",
         features: [
@@ -221,6 +233,7 @@ export const services: Service[] = [
         subtitle: "Real-time analytics and insights platform",
         description: "Track, analyze, and optimize your SaaS product with powerful real-time insights",
         longDescription: "Our SaaS analytics platform helps businesses monitor performance, understand user behavior, and make data-driven decisions. With real-time dashboards and advanced data visualization, you gain complete visibility into your product's growth and performance.",
+        metaDescription: "Real-time SaaS analytics platforms: custom dashboards, product telemetry, funnel and cohort analysis with third-party integrations. From $3,000.",
         icon: "/icons/analytics.svg",
         image: "/saas-analytics.png",
         features: [

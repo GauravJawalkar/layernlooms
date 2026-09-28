@@ -5,7 +5,8 @@ import { motion, useInView } from "framer-motion";
 import { ArrowRight, Check, Target, Eye, Heart, Shield, Zap, Users, Linkedin, Sparkles, Quote } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import JsonLd, { getBreadcrumbSchema } from "@/app/components/JsonLd";
+import JsonLd, { getBreadcrumbSchema, getPersonSchema, getProfilePageSchema } from "@/app/components/JsonLd";
+import { team } from "@/app/lib/site";
 
 const stagger = {
   hidden: { opacity: 0 },
@@ -91,7 +92,12 @@ export default function AboutPage() {
 
   return (
     <div className="min-h-screen bg-background selection:bg-primary selection:text-background">
-      <JsonLd data={getBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "About", url: "/about" }])} />
+      <JsonLd
+        data={[
+          getBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "About", url: "/about" }]),
+          ...team.flatMap((member) => [getPersonSchema(member), getProfilePageSchema(member)]),
+        ]}
+      />
       {/* Background */}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
         <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/3 rounded-full blur-[150px]" />

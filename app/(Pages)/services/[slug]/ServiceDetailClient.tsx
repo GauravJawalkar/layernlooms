@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { CheckCircle2, ArrowRight, Check, Sparkles, Code2, ChevronRight, Loader2 } from "lucide-react";
+import { CheckCircle2, ArrowRight, Check, Sparkles, Code2, ChevronRight, Loader2, ListChecks, Route, Users2 } from "lucide-react";
 import { getAllServicesFromDb, AdminService } from "@/app/lib/admin/services";
+import { getServiceContent } from "@/app/data/service-content";
 import ServiceHero from "../../../components/services/ServiceHero";
 
 const sectionHeader = (title: string) => (
@@ -69,6 +70,18 @@ export default function ServiceDetailClient({ slug, initialService }: ServiceDet
   }
 
   const relatedServices = allServices.filter((s) => s.slug !== slug);
+  const content = getServiceContent(slug);
+
+  // Editorial FAQs first, then any the CMS adds, de-duplicated on the question.
+  const faqs = [
+    ...(content?.faqs ?? []),
+    ...(service.faqs ?? []).filter(
+      (cms: { question: string }) =>
+        !content?.faqs.some(
+          (staticFaq) => staticFaq.question.toLowerCase() === cms.question.toLowerCase()
+        )
+    ),
+  ];
 
   return (
     <>
@@ -88,6 +101,45 @@ export default function ServiceDetailClient({ slug, initialService }: ServiceDet
                   {service.longDescription}
                 </p>
               </div>
+
+              {/* Deliverables */}
+              {content?.deliverables && content.deliverables.length > 0 && (
+                <div>
+                  {sectionHeader("What You Get")}
+                  <ul className="space-y-2.5">
+                    {content.deliverables.map((item: string) => (
+                      <li key={item} className="flex items-start gap-3">
+                        <ListChecks className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                        <span className="text-sm text-textMuted leading-relaxed">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* How we work */}
+              {content?.process && content.process.length > 0 && (
+                <div>
+                  {sectionHeader("How We Work")}
+                  <div className="space-y-6">
+                    {content.process.map((step, index) => (
+                      <div key={step.title} className="flex gap-4">
+                        <div className="shrink-0 w-8 h-8 rounded-full border border-primary/30 bg-primary/5 flex items-center justify-center">
+                          <Route className="w-3.5 h-3.5 text-primary" />
+                        </div>
+                        <div>
+                          <h3 className="text-sm font-semibold text-foreground">
+                            {String(index + 1).padStart(2, "0")}. {step.title}
+                          </h3>
+                          <p className="mt-1.5 text-sm text-textMuted leading-relaxed">
+                            {step.description}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Features */}
               {service.features && service.features.length > 0 && (
@@ -129,6 +181,50 @@ export default function ServiceDetailClient({ slug, initialService }: ServiceDet
                 </div>
               )}
 
+              {/* Why this stack */}
+              {content?.stackRationale && content.stackRationale.length > 0 && (
+                <div>
+                  {sectionHeader("Why This Stack")}
+                  <div className="space-y-4">
+                    {content.stackRationale.map((entry) => (
+                      <div
+                        key={entry.tech}
+                        className="rounded-xl border border-border bg-card/50 p-4 sm:p-5"
+                      >
+                        <div className="flex items-center gap-2 mb-2">
+                          <Code2 className="w-3.5 h-3.5 text-primary" />
+                          <h3 className="text-sm font-bold text-foreground">{entry.tech}</h3>
+                        </div>
+                        <p className="text-sm text-textMuted leading-relaxed">{entry.reason}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Ideal For */}
+              {content?.idealFor && content.idealFor.length > 0 && (
+                <div>
+                  {sectionHeader("Who This Is For")}
+                  <div className="rounded-xl border border-border bg-card/50 p-5 sm:p-6">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Users2 className="w-4 h-4 text-primary" />
+                      <span className="text-xs font-semibold text-foreground">
+                        A good fit if you are
+                      </span>
+                    </div>
+                    <ul className="space-y-2.5">
+                      {content.idealFor.map((item: string) => (
+                        <li key={item} className="flex items-start gap-3">
+                          <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                          <span className="text-sm text-textMuted leading-relaxed">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              )}
+
               {/* Technologies */}
               {service.technologies && service.technologies.length > 0 && (
                 <div>
@@ -148,11 +244,11 @@ export default function ServiceDetailClient({ slug, initialService }: ServiceDet
               )}
 
               {/* FAQs */}
-              {service.faqs && service.faqs.length > 0 && (
+              {faqs.length > 0 && (
                 <div>
                   {sectionHeader("FAQs")}
                   <div className="space-y-3">
-                    {service.faqs.map((faq: { question: string; answer: string }, index: number) => (
+                    {faqs.map((faq: { question: string; answer: string }, index: number) => (
                       <details
                         key={index}
                         className="group rounded-xl border border-border bg-card overflow-hidden"
@@ -200,14 +296,18 @@ export default function ServiceDetailClient({ slug, initialService }: ServiceDet
                 <div className="rounded-2xl border border-border bg-card/50 p-6">
                   {sectionHeader("Quick Stats")}
                   <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-textMuted">Delivery Time</span>
-                      <span className="text-sm font-bold text-foreground">2-6 weeks</span>
+                    <div className="flex items-start justify-between gap-4">
+                      <span className="text-xs text-textMuted shrink-0">Typical Timeline</span>
+                      <span className="text-xs sm:text-sm font-bold text-foreground text-right">
+                        {content?.timeline ?? "Scoped per project"}
+                      </span>
                     </div>
                     <div className="w-full h-px bg-border" />
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-textMuted">Support</span>
-                      <span className="text-sm font-bold text-foreground">24/7</span>
+                    <div className="flex items-start justify-between gap-4">
+                      <span className="text-xs text-textMuted shrink-0">Support</span>
+                      <span className="text-xs sm:text-sm font-bold text-foreground text-right">
+                        {content?.support ?? "Ongoing retainer"}
+                      </span>
                     </div>
                     <div className="w-full h-px bg-border" />
                     <div className="flex items-center justify-between">

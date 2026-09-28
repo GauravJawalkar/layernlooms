@@ -2,6 +2,29 @@ import { Metadata } from "next";
 import { services, getServiceBySlug } from "@/app/data/services";
 import ServiceDetailClient from "./ServiceDetailClient";
 import JsonLd, { getBreadcrumbSchema, getServiceSchema, getFAQPageSchema } from "@/app/components/JsonLd";
+import { pickMetaDescription } from "@/app/lib/seo";
+import { site } from "@/app/lib/site";
+import { getServiceContent } from "@/app/data/service-content";
+
+type Faq = { question: string; answer: string };
+
+/**
+ * Editorial FAQs from the static content module are richer than anything in
+ * the CMS, but an editor may still have added their own. Merge both, keyed on
+ * the question text, so FAQPage schema covers the full set without repeating.
+ */
+function collectFaqs(slug: string, cmsFaqs?: Faq[]): Faq[] {
+  const combined: Faq[] = [...(getServiceContent(slug)?.faqs ?? [])];
+
+  for (const faq of cmsFaqs ?? []) {
+    const alreadyAnswered = combined.some(
+      (existing) => existing.question.trim().toLowerCase() === faq.question.trim().toLowerCase()
+    );
+    if (!alreadyAnswered) combined.push(faq);
+  }
+
+  return combined;
+}
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -19,7 +42,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   const title = `${service.title} | LayerNLooms Custom Software Services`;
-  const description = service.longDescription || service.description;
+  const description = pickMetaDescription(
+    service.metaDescription,
+    service.description,
+    service.longDescription
+  );
 
   return {
     title,
@@ -31,18 +58,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       ...(service.features || []),
     ],
     alternates: {
-      canonical: `https://layernlooms.com/services/${slug}`,
+      canonical: `${site.url}/services/${slug}`,
     },
     openGraph: {
       type: "article",
-      url: `https://layernlooms.com/services/${slug}`,
+      url: `${site.url}/services/${slug}`,
       title: `${service.title} | LayerNLooms`,
       description,
       images: [
         {
           url: service.image?.startsWith("http")
             ? service.image
-            : `https://layernlooms.com${service.image || "/og-image.png"}`,
+            : `${site.url}${service.image || "/og-image.png"}`,
           alt: service.title,
         },
       ],
@@ -54,7 +81,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       images: [
         service.image?.startsWith("http")
           ? service.image
-          : `https://layernlooms.com${service.image || "/og-image.png"}`,
+          : `${site.url}${service.image || "/og-image.png"}`,
       ],
     },
   };
@@ -68,7 +95,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const service = getServiceBySlug(slug);
 
-  const schemas: any[] = [
+  const schemas: Record<string, unknown>[] = [
     getBreadcrumbSchema([
       { name: "Home", url: "/" },
       { name: "Services", url: "/services" },
@@ -78,8 +105,9 @@ export default async function ServiceDetailPage({ params }: PageProps) {
 
   if (service) {
     schemas.push(getServiceSchema(service));
-    if (service.faqs && service.faqs.length > 0) {
-      schemas.push(getFAQPageSchema(service.faqs));
+    const faqs = collectFaqs(slug, service.faqs);
+    if (faqs.length > 0) {
+      schemas.push(getFAQPageSchema(faqs));
     }
   }
 

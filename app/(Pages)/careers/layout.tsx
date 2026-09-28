@@ -14,6 +14,13 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://layernlooms.com/careers",
   },
+  robots: {
+    // The page currently renders a 105-word "Coming Soon" placeholder. A
+    // placeholder in the index is thin content with no upside, so it stays
+    // crawlable via the sitemap but out of the index until it is built out.
+    index: false,
+    follow: true,
+  },
   openGraph: {
     type: "website",
     url: "https://layernlooms.com/careers",

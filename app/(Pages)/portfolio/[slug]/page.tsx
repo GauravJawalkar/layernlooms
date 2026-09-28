@@ -2,6 +2,8 @@ import { Metadata } from "next";
 import { projects, getProjectBySlug } from "@/app/data/portfolio";
 import PortfolioDetailClient from "./PortfolioDetailClient";
 import JsonLd, { getBreadcrumbSchema, getCreativeWorkSchema } from "@/app/components/JsonLd";
+import { pickMetaDescription } from "@/app/lib/seo";
+import { site } from "@/app/lib/site";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -19,7 +21,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   const title = `${project.title} — Case Study | LayerNLooms Portfolio`;
-  const description = project.longDescription || project.description;
+  const description = pickMetaDescription(
+    project.metaDescription,
+    project.description,
+    project.result
+  );
 
   return {
     title,
@@ -32,18 +38,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       ...(project.services || []),
     ],
     alternates: {
-      canonical: `https://layernlooms.com/portfolio/${slug}`,
+      canonical: `${site.url}/portfolio/${slug}`,
     },
     openGraph: {
       type: "article",
-      url: `https://layernlooms.com/portfolio/${slug}`,
+      url: `${site.url}/portfolio/${slug}`,
       title,
       description,
       images: [
         {
           url: project.image?.startsWith("http")
             ? project.image
-            : `https://layernlooms.com${project.image || "/og-image.png"}`,
+            : `${site.url}${project.image || "/og-image.png"}`,
           alt: project.title,
         },
       ],
@@ -55,7 +61,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       images: [
         project.image?.startsWith("http")
           ? project.image
-          : `https://layernlooms.com${project.image || "/og-image.png"}`,
+          : `${site.url}${project.image || "/og-image.png"}`,
       ],
     },
   };
@@ -69,7 +75,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const project = getProjectBySlug(slug);
 
-  const schemas: any[] = [
+  const schemas: Record<string, unknown>[] = [
     getBreadcrumbSchema([
       { name: "Home", url: "/" },
       { name: "Portfolio", url: "/portfolio" },

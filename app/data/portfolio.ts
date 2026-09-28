@@ -8,6 +8,7 @@ export interface Project {
     client: string;
     year: string;
     url?: string;
+    metaDescription?: string;
     services: string[];
     technologies: string[];
     result: string;
@@ -25,6 +26,7 @@ export const projects: Project[] = [
         title: "ECOMM_STORE",
         category: "E-Commerce",
         description: "A digital marketplace for plants, gardening supplies, and botanical decor.",
+        metaDescription: "Case study: a multi-vendor plant marketplace built on Next.js and PostgreSQL, with Stripe checkout, seller onboarding and real-time inventory.",
         longDescription: "ECOMM_STORE is an e-commerce website dedicated to the sale of plants, gardening supplies, and related decor. It serves as a digital marketplace connecting customers with a wide variety of botanical products. The platform offers diverse categories including Indoor Plants, Outdoor Plants, Herbal Plants, Cactus Plants, Fruit Plants, Air Purifying varieties, and Climber Plants. Beyond plants, the store provides essential gardening accessories such as Garden Tool Sets, Watering Cans, Heavy Duty Gardening Gloves, and plant health products like NPK Fertilizers. The site includes standard e-commerce features including a search bar, user login portal, and a Become Seller option for third-party vendors, along with Best Selling and Top Rated sections to guide purchasing decisions.",
         image: "/portfolio/Ecomm_Store.png",
         client: "ECOMM_STORE",
@@ -39,6 +41,7 @@ export const projects: Project[] = [
         title: "Imgira Tools",
         category: "Design & Developer Tools",
         description: "200+ free, browser-based tools for creators, designers, and developers — no installs or sign-ups required.",
+        metaDescription: "Case study: 200+ zero-signup browser tools built with Canvas, WebAssembly and Next.js, serving thousands of daily active creators.",
         longDescription: "Imgira is a comprehensive online platform offering 200+ free, browser-based tools for creators, designers, and developers. It requires no installations, downloads, or sign-ups. Key tool categories include: Image Editing & Analysis with advanced features like edge detection, threshold tools, channel splitters, histogram viewers, and built-in drawing workspaces; GIF & Media Utilities for converting video to GIF, adjusting speed, optimizing file sizes, and editing metadata; Design & Typography tools for generating custom shape cutouts, removing watermarks, and designing 3D text effects; and Math & Generative Art features such as ASCII art generation from images, recursive fractal tree simulation (Pythagoras tree generator), and Pascal's Triangle visualization.",
         image: "/portfolio/imgira.png",
         client: "Imgira Inc.",
@@ -53,6 +56,7 @@ export const projects: Project[] = [
         title: "Temp Nova",
         category: "Privacy & Security",
         description: "Disposable email, temporary SMS, and privacy utilities for protecting your digital identity.",
+        metaDescription: "Case study: a stateless privacy suite for disposable email and temporary SMS, built with Redis and Docker for zero data retention.",
         longDescription: "TempNova is a comprehensive privacy and security utility suite designed to provide disposable, anonymous digital identifiers for modern web users and developers. It serves as a tool for protecting personal data by replacing permanent information with transient, temporary alternatives. Core features include: Disposable Email for generating temporary email addresses to avoid spam, newsletter subscriptions, and tracking pixels during registrations; Temporary SMS for providing virtual phone numbers to receive OTPs and verification codes while keeping your real mobile number private; Identity Protection tools including a Temp Username Generator and self-destructing notes with encrypted links; Testing & Development utilities for QA testing with multiple concurrent inboxes to test registration flows and multi-user scenarios. The platform operates on a stateless architecture — no personal information, email content, or location data is permanently logged or stored.",
         image: "/portfolio/temp-nova.png",
         client: "TempNova Systems",
@@ -67,6 +71,7 @@ export const projects: Project[] = [
         title: "Explore with Unity",
         category: "Social & Travel",
         description: "A community-driven travel social platform to document and discover personal travel experiences.",
+        metaDescription: "Case study: a travel social platform with journaling, a discovery feed, messaging and trip planning, built on Next.js and Firebase.",
         longDescription: "Explore with Unity is a community-driven travel social platform designed for users to document and discover personal travel experiences. Core features include: Community Journaling where travelers can create and publish their own digital travel journals to document their journeys; a Discovery Feed allowing users to browse an Explore feed to see adventures shared by other travelers from around the world; Social Connectivity facilitating networking among travelers through messaging and the ability to follow others; and Trip Planning tools to help users organize and create their own trips. It acts as a niche social network dedicated specifically to travel storytelling and trip inspiration.",
         image: "/portfolio/Explore%20with%20unity.png",
         client: "Explore with Unity",
@@ -81,6 +86,7 @@ export const projects: Project[] = [
         title: "Softivra",
         category: "Web Development",
         description: "A high-performance design system and web development agency delivering cutting-edge digital experiences.",
+        metaDescription: "Case study: a design system and agency platform blending Framer Motion, GSAP and Three.js into interactive, app-like web experiences.",
         longDescription: "Softivra is a web development agency and design system that fuses high-performance engineering with intuitive user experience (UX) to build websites that function more like software applications than traditional document repositories. It represents the evolution of websites beyond simple text and images into highly interactive digital platforms. Softivra specializes in creating digital properties — virtual spaces on the internet where content, information, services, and applications are hosted and made accessible globally. The platform covers the full spectrum of web development including informational sites, e-commerce solutions, portfolio/brand showcases, web applications, and community/social platforms. Every project is built on a foundation of robust domain management, reliable web hosting, and dynamic web pages that adapt to user interaction, time of day, and real-time data.",
         image: "/portfolio/softivra.png",
         client: "Softivra",
@@ -95,6 +101,7 @@ export const projects: Project[] = [
         title: "Neritic Wellness",
         category: "E-Commerce",
         description: "A powerful admin panel for managing products, orders, customers, and analytics.",
+        metaDescription: "Case study: an eCommerce admin dashboard with real-time sales analytics, role-based access and full product and order management.",
         longDescription: "Neritic Wellness Admin Panel provides administrators with complete control over the eCommerce platform, allowing for efficient product management, order tracking, customer oversight, and insightful analytics to drive business decisions. Features include: Product Management with add/edit/delete, category management, bulk uploads, pricing and stock control; Order Management with status tracking, invoice generation, filtering, and automated email notifications; Customer Management with role-based permissions, activity monitoring, and data export; Dashboard & Analytics with real-time sales insights, revenue trends, top-selling products, and downloadable reports; Secure Authentication with OAuth and multi-factor authentication; and Settings for branding, payment gateways, shipping, tax rates, and discount codes.",
         image: "/portfolio/neritic-dashboard..png",
         client: "Neritic Wellness",

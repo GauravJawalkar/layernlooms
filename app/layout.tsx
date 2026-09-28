@@ -7,6 +7,7 @@ import CustomCursor from "./components/CustomCursor";
 import ThemeCustomizer from "./components/ThemeCustomizer";
 import GoogleAnalytics from "./components/GoogleAnalytics";
 import JsonLd, { organizationSchema, websiteSchema } from "./components/JsonLd";
+import { site } from "@/app/lib/site";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -14,13 +15,16 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://layernlooms.com"),
+  metadataBase: new URL(site.url),
   title: {
     default: "LayerNLooms | Custom Software Development, Web & Mobile Apps, AI Solutions",
     template: "%s | LayerNLooms",
   },
   description:
-    "Premium software development agency specializing in custom web applications, mobile app development, AI integration, and enterprise software solutions for brands that demand excellence.",
+    "Custom software development agency building web applications, mobile apps, AI systems, and cloud infrastructure for startups and enterprises worldwide.",
+  applicationName: site.name,
+  generator: "Next.js",
+  referrer: "origin-when-cross-origin",
   keywords: [
     "custom software development",
     "web application development",
@@ -37,10 +41,13 @@ export const metadata: Metadata = {
     "Next.js agency",
     "React Native development",
     "cloud infrastructure services",
+    "hire software developers",
+    "dedicated development team",
   ],
-  authors: [{ name: "LayerNLooms", url: "https://layernlooms.com" }],
-  creator: "LayerNLooms",
-  publisher: "LayerNLooms",
+  authors: [{ name: site.name, url: site.url }],
+  creator: site.name,
+  publisher: site.name,
+  category: "technology",
   robots: {
     index: true,
     follow: true,
@@ -55,14 +62,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://layernlooms.com",
-    siteName: "LayerNLooms",
+    url: site.url,
+    siteName: site.name,
     title: "Custom Software Development & AI Solutions | LayerNLooms",
     description:
       "Weaving Digital Experiences with Precision, Depth & AI. Web • Mobile • AI • Custom Software built for brands that want excellence.",
     images: [
       {
-        url: "https://layernlooms.com/og-image.png",
+        url: `${site.url}/og-image.png`,
         width: 1200,
         height: 630,
         alt: "LayerNLooms - Custom Software Development & AI Agency",
@@ -74,11 +81,11 @@ export const metadata: Metadata = {
     title: "Custom Software Development & AI Solutions | LayerNLooms",
     description:
       "Web • Mobile • AI • Custom Software — Built exclusively for brands that want excellence.",
-    images: ["https://layernlooms.com/twitter-image.png"],
-    creator: "@layernlooms",
+    images: [`${site.url}/twitter-image.png`],
+    creator: site.socialHandles.twitter,
   },
   alternates: {
-    canonical: "https://layernlooms.com",
+    canonical: site.url,
   },
   icons: {
     icon: [

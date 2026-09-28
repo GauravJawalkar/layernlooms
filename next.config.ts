@@ -88,6 +88,24 @@ import https from "https";
 })();
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      {
+        // www.layernlooms.com currently serves a 200 with a canonical tag, which
+        // leaves the two hosts as separate crawl surfaces. A 301 consolidates
+        // link equity and makes the canonical the enforced answer.
+        source: "/:path*",
+        destination: "https://layernlooms.com/:path*",
+        permanent: true,
+        has: [
+          {
+            type: "host",
+            value: "www.layernlooms.com",
+          },
+        ],
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {
