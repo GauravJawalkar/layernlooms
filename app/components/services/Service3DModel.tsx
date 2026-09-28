@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
   Float,
@@ -556,7 +556,7 @@ function Orb() {
   );
 }
 
-const MODELS: Record<string, { Model: () => JSX.Element; spin: boolean }> = {
+const MODELS: Record<string, { Model: () => React.JSX.Element; spin: boolean }> = {
   "web-development": { Model: Browser, spin: false },
   "mobile-app-development": { Model: Phone, spin: false },
   "ai-ml-solutions": { Model: Neural, spin: true },
