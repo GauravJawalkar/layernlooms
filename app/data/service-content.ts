@@ -667,6 +667,101 @@ export const serviceContent: Record<string, ServiceContent> = {
       },
     ],
   },
+
+  "e-commerce-development": {
+    deliverables: [
+      "A production storefront deployed to your domain with SSL and CDN",
+      "Full product catalogue, collections and variant configuration",
+      "Payment gateway integration with Stripe or your preferred provider",
+      "Order management, fulfilment hooks and inventory sync",
+      "Analytics pipeline covering sessions, funnel steps and revenue attribution",
+      "A handover session covering the admin panel, order flow and deployment process",
+    ],
+    process: [
+      {
+        title: "Platform decision first",
+        description:
+          "We start by mapping your catalogue structure, pricing rules and fulfilment requirements against the platforms on offer. Most businesses land on Shopify. When they do not, we say so early, before any code is written.",
+      },
+      {
+        title: "Design against real products",
+        description:
+          "Mockups are built around your actual catalogue, real image aspect ratios, real title lengths and real pricing structures. A design that only works with a single product variant is not a design that works.",
+      },
+      {
+        title: "Checkout conversion is engineered, not assumed",
+        description:
+          "Form fields, trust signals, cart logic and error states are reviewed against conversion research, not left to defaults. We reduce friction at every step that stands between a browser and a completed order.",
+      },
+      {
+        title: "Performance verified before launch",
+        description:
+          "Storefront load time and Core Web Vitals are checked on real mobile hardware before launch, not in a lighthouse simulator on a desktop. Images, fonts and third-party scripts are audited and trimmed to budget.",
+      },
+    ],
+    stackRationale: [
+      {
+        tech: "Shopify",
+        reason:
+          "The widest ecosystem of payment gateways, fulfilment providers and third-party apps of any hosted platform. The right default unless your data model or pricing rules cannot fit inside Shopify's structures.",
+      },
+      {
+        tech: "Medusa.js",
+        reason:
+          "An open-source headless commerce engine that gives you full control over the data model and business logic when Shopify's constraints become real constraints rather than hypothetical ones.",
+      },
+      {
+        tech: "Next.js",
+        reason:
+          "Handles server-side rendering and static generation for product pages, which is what makes a large catalogue rank in search and load quickly on slow connections.",
+      },
+      {
+        tech: "Algolia",
+        reason:
+          "Search that returns results in milliseconds, handles typos, and supports merchandising rules. Native platform search is adequate for catalogues under a few hundred products; anything larger benefits from a dedicated search service.",
+      },
+      {
+        tech: "Stripe",
+        reason:
+          "The most complete payment and fraud infrastructure available. Handles card payments, wallets, buy-now-pay-later and recurring billing from a single integration, with strong documentation and predictable pricing.",
+      },
+    ],
+    idealFor: [
+      "Brands moving from a legacy Magento or WooCommerce store to a faster, lower-maintenance platform",
+      "Direct-to-consumer businesses launching their first owned channel",
+      "B2B businesses that need quote workflows, tier pricing or account-level catalogues",
+      "Retailers adding an online channel to complement physical stores",
+    ],
+    timeline: "Simple Shopify theme: 2-4 weeks. Custom storefront or headless build: 8-14 weeks.",
+    support: "30-day post-launch warranty included. Ongoing retainer available for content, promotions and platform updates.",
+    faqs: [
+      {
+        question: "Should I use Shopify or a custom platform?",
+        answer:
+          "Shopify is the right default for most product-led businesses. The platform, the payment ecosystem and the app store cover the majority of commerce requirements without custom code. A custom or headless platform makes sense when your catalogue structure, pricing rules or fulfilment logic genuinely cannot be expressed inside Shopify's data model.",
+      },
+      {
+        question: "Do you build headless storefronts?",
+        answer:
+          "Yes. A headless approach uses the commerce platform for inventory, orders and checkout while serving the frontend through a separate Next.js application. The benefit is full control over performance and UX. The trade-off is higher build and maintenance cost. We will recommend it only when the gain justifies it.",
+      },
+      {
+        question: "How do you handle payment and tax compliance?",
+        answer:
+          "We integrate with Stripe, PayPal and regional gateways and configure tax calculation through your platform or a service such as TaxJar. We ensure the plumbing is correct; legal advice on tax obligations in specific jurisdictions is outside our scope.",
+      },
+      {
+        question: "Can you migrate our existing product catalogue?",
+        answer:
+          "Yes. We handle catalogue migration from Magento, WooCommerce, Squarespace Commerce and most CSV-exportable platforms. The migration includes products, variants, images, historical orders where the target platform supports it, and customer accounts where it is legally straightforward.",
+      },
+      {
+        question: "What happens if traffic spikes during a sale or launch?",
+        answer:
+          "For Shopify-based builds, traffic scaling is managed by the platform. For custom storefronts, we deploy to infrastructure that scales horizontally and run load tests before a known high-traffic event so there are no surprises.",
+      },
+    ],
+  },
 };
 
 export function getServiceContent(slug: string): ServiceContent | undefined {

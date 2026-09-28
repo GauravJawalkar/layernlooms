@@ -273,6 +273,52 @@ export const services: Service[] = [
                 answer: "Yes, our SaaS analytics solutions are scalable and perfect for startups as well as enterprise-level businesses."
             }
         ]
+    },
+    {
+        slug: "e-commerce-development",
+        title: "E-Commerce Development",
+        subtitle: "Shopify, WooCommerce & Custom Storefronts",
+        description: "Build high-converting online stores that drive revenue and scale",
+        isCoreService: true,
+        longDescription: "We design and build e-commerce experiences that convert browsers into buyers. From headless Shopify storefronts to fully custom platforms, every build is optimised for speed, SEO, and checkout conversion.",
+        metaDescription: "Custom e-commerce development on Shopify, WooCommerce and headless platforms. Performance-first storefronts with payment integration, inventory and analytics from $6,000.",
+        icon: "/icons/ecommerce.svg",
+        image: "/ecommerce.png",
+        features: [
+            "Custom Shopify & WooCommerce Development",
+            "Headless Commerce Architecture",
+            "Payment Gateway Integration",
+            "Inventory & Order Management",
+            "Product Catalogue & Search",
+            "Multi-currency & Multi-language Support"
+        ],
+        benefits: [
+            "Higher checkout conversion rates",
+            "Faster storefront load times",
+            "Seamless omnichannel selling",
+            "Reduced cart abandonment",
+            "Automated inventory workflows",
+            "Scalable for seasonal traffic spikes"
+        ],
+        technologies: [
+            "Shopify", "WooCommerce", "Next.js", "Medusa.js",
+            "Stripe", "Algolia", "Sanity", "PostgreSQL"
+        ],
+        pricing: {
+            starter: "$6,000",
+            professional: "$18,000",
+            enterprise: "Custom"
+        },
+        faqs: [
+            {
+                question: "Should I use Shopify or a custom platform?",
+                answer: "Shopify is the right default for most product-led businesses. A custom platform makes sense when your catalogue, pricing rules, or fulfilment logic cannot be modelled inside Shopify's data structures."
+            },
+            {
+                question: "Do you handle payment and tax compliance?",
+                answer: "Yes. We integrate with Stripe, PayPal and regional gateways and configure tax rules through your platform or a service like TaxJar. We do not provide legal tax advice, but we wire up the tools correctly."
+            }
+        ]
     }
 ];
 
