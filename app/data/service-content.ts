@@ -670,5 +670,15 @@ export const serviceContent: Record<string, ServiceContent> = {
 };
 
 export function getServiceContent(slug: string): ServiceContent | undefined {
-  return serviceContent[slug];
+  const content = serviceContent[slug];
+
+  if (!content && process.env.NODE_ENV !== "production") {
+    console.warn(
+      `[service-content] No editorial content for slug "${slug}". Service slugs now come from ` +
+        `Firestore, so this key is missing. The page will fall back to CMS copy and lose its ` +
+        `deliverables, process, timeline, support and editorial FAQ sections.`
+    );
+  }
+
+  return content;
 }

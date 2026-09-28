@@ -203,6 +203,7 @@ export function getBlogPostingSchema(post: {
   image?: string;
   category?: string;
   tags?: string[];
+  dateModified?: string;
 }) {
   const url = `${site.url}/blog/${post.slug}`;
 
@@ -215,7 +216,7 @@ export function getBlogPostingSchema(post: {
     url,
     mainEntityOfPage: { "@id": url },
     datePublished: post.date,
-    dateModified: post.date,
+    dateModified: post.dateModified || post.date,
     inLanguage: "en",
     author: {
       "@type": "Person",

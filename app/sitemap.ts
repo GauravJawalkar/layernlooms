@@ -1,95 +1,62 @@
 import { MetadataRoute } from "next";
-import { services } from "./data/services";
-import { projects } from "./data/portfolio";
-import { blogPosts } from "./data/blogs";
+import { site } from "@/app/lib/site";
+import {
+  getPublishedPosts,
+  getPublishedProjects,
+  getPublishedServices,
+  resolveLastModified,
+} from "@/app/lib/firestore-content";
 
-const baseUrl = "https://layernlooms.com";
+export const revalidate = 3600;
 
 /**
- * A single build timestamp. Every dynamic entry previously used `new Date()`,
- * which told crawlers that all 32 URLs had changed on every request. Google
- * down-weights lastModified signals that always change, so the honest answer
- * for pages generated from static data is "no recent change".
+ * The public index pages render from Firestore, so the sitemap has to as well.
+ * Otherwise a post published in the admin panel is linked from /blog and
+ * carries a self-referencing canonical, but is absent from the sitemap and from
+ * generateStaticParams.
+ *
+ * `lastModified` is omitted for the fixed routes on purpose. These pages only
+ * change when someone edits a file, and a build timestamp is not that. Google
+ * ignores a `<lastmod>` it cannot verify, and a value that moves on every
+ * deploy teaches it to stop trusting the whole signal. The dynamic routes carry
+ * real CMS write times.
  */
-const buildDate = new Date();
-
 const staticRoutes: MetadataRoute.Sitemap = [
-  { url: baseUrl, lastModified: buildDate, changeFrequency: "weekly", priority: 1.0 },
-  { url: `${baseUrl}/services`, lastModified: buildDate, changeFrequency: "monthly", priority: 0.9 },
-  { url: `${baseUrl}/about`, lastModified: buildDate, changeFrequency: "monthly", priority: 0.7 },
-  { url: `${baseUrl}/portfolio`, lastModified: buildDate, changeFrequency: "monthly", priority: 0.8 },
-  { url: `${baseUrl}/blog`, lastModified: buildDate, changeFrequency: "weekly", priority: 0.8 },
-  { url: `${baseUrl}/pricing`, lastModified: buildDate, changeFrequency: "monthly", priority: 0.8 },
-  { url: `${baseUrl}/contact`, lastModified: buildDate, changeFrequency: "yearly", priority: 0.7 },
-  { url: `${baseUrl}/terms`, lastModified: buildDate, changeFrequency: "yearly", priority: 0.2 },
-  { url: `${baseUrl}/privacy`, lastModified: buildDate, changeFrequency: "yearly", priority: 0.2 },
+  { url: site.url },
+  { url: `${site.url}/services` },
+  { url: `${site.url}/about` },
+  { url: `${site.url}/portfolio` },
+  { url: `${site.url}/blog` },
+  { url: `${site.url}/pricing` },
+  { url: `${site.url}/contact` },
+  { url: `${site.url}/terms` },
+  { url: `${site.url}/privacy` },
   // /careers is deliberately omitted. It is noindex until the page is built
   // out, and Google asks that noindex URLs stay out of the sitemap. It stays
-  // crawlable via the footer link so the noindex is picked up quickly.
+  // crawlable through the footer link so the noindex is picked up quickly.
 ];
 
-const serviceRoutes: MetadataRoute.Sitemap = services.map((service) => ({
-  url: `${baseUrl}/services/${service.slug}`,
-  lastModified: buildDate,
-  changeFrequency: "monthly",
-  priority: service.isCoreService ? 0.9 : 0.7,
-}));
-
-const projectRoutes: MetadataRoute.Sitemap = projects.map((project) => ({
-  url: `${baseUrl}/portfolio/${project.slug}`,
-  lastModified: buildDate,
-  changeFrequency: "yearly",
-  priority: 0.6,
-}));
-
-const MONTHS = [
-  "january",
-  "february",
-  "march",
-  "april",
-  "may",
-  "june",
-  "july",
-  "august",
-  "september",
-  "october",
-  "november",
-  "december",
-];
-
-/**
- * Blog dates are stored as display strings ("January 15, 2026"). Passing that
- * straight to `new Date()` parses it as local midnight, so on a UTC+5:30
- * machine the serialised value lands on the previous day. Parse the parts and
- * build a UTC date explicitly instead. A future-dated entry is clamped, because
- * a lastmod in the future is ignored by crawlers and signals a scheduling bug.
- */
-function toSitemapDate(displayDate: string): Date {
-  const match = displayDate
-    .trim()
-    .match(/^([A-Za-z]+)\s+(\d{1,2}),\s*(\d{4})$/);
-
-  if (!match) return buildDate;
-
-  const monthIndex = MONTHS.indexOf(match[1].toLowerCase());
-  if (monthIndex === -1) return buildDate;
-
-  const parsed = new Date(Date.UTC(Number(match[3]), monthIndex, Number(match[2])));
-
-  if (Number.isNaN(parsed.getTime()) || parsed.getTime() > Date.now()) {
-    return buildDate;
-  }
-
-  return parsed;
+function toEntry(path: string, lastModified: Date | null): MetadataRoute.Sitemap[number] {
+  return lastModified
+    ? { url: `${site.url}${path}`, lastModified }
+    : { url: `${site.url}${path}` };
 }
 
-const blogRoutes: MetadataRoute.Sitemap = blogPosts.map((post) => ({
-  url: `${baseUrl}/blog/${post.slug}`,
-  lastModified: toSitemapDate(post.date),
-  changeFrequency: "yearly" as const,
-  priority: 0.7,
-}));
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const [posts, services, projects] = await Promise.all([
+    getPublishedPosts(),
+    getPublishedServices(),
+    getPublishedProjects(),
+  ]);
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  return [...staticRoutes, ...serviceRoutes, ...projectRoutes, ...blogRoutes];
+  return [
+    ...staticRoutes,
+    ...services.map((service) =>
+      toEntry(`/services/${service.slug}`, resolveLastModified(service))
+    ),
+    ...projects.map((project) =>
+      toEntry(`/portfolio/${project.slug}`, resolveLastModified(project))
+    ),
+    ...posts.map((post) => toEntry(`/blog/${post.slug}`, resolveLastModified(post))),
+  ];
 }

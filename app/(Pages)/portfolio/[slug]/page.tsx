@@ -1,31 +1,49 @@
 import { Metadata } from "next";
-import { projects, getProjectBySlug } from "@/app/data/portfolio";
+import { notFound } from "next/navigation";
 import PortfolioDetailClient from "./PortfolioDetailClient";
 import JsonLd, { getBreadcrumbSchema, getCreativeWorkSchema } from "@/app/components/JsonLd";
 import { pickMetaDescription } from "@/app/lib/seo";
 import { site } from "@/app/lib/site";
+import {
+  getPublishedProjectBySlug,
+  getPublishedProjects,
+  resolveLastModified,
+} from "@/app/lib/firestore-content";
+
+export const revalidate = 3600;
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
+export async function generateStaticParams() {
+  const projects = await getPublishedProjects();
+  return projects.map((project) => ({ slug: project.slug }));
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const project = getProjectBySlug(slug);
+  const project = await getPublishedProjectBySlug(slug);
 
   if (!project) {
     return {
       title: "Project Not Found | LayerNLooms",
-      description: "The requested portfolio case study was not found.",
+      robots: { index: false, follow: false },
     };
   }
 
   const title = `${project.title} — Case Study | LayerNLooms Portfolio`;
   const description = pickMetaDescription(
-    project.metaDescription,
+    undefined,
     project.description,
+    project.longDescription,
     project.result
   );
+  const url = `${site.url}/portfolio/${project.slug}`;
+  const image = project.image?.startsWith("http")
+    ? project.image
+    : `${site.url}${project.image || "/og-image.png"}`;
+  const modified = resolveLastModified(project);
 
   return {
     title,
@@ -35,62 +53,46 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       project.category,
       "case study",
       ...(project.technologies || []),
-      ...(project.services || []),
     ],
     alternates: {
-      canonical: `${site.url}/portfolio/${slug}`,
+      canonical: url,
     },
     openGraph: {
       type: "article",
-      url: `${site.url}/portfolio/${slug}`,
+      url,
       title,
       description,
-      images: [
-        {
-          url: project.image?.startsWith("http")
-            ? project.image
-            : `${site.url}${project.image || "/og-image.png"}`,
-          alt: project.title,
-        },
-      ],
+      ...(modified ? { modifiedTime: modified.toISOString() } : {}),
+      images: [{ url: image, alt: project.title }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [
-        project.image?.startsWith("http")
-          ? project.image
-          : `${site.url}${project.image || "/og-image.png"}`,
-      ],
+      images: [image],
     },
   };
 }
 
-export function generateStaticParams() {
-  return projects.map((p) => ({ slug: p.slug }));
-}
-
 export default async function ProjectDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const project = getProjectBySlug(slug);
+  const project = await getPublishedProjectBySlug(slug);
+
+  if (!project) notFound();
 
   const schemas: Record<string, unknown>[] = [
     getBreadcrumbSchema([
       { name: "Home", url: "/" },
       { name: "Portfolio", url: "/portfolio" },
-      { name: project ? project.title : slug, url: `/portfolio/${slug}` },
+      { name: project.title, url: `/portfolio/${project.slug}` },
     ]),
+    getCreativeWorkSchema(project),
   ];
-
-  if (project) {
-    schemas.push(getCreativeWorkSchema(project));
-  }
 
   return (
     <>
       <JsonLd data={schemas} />
-      <PortfolioDetailClient slug={slug} initialProject={project as any} />
+      <PortfolioDetailClient slug={project.slug} initialProject={project} />
     </>
   );
 }

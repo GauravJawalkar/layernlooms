@@ -91,9 +91,10 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        // www.layernlooms.com currently serves a 200 with a canonical tag, which
-        // leaves the two hosts as separate crawl surfaces. A 301 consolidates
-        // link equity and makes the canonical the enforced answer.
+        // The apex is the canonical host, matching site.url, every canonical tag
+        // and robots.host. Vercel's project settings must not also redirect the
+        // apex to www, or the two rules loop and the whole site — robots.txt and
+        // sitemap.xml included — returns ERR_TOO_MANY_REDIRECTS.
         source: "/:path*",
         destination: "https://layernlooms.com/:path*",
         permanent: true,
