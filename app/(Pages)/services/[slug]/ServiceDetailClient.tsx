@@ -7,9 +7,9 @@ import { getServiceContent } from "@/app/data/service-content";
 import ServiceHero from "../../../components/services/ServiceHero";
 
 const sectionHeader = (title: string) => (
-  <div className="flex items-center gap-3 mb-8">
-    <div className="w-6 h-px bg-border" />
-    <h2 className="text-xs font-black tracking-[0.3em] uppercase text-textMuted">{title}</h2>
+  <div className="flex items-center gap-3 mb-6 sm:mb-8">
+    <div className="w-8 h-px bg-white/20" />
+    <h2 className="text-[10px] sm:text-xs font-black tracking-[0.3em] uppercase text-zinc-400">{title}</h2>
   </div>
 );
 
@@ -24,14 +24,14 @@ export default function ServiceDetailClient({ slug, initialService }: ServiceDet
 
   if (!service) {
     return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center">
-        <h1 className="text-2xl font-bold text-foreground mb-2">Service Not Found</h1>
-        <p className="text-sm text-textMuted mb-6">The service you&apos;re looking for doesn&apos;t exist.</p>
+      <div className="min-h-[60vh] flex flex-col items-center justify-center bg-zinc-950 text-white">
+        <h1 className="text-3xl font-bold mb-4">Service Not Found</h1>
+        <p className="text-zinc-400 mb-8">The requested digital solution doesn&apos;t exist.</p>
         <Link
           href="/services"
-          className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-background"
+          className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-sm font-bold text-black hover:scale-105 transition-transform"
         >
-          View All Services
+          View Capabilities
           <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
@@ -53,20 +53,22 @@ export default function ServiceDetailClient({ slug, initialService }: ServiceDet
   ];
 
   return (
-    <>
+    <div className="bg-zinc-950 text-white min-h-screen selection:bg-white selection:text-black">
       <ServiceHero service={service} />
 
       {/* Main Content */}
-      <section className="py-12 sm:py-16 bg-background">
-        <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-16">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-16">
+      <section className="py-16 sm:py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.02] mix-blend-overlay pointer-events-none" />
+        
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16">
             {/* Left Column */}
-            <div className="lg:col-span-2 space-y-12 sm:space-y-16">
+            <div className="lg:col-span-2 space-y-16 sm:space-y-24">
 
               {/* Overview */}
               <div>
                 {sectionHeader("Overview")}
-                <p className="text-sm sm:text-base text-textMuted leading-relaxed">
+                <p className="text-base sm:text-lg text-zinc-300 leading-relaxed font-medium">
                   {service.longDescription}
                 </p>
               </div>
@@ -75,11 +77,11 @@ export default function ServiceDetailClient({ slug, initialService }: ServiceDet
               {content?.deliverables && content.deliverables.length > 0 && (
                 <div>
                   {sectionHeader("What You Get")}
-                  <ul className="space-y-2.5">
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {content.deliverables.map((item: string) => (
-                      <li key={item} className="flex items-start gap-3">
-                        <ListChecks className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                        <span className="text-sm text-textMuted leading-relaxed">{item}</span>
+                      <li key={item} className="flex items-start gap-3 p-4 rounded-2xl border border-white/5 bg-white/[0.02]">
+                        <ListChecks className="w-5 h-5 text-zinc-400 shrink-0 mt-0.5" />
+                        <span className="text-sm text-zinc-300 leading-relaxed">{item}</span>
                       </li>
                     ))}
                   </ul>
@@ -89,18 +91,18 @@ export default function ServiceDetailClient({ slug, initialService }: ServiceDet
               {/* How we work */}
               {content?.process && content.process.length > 0 && (
                 <div>
-                  {sectionHeader("How We Work")}
-                  <div className="space-y-6">
+                  {sectionHeader("Execution Methodology")}
+                  <div className="space-y-4">
                     {content.process.map((step, index) => (
-                      <div key={step.title} className="flex gap-4">
-                        <div className="shrink-0 w-8 h-8 rounded-full border border-primary/30 bg-primary/5 flex items-center justify-center">
-                          <Route className="w-3.5 h-3.5 text-primary" />
+                      <div key={step.title} className="flex flex-col sm:flex-row gap-4 sm:gap-6 p-6 rounded-2xl border border-white/5 bg-white/[0.02] group hover:bg-white/[0.04] transition-colors">
+                        <div className="shrink-0 w-10 h-10 rounded-full border border-white/10 bg-black flex items-center justify-center group-hover:border-white/30 transition-colors">
+                          <span className="text-xs font-bold text-white">{String(index + 1).padStart(2, "0")}</span>
                         </div>
                         <div>
-                          <h3 className="text-sm font-semibold text-foreground">
-                            {String(index + 1).padStart(2, "0")}. {step.title}
+                          <h3 className="text-base font-bold text-white mb-2">
+                            {step.title}
                           </h3>
-                          <p className="mt-1.5 text-sm text-textMuted leading-relaxed">
+                          <p className="text-sm text-zinc-400 leading-relaxed">
                             {step.description}
                           </p>
                         </div>
@@ -110,61 +112,62 @@ export default function ServiceDetailClient({ slug, initialService }: ServiceDet
                 </div>
               )}
 
-              {/* Features */}
-              {service.features && service.features.length > 0 && (
-                <div>
-                  {sectionHeader("Key Features")}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {service.features.map((feature: string) => (
-                      <div
-                        key={feature}
-                        className="group flex items-start gap-3 p-4 rounded-xl border border-border bg-card hover:border-primary/20 hover:shadow-md hover:shadow-primary/5 transition-all duration-300"
-                      >
-                        <div className="shrink-0 w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-background transition-all duration-300">
-                          <Check className="w-4 h-4 text-primary group-hover:text-background transition-colors" />
+              {/* Features & Benefits */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 sm:gap-8">
+                {service.features && service.features.length > 0 && (
+                  <div>
+                    {sectionHeader("Core Features")}
+                    <div className="space-y-3">
+                      {service.features.map((feature: string) => (
+                        <div
+                          key={feature}
+                          className="group flex items-start gap-3 p-4 rounded-2xl border border-white/5 bg-white/[0.02] hover:border-white/20 transition-all duration-300"
+                        >
+                          <div className="shrink-0 w-8 h-8 rounded-full bg-black border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-300">
+                            <Check className="w-4 h-4 text-zinc-400 group-hover:text-black transition-colors" />
+                          </div>
+                          <span className="text-sm text-zinc-400 group-hover:text-white transition-colors pt-1 font-medium">{feature}</span>
                         </div>
-                        <span className="text-sm text-textMuted group-hover:text-foreground transition-colors pt-1">{feature}</span>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {/* Benefits */}
-              {service.benefits && service.benefits.length > 0 && (
-                <div>
-                  {sectionHeader("Benefits")}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {service.benefits.map((benefit: string) => (
-                      <div
-                        key={benefit}
-                        className="group flex items-start gap-3 p-4 rounded-xl border border-border bg-card/50 hover:bg-card hover:border-primary/20 transition-all duration-300"
-                      >
-                        <div className="shrink-0 w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-                          <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                {service.benefits && service.benefits.length > 0 && (
+                  <div>
+                    {sectionHeader("Business Impact")}
+                    <div className="space-y-3">
+                      {service.benefits.map((benefit: string) => (
+                        <div
+                          key={benefit}
+                          className="group flex items-start gap-3 p-4 rounded-2xl border border-white/5 bg-white/[0.02] hover:border-white/20 transition-all duration-300"
+                        >
+                          <div className="shrink-0 w-8 h-8 rounded-full bg-black border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-300">
+                            <CheckCircle2 className="w-4 h-4 text-zinc-400 group-hover:text-black transition-colors" />
+                          </div>
+                          <span className="text-sm text-zinc-400 group-hover:text-white transition-colors pt-1 font-medium">{benefit}</span>
                         </div>
-                        <span className="text-sm text-textMuted group-hover:text-foreground transition-colors pt-1">{benefit}</span>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
 
               {/* Why this stack */}
               {content?.stackRationale && content.stackRationale.length > 0 && (
                 <div>
-                  {sectionHeader("Why This Stack")}
-                  <div className="space-y-4">
+                  {sectionHeader("Technology Stack Rationale")}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {content.stackRationale.map((entry) => (
                       <div
                         key={entry.tech}
-                        className="rounded-xl border border-border bg-card/50 p-4 sm:p-5"
+                        className="rounded-2xl border border-white/5 bg-white/[0.02] p-5 sm:p-6"
                       >
-                        <div className="flex items-center gap-2 mb-2">
-                          <Code2 className="w-3.5 h-3.5 text-primary" />
-                          <h3 className="text-sm font-bold text-foreground">{entry.tech}</h3>
+                        <div className="flex items-center gap-3 mb-3">
+                          <Code2 className="w-4 h-4 text-zinc-400" />
+                          <h3 className="text-sm font-bold text-white">{entry.tech}</h3>
                         </div>
-                        <p className="text-sm text-textMuted leading-relaxed">{entry.reason}</p>
+                        <p className="text-sm text-zinc-400 leading-relaxed">{entry.reason}</p>
                       </div>
                     ))}
                   </div>
@@ -174,19 +177,19 @@ export default function ServiceDetailClient({ slug, initialService }: ServiceDet
               {/* Ideal For */}
               {content?.idealFor && content.idealFor.length > 0 && (
                 <div>
-                  {sectionHeader("Who This Is For")}
-                  <div className="rounded-xl border border-border bg-card/50 p-5 sm:p-6">
-                    <div className="flex items-center gap-2 mb-4">
-                      <Users2 className="w-4 h-4 text-primary" />
-                      <span className="text-xs font-semibold text-foreground">
-                        A good fit if you are
+                  {sectionHeader("Ideal Profile")}
+                  <div className="rounded-3xl border border-white/5 bg-black p-6 sm:p-8">
+                    <div className="flex items-center gap-2 mb-6">
+                      <Users2 className="w-5 h-5 text-zinc-400" />
+                      <span className="text-sm font-bold text-white">
+                        This solution is perfectly suited for organizations that are:
                       </span>
                     </div>
-                    <ul className="space-y-2.5">
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       {content.idealFor.map((item: string) => (
                         <li key={item} className="flex items-start gap-3">
-                          <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                          <span className="text-sm text-textMuted leading-relaxed">{item}</span>
+                          <Check className="w-4 h-4 text-zinc-500 shrink-0 mt-1" />
+                          <span className="text-sm text-zinc-300 leading-relaxed">{item}</span>
                         </li>
                       ))}
                     </ul>
@@ -194,40 +197,22 @@ export default function ServiceDetailClient({ slug, initialService }: ServiceDet
                 </div>
               )}
 
-              {/* Technologies */}
-              {service.technologies && service.technologies.length > 0 && (
-                <div>
-                  {sectionHeader("Technologies We Use")}
-                  <div className="flex flex-wrap gap-2">
-                    {service.technologies.map((tech: string) => (
-                      <span
-                        key={tech}
-                        className="inline-flex items-center gap-1.5 rounded-full bg-secondary border border-border px-3.5 py-1.5 text-xs font-medium text-foreground/80 hover:border-primary/30 hover:bg-primary/5 transition-all duration-300"
-                      >
-                        <Code2 className="w-3 h-3" />
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-
               {/* FAQs */}
               {faqs.length > 0 && (
                 <div>
-                  {sectionHeader("FAQs")}
+                  {sectionHeader("Frequently Asked Questions")}
                   <div className="space-y-3">
                     {faqs.map((faq: { question: string; answer: string }, index: number) => (
                       <details
                         key={index}
-                        className="group rounded-xl border border-border bg-card overflow-hidden"
+                        className="group rounded-2xl border border-white/5 bg-white/[0.02] overflow-hidden"
                       >
-                        <summary className="flex items-center justify-between p-4 cursor-pointer list-none text-sm font-semibold text-foreground hover:bg-secondary/50 transition-colors">
+                        <summary className="flex items-center justify-between p-5 cursor-pointer list-none text-sm font-bold text-white hover:bg-white/[0.04] transition-colors">
                           {faq.question}
-                          <ChevronRight className="w-4 h-4 text-textMuted shrink-0 transition-transform group-open:rotate-90" />
+                          <ChevronRight className="w-4 h-4 text-zinc-500 shrink-0 transition-transform group-open:rotate-90" />
                         </summary>
-                        <div className="px-4 pb-4">
-                          <p className="text-sm text-textMuted leading-relaxed">{faq.answer}</p>
+                        <div className="px-5 pb-5 pt-2">
+                          <p className="text-sm text-zinc-400 leading-relaxed font-medium">{faq.answer}</p>
                         </div>
                       </details>
                     ))}
@@ -238,51 +223,65 @@ export default function ServiceDetailClient({ slug, initialService }: ServiceDet
             </div>
 
             {/* Right Sidebar */}
-            <div className="lg:col-span-1">
+            <div className="lg:col-span-1 mt-12 lg:mt-0">
               <div className="lg:sticky lg:top-28 space-y-6">
                 {/* Contact Card */}
-                <div className="rounded-2xl border border-border bg-card p-6 sm:p-8 relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-20 h-20 bg-primary/10 rounded-full blur-3xl -mr-8 -mt-8" />
+                <div className="rounded-[2rem] border border-white/10 bg-black p-6 sm:p-8 relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-white/10 transition-colors duration-500" />
                   <div className="relative">
-                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
-                      <Sparkles className="w-5 h-5 text-primary" />
+                    <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-6">
+                      <Sparkles className="w-5 h-5 text-white" />
                     </div>
-                    <h3 className="text-lg font-bold text-foreground">Need a Custom Solution?</h3>
-                    <p className="mt-2 text-sm text-textMuted leading-relaxed">
-                      Let&apos;s discuss your specific requirements and create a tailored solution for your business.
+                    <h3 className="text-xl font-black text-white mb-3">Architect a Solution</h3>
+                    <p className="text-sm text-zinc-400 leading-relaxed mb-8">
+                      Engage with our engineering team to outline a robust, scalable architecture tailored to your specific parameters.
                     </p>
                     <Link
                       href="/contact"
-                      className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:opacity-80 transition-opacity group"
+                      className="w-full inline-flex justify-center items-center gap-2 rounded-full bg-white text-black px-6 py-4 text-sm font-bold shadow-lg hover:scale-105 transition-all"
                     >
-                      Contact Our Experts
-                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                      Initialize Consultation
+                      <ArrowRight className="h-4 w-4" />
                     </Link>
                   </div>
                 </div>
 
                 {/* Quick Stats */}
-                <div className="rounded-2xl border border-border bg-card/50 p-6">
-                  {sectionHeader("Quick Stats")}
-                  <div className="space-y-4">
-                    <div className="flex items-start justify-between gap-4">
-                      <span className="text-xs text-textMuted shrink-0">Typical Timeline</span>
-                      <span className="text-xs sm:text-sm font-bold text-foreground text-right">
-                        {content?.timeline ?? "Scoped per project"}
+                <div className="rounded-[2rem] border border-white/5 bg-white/[0.02] p-6 sm:p-8">
+                  {sectionHeader("Parameters")}
+                  <div className="space-y-5">
+                    <div className="flex flex-col gap-1">
+                      <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-bold">Estimated Timeline</span>
+                      <span className="text-sm font-bold text-white">
+                        {content?.timeline ?? "Determined post-discovery"}
                       </span>
                     </div>
-                    <div className="w-full h-px bg-border" />
-                    <div className="flex items-start justify-between gap-4">
-                      <span className="text-xs text-textMuted shrink-0">Support</span>
-                      <span className="text-xs sm:text-sm font-bold text-foreground text-right">
-                        {content?.support ?? "Ongoing retainer"}
+                    <div className="w-full h-px bg-white/5" />
+                    <div className="flex flex-col gap-1">
+                      <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-bold">Maintenance & Support</span>
+                      <span className="text-sm font-bold text-white">
+                        {content?.support ?? "Available SLA contracts"}
                       </span>
                     </div>
-                    <div className="w-full h-px bg-border" />
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-textMuted">Technologies</span>
-                      <span className="text-sm font-bold text-foreground">{service.technologies?.length || 0}+</span>
-                    </div>
+                    
+                    {service.technologies && service.technologies.length > 0 && (
+                      <>
+                        <div className="w-full h-px bg-white/5" />
+                        <div className="flex flex-col gap-3">
+                          <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-bold">Core Technologies</span>
+                          <div className="flex flex-wrap gap-2">
+                            {service.technologies.map((tech: string) => (
+                              <span
+                                key={tech}
+                                className="inline-flex items-center gap-1.5 rounded-full bg-black border border-white/10 px-3 py-1 text-xs font-semibold text-zinc-300"
+                              >
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
@@ -293,37 +292,40 @@ export default function ServiceDetailClient({ slug, initialService }: ServiceDet
 
       {/* Related Services */}
       {relatedServices.length > 0 && (
-        <section className="border-t border-border bg-secondary/30 py-12 sm:py-16">
-          <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-16">
-            <div className="text-center mb-10">
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">Explore Other Services</h2>
-              <p className="mt-3 text-sm sm:text-base text-textMuted">Discover how we can help you with other business needs</p>
+        <section className="border-t border-white/5 bg-black py-16 sm:py-24">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-12">
+              <div>
+                <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white mb-2">Adjacent Capabilities</h2>
+                <p className="text-sm text-zinc-400">Explore integrated solutions across our ecosystem.</p>
+              </div>
+              <Link
+                href="/services"
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3 text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors shrink-0"
+              >
+                View Directory
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {relatedServices.slice(0, 3).map((s) => (
                 <Link key={s.slug} href={`/services/${s.slug}`}>
-                  <div className="group rounded-xl sm:rounded-2xl border border-border bg-card p-5 sm:p-6 hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 h-full">
-                    <h3 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">{s.title}</h3>
-                    <p className="mt-1.5 text-xs text-textMuted line-clamp-2">{s.description}</p>
-                    <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                      Learn more <ArrowRight className="w-3 h-3" />
+                  <div className="group rounded-[2rem] border border-white/5 bg-white/[0.02] p-6 sm:p-8 hover:border-white/20 hover:bg-white/[0.04] transition-all duration-300 h-full flex flex-col justify-between">
+                    <div>
+                      <h3 className="text-lg font-bold text-white mb-3 group-hover:text-zinc-300 transition-colors">{s.title}</h3>
+                      <p className="text-sm text-zinc-400 line-clamp-3 leading-relaxed font-medium mb-6">{s.description}</p>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs font-bold text-white group-hover:translate-x-2 transition-transform">
+                      Explore Capability <ArrowRight className="w-3 h-3" />
                     </div>
                   </div>
                 </Link>
               ))}
             </div>
-            <div className="mt-8 text-center">
-              <Link
-                href="/services"
-                className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold text-foreground hover:bg-secondary transition-all duration-300"
-              >
-                View All Services
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
           </div>
         </section>
       )}
-    </>
+    </div>
   );
 }

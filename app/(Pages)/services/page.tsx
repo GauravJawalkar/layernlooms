@@ -8,7 +8,6 @@ import { getAllServices } from "@/app/data/services";
 import ServiceCard from "../../components/services/ServiceCard";
 import JsonLd, { getBreadcrumbSchema } from "@/app/components/JsonLd";
 
-
 export default function ServicesPage() {
   const services = getAllServices();
   const servicesRef = useRef(null);
@@ -26,21 +25,39 @@ export default function ServicesPage() {
   };
 
   return (
-    <>
+    <div className="min-h-screen text-white selection:bg-white selection:text-black">
       <JsonLd data={getBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "Services", url: "/services" }])} />
+      
+      {/* Hero Section */}
+      <section className="relative pt-24 pb-8 md:pt-32 md:pb-12">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="flex flex-col items-center"
+          >
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight">
+              Our Services
+            </h1>
+            
+            <div className="w-24 h-[3px] bg-white mx-auto mt-4 mb-6 rounded-full" />
+            
+            <p className="text-base md:text-lg text-zinc-300 max-w-2xl mx-auto leading-relaxed font-normal">
+              Explore our comprehensive capabilities where design meets engineering excellence. We build digital products that drive results.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Services Grid */}
       <section
         ref={servicesRef}
-        className="relative pt-24 pb-24 transition-colors duration-300 bg-background overflow-hidden"
+        className="relative py-12 sm:py-16 md:py-20 overflow-hidden"
       >
-        {/* Ambient glassmorphic glows */}
-        <div className="absolute inset-0 pointer-events-none -z-10">
-          <div className="absolute top-1/4 -right-40 h-[500px] w-[500px] rounded-full bg-neutral-200/20 dark:bg-zinc-900/10 blur-3xl opacity-60" />
-          <div className="absolute bottom-1/4 -left-40 h-[500px] w-[500px] rounded-full bg-neutral-200/20 dark:bg-zinc-900/10 blur-3xl opacity-60" />
-        </div>
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div
-            className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
             initial="hidden"
             animate={isServicesInView ? "visible" : "hidden"}
             variants={{
@@ -49,31 +66,18 @@ export default function ServicesPage() {
                 opacity: 1,
                 transition: {
                   staggerChildren: 0.1,
-                  delayChildren: 0.2
+                  delayChildren: 0.1
                 }
               }
             }}
           >
             {services.length === 0 ? (
-              <div className="col-span-full text-center py-20 text-sm text-textMuted">
+              <div className="col-span-full text-center py-20 text-sm text-zinc-500 border border-dashed border-white/10 rounded-3xl">
                 No services available yet.
               </div>
             ) : (
               services.map((service, index) => (
-                <motion.div
-                  key={service.slug}
-                  variants={{
-                    hidden: { opacity: 0, y: 30 },
-                    visible: {
-                      opacity: 1,
-                      y: 0,
-                      transition: { duration: 0.5, ease: "easeOut" as const }
-                    }
-                  }}
-                  whileHover={{ y: -8, transition: { duration: 0.2 } }}
-                >
-                  <ServiceCard service={service} index={index} />
-                </motion.div>
+                <ServiceCard key={service.slug} service={service} index={index} />
               ))
             )}
           </motion.div>
@@ -83,70 +87,57 @@ export default function ServicesPage() {
       {/* CTA Section */}
       <section
         ref={ctaRef}
-        className="py-20 transition-colors duration-300 bg-primary text-background rounded-3xl mx-6 mb-20 shadow-2xl shadow-primary/20"
+        className="relative py-16 mb-12 sm:mb-16 mx-4 sm:mx-8 md:mx-12 lg:mx-20 rounded-[2rem] sm:rounded-[3rem] overflow-hidden bg-black border border-white/10 shadow-[0_0_100px_rgba(255,255,255,0.02)]"
       >
-        <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
+        <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-white/[0.02] rounded-[100%] blur-[120px]" />
+            <div className="absolute inset-0 bg-grid-white/[0.03] bg-[length:24px_24px]" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
+        </div>
+        
+        <div className="relative mx-auto max-w-4xl px-6 lg:px-8 text-center z-10">
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate={isCtaInView ? "visible" : "hidden"}
+            className="flex flex-col items-center"
           >
             <motion.h2
-              className="text-3xl font-bold tracking-tight sm:text-4xl text-background"
-              initial={{ opacity: 0, y: 20 }}
-              animate={isCtaInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+              className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tighter text-white mb-6 leading-tight"
+              variants={containerVariants}
             >
-              Ready to start your project?
+              Ready to engineer your<br />next breakthrough?
             </motion.h2>
+            
             <motion.p
-              className="mt-4 text-lg opacity-80"
-              initial={{ opacity: 0, y: 20 }}
-              animate={isCtaInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-base sm:text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-10"
+              variants={containerVariants}
             >
-              Let&apos;s discuss how we can help you achieve your goals
+              Connect with our technical architects to discuss your infrastructure, platform, or product requirements.
             </motion.p>
+            
             <motion.div
-              className="mt-8 flex items-center justify-center gap-x-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={isCtaInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto"
+              variants={containerVariants}
             >
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              <Link
+                href="/contact"
+                className="group w-full sm:w-auto inline-flex items-center justify-center rounded-full px-8 py-4 text-sm font-bold shadow-xl transition-all duration-300 bg-white text-black hover:scale-105 hover:shadow-[0_0_30px_rgba(255,255,255,0.3)]"
               >
-                <Link
-                  href="/contact"
-                  className="inline-block rounded-full px-8 py-3 text-sm font-semibold shadow-sm transition-all duration-300 bg-background text-foreground hover:bg-background/90"
-                >
-                  Contact Us Today
-                </Link>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                Initiate Project
+                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+              
+              <Link
+                href="/portfolio"
+                className="group w-full sm:w-auto inline-flex items-center justify-center text-sm font-bold border rounded-full px-8 py-4 transition-all duration-300 text-white border-white/20 hover:bg-white/5 hover:border-white/40"
               >
-                <Link
-                  href="/contact"
-                  className="inline-block text-sm font-semibold border-2 rounded-full px-6 py-3 transition-all duration-300 text-background border-background hover:bg-background hover:text-primary"
-                >
-                  View Our Work{" "}
-                  <motion.span
-                    initial={{ x: 0 }}
-                    whileHover={{ x: 4 }}
-                    transition={{ duration: 0.2 }}
-                    className="inline-block"
-                  >
-                    <ArrowRight className="inline-block ml-1 w-4 h-4" />
-                  </motion.span>
-                </Link>
-              </motion.div>
+                Review Case Studies
+              </Link>
             </motion.div>
           </motion.div>
         </div>
       </section>
-    </>
+    </div>
   );
 }
