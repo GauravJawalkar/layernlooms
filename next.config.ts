@@ -88,25 +88,6 @@ import https from "https";
 })();
 
 const nextConfig: NextConfig = {
-  async redirects() {
-    return [
-      {
-        // The apex is the canonical host, matching site.url, every canonical tag
-        // and robots.host. Vercel's project settings must not also redirect the
-        // apex to www, or the two rules loop and the whole site — robots.txt and
-        // sitemap.xml included — returns ERR_TOO_MANY_REDIRECTS.
-        source: "/:path*",
-        destination: "https://layernlooms.com/:path*",
-        permanent: true,
-        has: [
-          {
-            type: "host",
-            value: "www.layernlooms.com",
-          },
-        ],
-      },
-    ];
-  },
   images: {
     remotePatterns: [
       {
