@@ -26,7 +26,7 @@ const fadeIn = {
 const sectionHeader = (title: string) => (
   <div className="flex items-center gap-3 mb-6 sm:mb-8">
     <div className="w-6 h-px bg-border" />
-    <h2 className="text-xs font-black tracking-[0.3em] uppercase text-textMuted">{title}</h2>
+    <h2 className="text-xs font-black tracking-[0.3em] uppercase text-muted-foreground">{title}</h2>
   </div>
 );
 
@@ -117,7 +117,7 @@ export default function AboutPage() {
             <div className="order-2 ">
               {/* <motion.div variants={fadeUp} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/5 border border-border mb-5">
                 <Sparkles className="w-3 h-3 text-primary" />
-                <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-textMuted">About Us</span>
+                <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-muted-foreground">About Us</span>
               </motion.div> */}
 
               <motion.h1
@@ -127,12 +127,12 @@ export default function AboutPage() {
                 Where vision meets{" "}
                 <span className="bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">execution</span>
                 <br />
-                <span className="text-textMuted/30">we build what matters</span>
+                <span className="text-muted-foreground/30">we build what matters</span>
               </motion.h1>
 
               <motion.p
                 variants={fadeUp}
-                className="text-sm sm:text-base text-textMuted max-w-xl mt-5 leading-relaxed"
+                className="text-sm sm:text-base text-muted-foreground max-w-xl mt-5 leading-relaxed"
               >
                 LayerNLooms is a team of passionate engineers, designers, and strategists.
                 We partner with startups and enterprises to build high-impact digital solutions
@@ -185,7 +185,7 @@ export default function AboutPage() {
                     className="text-center"
                   >
                     <p className="text-2xl sm:text-3xl lg:text-4xl font-black text-foreground">{stat.value}</p>
-                    <p className="text-[10px] sm:text-xs font-bold tracking-[0.15em] uppercase text-textMuted mt-1">{stat.label}</p>
+                    <p className="text-[10px] sm:text-xs font-bold tracking-[0.15em] uppercase text-muted-foreground mt-1">{stat.label}</p>
                   </motion.div>
                 ))}
               </div>
@@ -204,20 +204,20 @@ export default function AboutPage() {
                 <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-foreground leading-[1.1]">
                   From a bold vision to a
                   <br />
-                  <span className="text-textMuted/30">digital powerhouse</span>
+                  <span className="text-muted-foreground/30">digital powerhouse</span>
                 </h3>
               </div>
               <div className="space-y-4">
-                <p className="text-sm sm:text-base text-textMuted leading-relaxed">
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                   Founded in 2024, LayerNLooms began as a two-person team in a co-working space with a simple belief —
                   that great software comes from deep collaboration and uncompromising quality.
                 </p>
-                <p className="text-sm sm:text-base text-textMuted leading-relaxed">
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                   Today, we are a 10+ member team spanning across India, delivering cutting-edge web, mobile, and AI
                   solutions to clients worldwide. From YC-backed startups to Fortune 500 enterprises, we&apos;ve helped
                   dozens of organizations transform their digital landscape.
                 </p>
-                <p className="text-sm sm:text-base text-textMuted leading-relaxed">
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                   Our culture is built on curiosity, craftsmanship, and continuous learning. Every project is an
                   opportunity to push boundaries and set new standards in engineering excellence.
                 </p>
@@ -240,7 +240,7 @@ export default function AboutPage() {
                     <Target className="w-5 h-5 text-primary" />
                   </div>
                   <h3 className="text-xl sm:text-2xl font-bold text-foreground">Our Mission</h3>
-                  <p className="mt-3 text-sm sm:text-base text-textMuted leading-relaxed">
+                  <p className="mt-3 text-sm sm:text-base text-muted-foreground leading-relaxed">
                     To empower businesses with elegant, scalable technology solutions that drive measurable impact.
                     We combine deep technical expertise with strategic thinking to deliver products that users love
                     and businesses rely on.
@@ -257,7 +257,7 @@ export default function AboutPage() {
                     <Eye className="w-5 h-5 text-primary" />
                   </div>
                   <h3 className="text-xl sm:text-2xl font-bold text-foreground">Our Vision</h3>
-                  <p className="mt-3 text-sm sm:text-base text-textMuted leading-relaxed">
+                  <p className="mt-3 text-sm sm:text-base text-muted-foreground leading-relaxed">
                     To be the most trusted technology partner for ambitious companies worldwide.
                     A future where every business, regardless of size, has access to world-class engineering
                     that accelerates their growth journey.
@@ -295,7 +295,7 @@ export default function AboutPage() {
                       <Icon className="w-5 h-5 text-primary group-hover:text-background transition-colors" />
                     </div>
                     <h4 className="mt-4 text-base sm:text-lg font-bold text-foreground">{value.title}</h4>
-                    <p className="mt-2 text-xs sm:text-sm text-textMuted leading-relaxed">{value.desc}</p>
+                    <p className="mt-2 text-xs sm:text-sm text-muted-foreground leading-relaxed">{value.desc}</p>
                   </motion.div>
                 </FadeInSection>
               );
@@ -332,8 +332,8 @@ export default function AboutPage() {
                     </div>
                     <div className="min-w-0">
                       <h4 className="text-sm sm:text-base font-bold text-foreground">{member.name}</h4>
-                      <p className="text-xs text-textMuted font-medium mt-0.5">{member.role}</p>
-                      <p className="text-xs text-textMuted/70 mt-2 leading-relaxed">{member.bio}</p>
+                      <p className="text-xs text-muted-foreground font-medium mt-0.5">{member.role}</p>
+                      <p className="text-xs text-muted-foreground/70 mt-2 leading-relaxed">{member.bio}</p>
                     </div>
                   </div>
 
@@ -347,7 +347,7 @@ export default function AboutPage() {
                         href={member.linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center text-textMuted hover:text-[#0077b5] hover:bg-[#0077b5]/10 transition-all"
+                        className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center text-muted-foreground hover:text-[#0077b5] hover:bg-[#0077b5]/10 transition-all"
                       >
                         <Linkedin className="w-4 h-4" />
                       </a>
@@ -377,7 +377,7 @@ export default function AboutPage() {
 
               <div className="mt-8 flex items-center justify-center gap-4">
                 <div className="w-px h-6 bg-border" />
-                <p className="text-xs font-bold tracking-widest uppercase text-textMuted">Steve Jobs</p>
+                <p className="text-xs font-bold tracking-widest uppercase text-muted-foreground">Steve Jobs</p>
                 <div className="w-px h-6 bg-border" />
               </div>
             </div>
@@ -425,3 +425,4 @@ export default function AboutPage() {
     </div>
   );
 }
+

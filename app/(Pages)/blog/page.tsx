@@ -69,7 +69,7 @@ export default function BlogPage() {
             animate={isHeroInView ? { width: 80 } : { width: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           />
-          <p className="text-lg max-w-xl mx-auto transition-colors duration-300 text-textMuted mb-12">
+          <p className="text-lg max-w-xl mx-auto transition-colors duration-300 text-muted-foreground mb-12">
             Insights, tutorials, and stories from the team — covering web development, AI, design, and more.
           </p>
 
@@ -81,7 +81,7 @@ export default function BlogPage() {
                   onClick={() => setActiveCategory(category)}
                   className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${activeCategory === category
                       ? "bg-primary text-background shadow-lg"
-                      : "bg-secondary text-textMuted hover:bg-secondary/80"
+                      : "bg-secondary text-muted-foreground hover:bg-secondary/80"
                     }`}
                 >
                   {category}
@@ -105,10 +105,10 @@ export default function BlogPage() {
           ) : filteredPosts.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16">
               <div className="w-16 h-16 rounded-2xl bg-secondary flex items-center justify-center mb-5">
-                <FileText className="w-7 h-7 text-textMuted" />
+                <FileText className="w-7 h-7 text-muted-foreground" />
               </div>
               <h3 className="text-xl font-semibold text-foreground mb-2">No blogs available</h3>
-              <p className="text-textMuted text-sm max-w-sm text-center">
+              <p className="text-muted-foreground text-sm max-w-sm text-center">
                 Blog posts will appear here once published. Check back later for updates and insights.
               </p>
             </div>
@@ -157,7 +157,7 @@ export default function BlogPage() {
                     </div>
 
                     <div className="mt-5">
-                      <div className="flex items-center gap-4 text-xs text-textMuted mb-3">
+                      <div className="flex items-center gap-4 text-xs text-muted-foreground mb-3">
                         <span className="flex items-center gap-1.5">
                           <Calendar className="w-3.5 h-3.5" />
                           {post.date}
@@ -170,7 +170,7 @@ export default function BlogPage() {
                       <h3 className="text-xl font-bold text-foreground mb-2 transition-colors group-hover:text-primary">
                         {post.title}
                       </h3>
-                      <p className="text-textMuted text-sm leading-relaxed line-clamp-2">
+                      <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2">
                         {post.excerpt}
                       </p>
                       <div className="mt-4 flex items-center gap-1.5 text-sm font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -234,3 +234,4 @@ export default function BlogPage() {
     </div>
   );
 }
+

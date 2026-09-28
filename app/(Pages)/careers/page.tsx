@@ -33,10 +33,10 @@ export default function CareersPage() {
             transition={{ duration: 0.6, delay: 0.3 }}
           />
 
-          <p className="text-lg text-textMuted max-w-lg mx-auto mb-4">
+          <p className="text-lg text-muted-foreground max-w-lg mx-auto mb-4">
             We&apos;re building something great and looking for talented people to join the journey.
           </p>
-          <p className="text-sm text-textMuted/70 max-w-md mx-auto mb-10">
+          <p className="text-sm text-muted-foreground/70 max-w-md mx-auto mb-10">
             Our career opportunities page is under construction. In the meantime, feel free to reach out — we&apos;d love to hear from you.
           </p>
 
@@ -61,3 +61,4 @@ export default function CareersPage() {
     </main>
   );
 }
+

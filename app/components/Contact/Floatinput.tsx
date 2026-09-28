@@ -39,10 +39,10 @@ export default function FloatInput({
                 className={`absolute left-4 max-w-[calc(100%-2rem)] truncate transition-all duration-200 pointer-events-none z-10 ${
                     active
                         ? `top-2 text-[10px] tracking-widest uppercase font-bold ${
-                            focused === name ? "text-primary" : "text-textMuted"
+                            focused === name ? "text-primary" : "text-muted-foreground"
                         }`
                         : `top-1/2 -translate-y-1/2 text-sm ${
-                            focused === name ? "text-primary" : "text-textMuted/60 group-hover:text-textMuted"
+                            focused === name ? "text-primary" : "text-muted-foreground/60 group-hover:text-muted-foreground"
                         }`
                 }`}
             >
@@ -71,7 +71,7 @@ export default function FloatInput({
                 autoComplete="off"
                 placeholder={active ? placeholder : ""}
                 required={required}
-                className={`w-full border rounded-2xl px-4 py-3 text-sm outline-none transition-all duration-200 bg-secondary/30 text-foreground placeholder:text-textMuted/50 placeholder:text-sm
+                className={`w-full border rounded-2xl px-4 py-3 text-sm outline-none transition-all duration-200 bg-secondary/30 text-foreground placeholder:text-muted-foreground/50 placeholder:text-sm
                     ${active ? "pt-7 pb-3" : "pt-3 pb-3"}
                     ${icon ? "pl-10" : "px-4"}
                     ${suffix ? "pr-16" : "pr-4"}

@@ -5,13 +5,13 @@ import { useState, useRef, useEffect } from "react";
 import { Search, PenTool, Code2, Rocket, RefreshCw, Settings } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
 
-const themeColors = {
-  zinc: "#a1a1aa",
-  purple: "#a78bfa",
-  green: "#34d399",
-  cyan: "#22d3ee",
-  amber: "#fb923c",
-  pink: "#f472b6",
+const themeColors: Record<string, string> = {
+  zinc: "oklch(0.708 0 0)",
+  purple: "oklch(0.7 0.22 270)",
+  green: "oklch(0.65 0.15 150)",
+  cyan: "oklch(0.75 0.15 200)",
+  amber: "oklch(0.8 0.18 80)",
+  pink: "oklch(0.75 0.22 340)",
 };
 
 const steps = [
@@ -107,14 +107,14 @@ export default function ProcessSection() {
   return (
     <section ref={sectionRef} className="relative py-24 overflow-hidden transition-colors duration-300">
       {/* 1. Dot Grid Background Pattern */}
-      <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#1c1c1c_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none -z-10" />
+      <div className="absolute inset-0 bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none -z-10" />
       
       {/* 2. Radial Vignette Mask */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,transparent_30%,var(--background)_100%)] pointer-events-none -z-10" />
 
       {/* 3. Ambient background glows */}
       <div className="absolute inset-0 pointer-events-none -z-10">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full bg-neutral-100/50 dark:bg-zinc-950/20 blur-3xl opacity-40" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full bg-secondary/50 blur-3xl opacity-40" />
       </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -126,7 +126,7 @@ export default function ProcessSection() {
           transition={{ duration: 0.5 }}
           className="text-center"
         >
-          <h2 className="text-3xl font-extrabold tracking-tight text-neutral-900 dark:text-white sm:text-5xl">
+          <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl">
             Our{" "}
             <span
               className="bg-clip-text text-transparent transition-all duration-500 font-extrabold"
@@ -137,7 +137,7 @@ export default function ProcessSection() {
               Process
             </span>
           </h2>
-          <p className="mt-4 text-lg text-neutral-500 dark:text-neutral-400 max-w-2xl mx-auto">
+          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
             A structured, transparent approach that takes your project from concept to launch.
           </p>
         </motion.div>
@@ -145,7 +145,7 @@ export default function ProcessSection() {
         {/* Timeline Container */}
         <div className="mt-20 relative min-h-[400px] max-w-5xl mx-auto">
           {/* Vertical Timeline Guide Line */}
-          <div className="absolute left-5 lg:left-1/2 lg:-translate-x-[0.5px] top-4 bottom-4 w-[1px] lg:w-[2px] bg-neutral-200 dark:bg-neutral-900 pointer-events-none overflow-hidden">
+          <div className="absolute left-5 lg:left-1/2 lg:-translate-x-[0.5px] top-4 bottom-4 w-[1px] lg:w-[2px] bg-border pointer-events-none overflow-hidden">
             <motion.div
               className="absolute left-0 w-full h-32 bg-gradient-to-b from-transparent via-neutral-400 dark:via-white/40 to-transparent"
               animate={{ top: ["-128px", "100%"] }}
@@ -177,8 +177,8 @@ export default function ProcessSection() {
                   <div
                     className={`absolute left-0 lg:left-1/2 lg:-translate-x-1/2 top-4 lg:top-1/2 lg:-translate-y-1/2 z-10 w-10 h-10 lg:w-12 lg:h-12 rounded-full border-2 flex items-center justify-center transition-all duration-500 ${
                       activeStep >= index
-                        ? "border-primary/60 dark:border-primary/40 bg-primary/10 dark:bg-primary/10 shadow-[0_0_25px_rgba(var(--primary),0.25)] dark:shadow-[0_0_30px_rgba(var(--primary),0.15)] scale-110"
-                        : "border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950"
+                        ? "border-primary/60 bg-primary/10 shadow-[0_0_25px_rgba(var(--primary),0.25)] scale-110"
+                        : "border-border bg-background"
                     }`}
                   >
                     {/* Ripple Halo animation */}
@@ -193,7 +193,7 @@ export default function ProcessSection() {
 
                     <IconComponent
                       className={`h-5 w-5 transition-colors duration-500 ${
-                        activeStep >= index ? "text-primary" : "text-neutral-500 dark:text-neutral-400"
+                        activeStep >= index ? "text-primary" : "text-muted-foreground"
                       }`}
                     />
                   </div>
@@ -202,7 +202,7 @@ export default function ProcessSection() {
                   <div className={`w-full relative ${isEven ? "lg:text-right block" : "hidden lg:block lg:opacity-0 pointer-events-none"}`}>
                     {/* Horizontal Connector Line (desktop only) */}
                     <div className={`hidden lg:block absolute right-[-32px] top-1/2 -translate-y-1/2 w-8 h-[1.5px] transition-colors duration-300 pointer-events-none ${
-                      activeStep === index ? "bg-neutral-400 dark:bg-white/30" : "bg-neutral-200 dark:bg-neutral-900"
+                      activeStep === index ? "bg-muted-foreground" : "bg-border"
                     }`} />
 
                     <motion.div
@@ -212,27 +212,27 @@ export default function ProcessSection() {
                       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                       className={`relative rounded-2xl border p-6 lg:p-8 transition-all duration-500 flex flex-col justify-start cursor-default overflow-hidden no-snap w-full ${
                         activeStep >= index
-                          ? "border-primary/40 dark:border-primary/30 bg-gradient-to-br from-white to-primary/5 dark:from-neutral-900 dark:to-primary/5 shadow-[0_0_30px_rgba(var(--primary),0.15)] dark:shadow-[0_0_40px_rgba(var(--primary),0.1)] -translate-y-1"
-                          : "border-neutral-300 dark:border-white/[0.06] bg-gradient-to-br from-white/90 to-neutral-50/90 dark:from-neutral-900 dark:to-neutral-950 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.01)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.15)]"
-                      } hover:-translate-y-1.5 hover:border-neutral-400 dark:hover:border-white/20 hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)] dark:hover:shadow-[0_20px_50px_rgba(255,255,255,0.02)]`}
+                          ? "border-primary/40 bg-gradient-to-br from-background to-primary/5 shadow-[0_0_30px_rgba(var(--primary),0.15)] -translate-y-1"
+                          : "border-border bg-card/90 backdrop-blur-md shadow-sm"
+                      } hover:-translate-y-1.5 hover:border-accent-current/30 hover:shadow-xl`}
                     >
                       {/* Outline Watermark Number */}
                       <span className={`absolute top-6 font-black text-4xl lg:text-5xl select-none transition-colors duration-300 ${
                         activeStep >= index
-                          ? "text-primary/10 dark:text-primary/10"
-                          : "text-neutral-100 dark:text-neutral-900/50"
+                          ? "text-primary/10"
+                          : "text-muted-foreground/20"
                       } ${isEven ? "right-6 lg:left-6 lg:right-auto" : "right-6"}`}>
                         {stepNumber}
                       </span>
 
                       <div className="relative z-10">
-                        <span className="text-xs font-bold tracking-widest text-neutral-400 dark:text-neutral-500 uppercase">
+                        <span className="text-xs font-bold tracking-widest text-muted-foreground uppercase">
                           Step {index + 1}
                         </span>
-                        <h3 className="mt-1 text-xl font-bold tracking-tight text-neutral-900 dark:text-white transition-colors duration-300">
+                        <h3 className="mt-1 text-xl font-bold tracking-tight text-foreground transition-colors duration-300">
                           {step.title}
                         </h3>
-                        <p className="mt-3 text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed transition-colors duration-300">
+                        <p className="mt-3 text-sm text-muted-foreground leading-relaxed transition-colors duration-300">
                           {step.description}
                         </p>
                       </div>
@@ -253,27 +253,27 @@ export default function ProcessSection() {
                       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                       className={`relative rounded-2xl border p-6 lg:p-8 transition-all duration-500 flex flex-col justify-start cursor-default overflow-hidden no-snap w-full ${
                         activeStep >= index
-                          ? "border-primary/40 dark:border-primary/30 bg-gradient-to-br from-white to-primary/5 dark:from-neutral-900 dark:to-primary/5 shadow-[0_0_30px_rgba(var(--primary),0.15)] dark:shadow-[0_0_40px_rgba(var(--primary),0.1)] -translate-y-1"
-                          : "border-neutral-300 dark:border-white/[0.06] bg-gradient-to-br from-white/90 to-neutral-50/90 dark:from-neutral-900 dark:to-neutral-950 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.01)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.15)]"
-                      } hover:-translate-y-1.5 hover:border-neutral-400 dark:hover:border-white/20 hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)] dark:hover:shadow-[0_20px_50px_rgba(255,255,255,0.02)]`}
+                          ? "border-primary/40 bg-gradient-to-br from-background to-primary/5 shadow-[0_0_30px_rgba(var(--primary),0.15)] -translate-y-1"
+                          : "border-border bg-card/90 backdrop-blur-md shadow-sm"
+                      } hover:-translate-y-1.5 hover:border-accent-current/30 hover:shadow-xl`}
                     >
                       {/* Outline Watermark Number */}
                       <span className={`absolute top-6 right-6 font-black text-4xl lg:text-5xl select-none transition-colors duration-300 ${
                         activeStep >= index
-                          ? "text-primary/10 dark:text-primary/10"
-                          : "text-neutral-100 dark:text-neutral-900/50"
+                          ? "text-primary/10"
+                          : "text-muted-foreground/20"
                       }`}>
                         {stepNumber}
                       </span>
 
                       <div className="relative z-10">
-                        <span className="text-xs font-bold tracking-widest text-neutral-400 dark:text-neutral-500 uppercase">
+                        <span className="text-xs font-bold tracking-widest text-muted-foreground uppercase">
                           Step {index + 1}
                         </span>
-                        <h3 className="mt-1 text-xl font-bold tracking-tight text-neutral-900 dark:text-white transition-colors duration-300">
+                        <h3 className="mt-1 text-xl font-bold tracking-tight text-foreground transition-colors duration-300">
                           {step.title}
                         </h3>
-                        <p className="mt-3 text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed transition-colors duration-300">
+                        <p className="mt-3 text-sm text-muted-foreground leading-relaxed transition-colors duration-300">
                           {step.description}
                         </p>
                       </div>
@@ -288,3 +288,4 @@ export default function ProcessSection() {
     </section>
   );
 }
+

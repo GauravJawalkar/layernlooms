@@ -93,7 +93,7 @@ export default function ContactForm() {
                 </div>
                 <div>
                     <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">Project Brief</h2>
-                    <p className="text-xs sm:text-sm text-textMuted mt-1">Tell us about your vision and we&apos;ll take it from there.</p>
+                    <p className="text-xs sm:text-sm text-muted-foreground mt-1">Tell us about your vision and we&apos;ll take it from there.</p>
                 </div>
             </div>
 
@@ -116,7 +116,7 @@ export default function ContactForm() {
                         htmlFor="projectType"
                         className={`absolute left-4 transition-all duration-200 pointer-events-none z-10 ${focused === "projectType" || form.projectType
                                 ? "top-2 text-[10px] tracking-widest uppercase font-bold text-primary"
-                                : "top-1/2 -translate-y-1/2 text-sm text-textMuted/60 group-hover:text-textMuted"
+                                : "top-1/2 -translate-y-1/2 text-sm text-muted-foreground/60 group-hover:text-muted-foreground"
                             }`}
                     >
                         Project Specialty
@@ -138,7 +138,7 @@ export default function ContactForm() {
                         ))}
                         <option value="__add_new__" className="font-bold text-foreground">+ Other Specialty</option>
                     </select>
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-textMuted">
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground">
                         <Plus className={`w-4 h-4 transition-transform duration-300 ${focused === "projectType" ? "rotate-45" : ""}`} />
                     </div>
                 </div>
@@ -161,7 +161,7 @@ export default function ContactForm() {
                                     <FloatInput label="Describe Specialty" name="customType" type="text" value={customType} focused={focused} onChange={(e) => setCustomType(e.target.value)} onFocus={() => setFocused("customType")} onBlur={() => setFocused(null)} />
                                 </div>
                                 <div className="flex gap-2 justify-end sm:w-auto">
-                                    <button type="button" onClick={handleCancelCustom} className="flex items-center justify-center p-3 sm:p-3 rounded-xl bg-card border border-border text-textMuted hover:text-foreground transition-colors">
+                                    <button type="button" onClick={handleCancelCustom} className="flex items-center justify-center p-3 sm:p-3 rounded-xl bg-card border border-border text-muted-foreground hover:text-foreground transition-colors">
                                         <X className="w-5 h-5 sm:w-4 sm:h-4" />
                                     </button>
                                     <button type="button" onClick={handleAddCustomType} className="flex items-center justify-center px-6 py-3 rounded-xl bg-primary text-background font-bold text-sm sm:text-xs uppercase tracking-widest hover:opacity-90 transition-colors">
@@ -180,7 +180,7 @@ export default function ContactForm() {
                     htmlFor="message"
                     className={`absolute left-4 transition-all duration-200 pointer-events-none z-10 ${focused === "message" || form.message
                             ? "top-2 text-[10px] tracking-widest uppercase font-bold text-primary"
-                            : "top-5 text-sm text-textMuted/60 group-hover:text-textMuted"
+                            : "top-5 text-sm text-muted-foreground/60 group-hover:text-muted-foreground"
                         }`}
                 >
                     Project Details
@@ -230,9 +230,10 @@ export default function ContactForm() {
 
                 <div className="flex items-center justify-center gap-3">
                     <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    <p className="text-[10px] font-bold tracking-[0.1em] uppercase text-textMuted">Response in &lt; 24h</p>
+                    <p className="text-[10px] font-bold tracking-[0.1em] uppercase text-muted-foreground">Response in &lt; 24h</p>
                 </div>
             </div>
         </form>
     );
 }
+

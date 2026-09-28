@@ -70,7 +70,7 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
           <div className="mb-8">
             <Link
               href="/blog"
-              className="inline-flex items-center gap-2 text-textMuted hover:text-foreground transition-colors group cursor-pointer"
+              className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors group cursor-pointer"
             >
               <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
               <span className="text-sm font-medium">Back to Blog</span>
@@ -92,7 +92,7 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground leading-tight mb-6">
               {post.title}
             </h1>
-            <div className="flex flex-wrap items-center gap-5 text-sm text-textMuted mb-8">
+            <div className="flex flex-wrap items-center gap-5 text-sm text-muted-foreground mb-8">
               <span className="flex items-center gap-2">
                 <User className="w-4 h-4" />
                 {post.author}
@@ -131,7 +131,7 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
                     <h4 className="text-lg font-bold text-foreground mt-6 mb-2">{children}</h4>
                   ),
                   p: ({ children }) => (
-                    <p className="text-textMuted leading-relaxed mb-5">{children}</p>
+                    <p className="text-muted-foreground leading-relaxed mb-5">{children}</p>
                   ),
                   a: ({ href, children }) => (
                     <a href={href} className="text-primary hover:underline font-medium" target="_blank" rel="noopener noreferrer">{children}</a>
@@ -143,10 +143,10 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
                     <ol className="space-y-2 mb-6 list-decimal pl-6">{children}</ol>
                   ),
                   li: ({ children }) => (
-                    <li className="text-textMuted leading-relaxed">{children}</li>
+                    <li className="text-muted-foreground leading-relaxed">{children}</li>
                   ),
                   blockquote: ({ children }) => (
-                    <blockquote className="border-l-4 border-primary pl-5 italic text-textMuted my-6 py-2">{children}</blockquote>
+                    <blockquote className="border-l-4 border-primary pl-5 italic text-muted-foreground my-6 py-2">{children}</blockquote>
                   ),
                   code: ({ className, children, ...props }) => {
                     const isInline = !className;
@@ -194,7 +194,7 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
                     <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-foreground">{children}</th>
                   ),
                   td: ({ children }) => (
-                    <td className="px-4 py-3 text-textMuted">{children}</td>
+                    <td className="px-4 py-3 text-muted-foreground">{children}</td>
                   ),
                   hr: () => (
                     <hr className="border-border my-10" />
@@ -214,7 +214,7 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
 
           <div className="mt-12 pt-8 border-t border-border">
             <div className="flex items-center gap-2 flex-wrap">
-              <Tag className="w-4 h-4 text-textMuted" />
+              <Tag className="w-4 h-4 text-muted-foreground" />
               {post.tags.map((tag) => (
                 <span
                   key={tag}
@@ -245,7 +245,7 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
                       className="w-full h-full object-cover grayscale-0 md:grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
                     />
                   </div>
-                  <div className="flex items-center gap-3 text-xs text-textMuted mb-2">
+                  <div className="flex items-center gap-3 text-xs text-muted-foreground mb-2">
                     <span className="flex items-center gap-1">
                       <Calendar className="w-3 h-3" />
                       {rp.date}

@@ -52,11 +52,11 @@ export default function Footer() {
   /* ─── tokens ─── */
   const bg = "bg-background";
   const borderTop = "border-border";
-  const bodyText = "text-textMuted";
+  const bodyText = "text-muted-foreground";
   const labelText = "text-foreground";
   const hoverText = "hover:text-primary";
   const divider = "border-border";
-  const iconColor = "text-textMuted";
+  const iconColor = "text-muted-foreground";
 
   return (
     <footer className={`relative rounded-3xl border transition-colors duration-300 my-6 sm:my-8 lg:my-10 ${bg} ${borderTop}`}>
@@ -217,3 +217,4 @@ export default function Footer() {
     </footer>
   );
 }
+

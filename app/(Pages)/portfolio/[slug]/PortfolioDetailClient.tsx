@@ -63,7 +63,7 @@ export default function PortfolioDetailClient({ slug, initialProject }: Portfoli
           <div className="mb-8">
             <Link
               href="/portfolio"
-              className="inline-flex items-center gap-2 text-textMuted hover:text-foreground transition-colors group cursor-pointer"
+              className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors group cursor-pointer"
             >
               <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
               <span className="text-sm font-medium">Back to Portfolio</span>
@@ -82,7 +82,7 @@ export default function PortfolioDetailClient({ slug, initialProject }: Portfoli
               <p className="mt-4 text-xl text-foreground font-medium">
                 {project.category} — {project.year}
               </p>
-              <p className="mt-6 text-lg leading-8 text-textMuted">
+              <p className="mt-6 text-lg leading-8 text-muted-foreground">
                 {project.description}
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -131,7 +131,7 @@ export default function PortfolioDetailClient({ slug, initialProject }: Portfoli
             <div className="lg:col-span-2">
               <div className="prose prose-lg max-w-none ">
                 <h2 className="text-3xl font-bold text-foreground mb-6">About </h2>
-                <p className="text-textMuted leading-relaxed mb-12">
+                <p className="text-muted-foreground leading-relaxed mb-12">
                   {project.longDescription}
                 </p>
 
@@ -147,7 +147,7 @@ export default function PortfolioDetailClient({ slug, initialProject }: Portfoli
               {/* Testimonial if exists */}
               {project.testimonial && (
                 <div className="mt-16 pt-16 border-t border-border">
-                  <h3 className="text-sm font-bold uppercase tracking-widest text-textMuted mb-8">Client Feedback</h3>
+                  <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-8">Client Feedback</h3>
                   <p className="text-2xl font-light text-foreground italic mb-8">
                     &quot;{project.testimonial.text}&quot;
                   </p>
@@ -155,7 +155,7 @@ export default function PortfolioDetailClient({ slug, initialProject }: Portfoli
                     <div className="h-12 w-12 rounded-full bg-secondary" />
                     <div>
                       <p className="font-bold text-foreground">{project.testimonial.author}</p>
-                      <p className="text-sm text-textMuted">{project.testimonial.role}</p>
+                      <p className="text-sm text-muted-foreground">{project.testimonial.role}</p>
                     </div>
                   </div>
                 </div>
@@ -170,16 +170,16 @@ export default function PortfolioDetailClient({ slug, initialProject }: Portfoli
                   <h3 className="text-lg font-bold text-foreground mb-6">Project Info</h3>
                   <div className="space-y-4">
                     <div>
-                      <p className="text-xs font-bold uppercase tracking-widest text-textMuted mb-1">Client</p>
+                      <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">Client</p>
                       <p className="text-foreground font-medium">{project.client}</p>
                     </div>
                     <div>
-                      <p className="text-xs font-bold uppercase tracking-widest text-textMuted mb-1">Year</p>
+                      <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">Year</p>
                       <p className="text-foreground font-medium">{project.year}</p>
                     </div>
                     {project.url && (
                       <div>
-                        <p className="text-xs font-bold uppercase tracking-widest text-textMuted mb-1">Website</p>
+                        <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">Website</p>
                         <a
                           href={project.url}
                           target="_blank"
@@ -192,7 +192,7 @@ export default function PortfolioDetailClient({ slug, initialProject }: Portfoli
                       </div>
                     )}
                     <div>
-                      <p className="text-xs font-bold uppercase tracking-widest text-textMuted mb-1">Tech Stack</p>
+                      <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">Tech Stack</p>
                       <div className="mt-2 flex flex-wrap gap-2">
                         {project.technologies.map(tech => (
                           <span key={tech} className="bg-background border border-border px-3 py-1 rounded-lg text-sm font-medium text-foreground/80">
@@ -229,7 +229,7 @@ export default function PortfolioDetailClient({ slug, initialProject }: Portfoli
           <h2 className="text-3xl font-bold text-foreground">
             Explore More Work
           </h2>
-          <p className="mt-4 text-lg text-textMuted">
+          <p className="mt-4 text-lg text-muted-foreground">
             See how we&apos;ve helped other clients achieve their digital goals.
           </p>
           <div className="mt-8">

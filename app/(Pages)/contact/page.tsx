@@ -63,14 +63,14 @@ export default function ContactPage() {
                         <span className="text-reflect">
                             Let&apos;s build
                             <br />
-                            <span className="text-textMuted/50">something</span>{" "}
+                            <span className="text-muted-foreground/50">something</span>{" "}
                             <span className="text-primary">great</span>
                         </span>
                     </motion.h1>
 
                     <motion.p
                         variants={fadeUp}
-                        className="text-sm sm:text-base md:text-lg text-textMuted max-w-2xl mt-4 leading-relaxed"
+                        className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mt-4 leading-relaxed"
                     >
                         Have a vision? We have the engineering expertise to bring it to life.
                         Tell us about your project and we&apos;ll get back to you within 24 hours.
@@ -114,11 +114,11 @@ export default function ContactPage() {
                                     >
                                         <div className="absolute top-0 right-0 w-20 h-20 bg-secondary rounded-full blur-3xl -mr-8 -mt-8 opacity-50 group-hover:opacity-80 transition-opacity" />
                                         <div className="relative flex items-center gap-4">
-                                            <div className="shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center bg-secondary text-textMuted group-hover:bg-primary group-hover:text-background transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
+                                            <div className="shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center bg-secondary text-muted-foreground group-hover:bg-primary group-hover:text-background transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
                                                 <Icon className="w-5 h-5" />
                                             </div>
                                             <div className="min-w-0">
-                                                <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-textMuted mb-0.5">{info.label}</p>
+                                                <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-muted-foreground mb-0.5">{info.label}</p>
                                                 {info.href ? (
                                                     <Link
                                                         href={info.href}
@@ -141,7 +141,7 @@ export default function ContactPage() {
 
                         {/* Social Links */}
                         <motion.div variants={fadeUp} className="p-5 sm:p-6 rounded-2xl sm:rounded-[2rem] border border-border bg-card/50 backdrop-blur-sm">
-                            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-textMuted mb-4">Follow Us</p>
+                            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-muted-foreground mb-4">Follow Us</p>
                             <div className="flex flex-wrap gap-3">
                                 {socialLinks.map((social) => (
                                     <Link
@@ -168,3 +168,4 @@ export default function ContactPage() {
         </div>
     );
 }
+

@@ -323,3 +323,4 @@ export function getProfilePageSchema(member: TeamMember) {
 }
 
 export { site, team };
+

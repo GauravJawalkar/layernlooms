@@ -4,13 +4,13 @@ import { motion } from "framer-motion";
 import { Code2, Brain, Cloud, Shield, Smartphone, Database } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
 
-const themeColors = {
-  zinc: "#a1a1aa",
-  purple: "#a78bfa",
-  green: "#34d399",
-  cyan: "#22d3ee",
-  amber: "#fb923c",
-  pink: "#f472b6",
+const themeColors: Record<string, string> = {
+  zinc: "oklch(0.708 0 0)",
+  purple: "oklch(0.7 0.22 270)",
+  green: "oklch(0.65 0.15 150)",
+  cyan: "oklch(0.75 0.15 200)",
+  amber: "oklch(0.8 0.18 80)",
+  pink: "oklch(0.75 0.22 340)",
 };
 
 const expertiseAreas = [
@@ -67,8 +67,8 @@ export default function ExpertiseSection() {
     <section className="relative py-20 bg-background overflow-hidden">
       {/* Ambient glassmorphic glows */}
       <div className="absolute inset-0 pointer-events-none -z-10">
-        <div className="absolute -top-40 -right-40 h-[500px] w-[500px] rounded-full bg-neutral-200/30 dark:bg-zinc-900/10 blur-3xl opacity-70" />
-        <div className="absolute -bottom-40 -left-40 h-[500px] w-[500px] rounded-full bg-neutral-200/30 dark:bg-zinc-900/10 blur-3xl opacity-70" />
+        <div className="absolute -top-40 -right-40 h-[500px] w-[500px] rounded-full bg-secondary/30 blur-3xl opacity-70" />
+        <div className="absolute -bottom-40 -left-40 h-[500px] w-[500px] rounded-full bg-secondary/30 blur-3xl opacity-70" />
       </div>
 
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -90,7 +90,7 @@ export default function ExpertiseSection() {
               Expertise
             </span>
           </h2>
-          <p className="mt-4 text-lg text-textMuted max-w-2xl mx-auto">
+          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
             We bring deep technical expertise across a wide range of domains to deliver impactful solutions.
           </p>
         </motion.div>
@@ -106,15 +106,15 @@ export default function ExpertiseSection() {
             <motion.div
               key={area.title}
               variants={itemVariants}
-              className="group relative rounded-2xl border border-neutral-200/50 dark:border-white/[0.05] bg-white/60 dark:bg-white/[0.02] backdrop-blur-md p-8 shadow-[0_8px_30px_rgb(0,0,0,0.01)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)] transition-all duration-300 hover:-translate-y-1 hover:bg-white/80 dark:hover:bg-white/[0.05] hover:border-neutral-300 dark:hover:border-white/[0.12] hover:shadow-[0_20px_50px_rgba(0,0,0,0.04)] dark:hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)]"
+              className="group relative rounded-2xl border border-border bg-card/60 backdrop-blur-md p-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:bg-card hover:border-accent-current/30 hover:shadow-xl"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-neutral-100/80 dark:bg-white/[0.04] border border-neutral-200/50 dark:border-white/[0.08] text-primary transition-all duration-300 group-hover:scale-110 group-hover:bg-neutral-900 group-hover:text-white dark:group-hover:bg-white dark:group-hover:text-neutral-900 group-hover:shadow-md">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary/80 border border-border text-accent-current transition-all duration-300 group-hover:scale-110 group-hover:bg-accent-current group-hover:text-accent-current-foreground group-hover:shadow-md">
                 <area.icon className="h-6 w-6" />
               </div>
               <h3 className="mt-6 text-lg font-semibold text-foreground">
                 {area.title}
               </h3>
-              <p className="mt-3 text-sm text-textMuted leading-relaxed">
+              <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
                 {area.description}
               </p>
             </motion.div>
@@ -124,3 +124,4 @@ export default function ExpertiseSection() {
     </section>
   );
 }
+

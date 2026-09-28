@@ -56,7 +56,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-          <p className="text-sm text-textMuted">Connecting...</p>
+          <p className="text-sm text-muted-foreground">Connecting...</p>
         </div>
       </div>
     );
@@ -78,7 +78,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
           </div>
           <div className="mb-5"></div>
               
-          <p className="text-xs font-bold tracking-wider uppercase text-textMuted">Navigation</p>
+          <p className="text-xs font-bold tracking-wider uppercase text-muted-foreground">Navigation</p>
         </div>
         <nav className="flex-1 px-3 space-y-1">
           {adminNav.map((item) => {
@@ -91,7 +91,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
                 className={`flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-all ${
                   active
                     ? "bg-primary/10 text-primary"
-                    : "text-textMuted hover:text-foreground hover:bg-secondary"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary"
                 }`}
               >
                 <item.icon className="w-4 h-4" />
@@ -113,7 +113,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
           <Link href="/admin">
             <Logo className="w-auto h-7" />
           </Link>
-          <button onClick={() => setSidebarOpen(false)} className="p-1 rounded-lg text-textMuted hover:text-foreground hover:bg-secondary transition-all">
+          <button onClick={() => setSidebarOpen(false)} className="p-1 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-all">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -126,7 +126,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
                 key={item.name}
                 href={item.href}
                 className={`flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-all ${
-                  active ? "bg-primary/10 text-primary" : "text-textMuted hover:text-foreground hover:bg-secondary"
+                  active ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-secondary"
                 }`}
               >
                 <item.icon className="w-4 h-4" />
@@ -138,7 +138,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
         <div className="border-t border-border pt-4 mt-4">
           <div className="px-3 mb-4">
             <p className="text-sm font-medium text-foreground truncate">{user.displayName || user.email}</p>
-            <p className="text-xs text-textMuted capitalize">{user.role}</p>
+            <p className="text-xs text-muted-foreground capitalize">{user.role}</p>
           </div>
           <button
             onClick={async () => { await logout(); router.push("/admin/login"); }}
@@ -146,7 +146,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
           >
             <LogOut className="w-4 h-4" /> Sign Out
           </button>
-          <Link href="/" className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-textMuted hover:text-foreground hover:bg-secondary transition-all mt-1">
+          <Link href="/" className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary transition-all mt-1">
             <ChevronLeft className="w-4 h-4" /> Back to Site
           </Link>
         </div>
@@ -165,7 +165,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
             <div className="h-5 w-px bg-border" />
             <div className="text-right min-w-0">
               <p className="text-sm font-medium text-foreground truncate max-w-[160px]" title={user.displayName || user.email}>{user.displayName || user.email}</p>
-              <p className="text-xs text-textMuted capitalize">{user.role}</p>
+              <p className="text-xs text-muted-foreground capitalize">{user.role}</p>
             </div>
             <button
               onClick={async () => { await logout(); router.push("/admin/login"); }}
@@ -176,7 +176,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
             </button>
             <Link
               href="/"
-              className="p-2 rounded-xl text-textMuted hover:text-foreground hover:bg-secondary transition-all"
+              className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-secondary transition-all"
               title="Back to Site"
             >
               <ExternalLink className="w-4 h-4" />
@@ -186,7 +186,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
 
         {/* Mobile header */}
         <header className="md:hidden flex items-center justify-between px-4 py-3 border-b border-border bg-card shrink-0">
-          <button onClick={() => setSidebarOpen(true)} className="p-1 rounded-lg text-textMuted hover:text-foreground hover:bg-secondary transition-all">
+          <button onClick={() => setSidebarOpen(true)} className="p-1 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-all">
             <Menu className="w-5 h-5" />
           </button>
           <span className="text-sm font-medium text-foreground">{currentNav.name}</span>
@@ -201,7 +201,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
             </button>
             <Link
               href="/"
-              className="p-1.5 rounded-lg text-textMuted hover:text-foreground hover:bg-secondary transition-all"
+              className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-all"
             >
               <ExternalLink className="w-4 h-4" />
             </Link>
@@ -220,7 +220,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
 
         {/* Footer */}
         <footer className="border-t border-border bg-card px-6 py-4 shrink-0">
-          <div className="flex items-center justify-between text-xs text-textMuted">
+          <div className="flex items-center justify-between text-xs text-muted-foreground">
             <p>&copy; {new Date().getFullYear()} LayerNLooms. All rights reserved.</p>
             <div className="flex items-center gap-4">
               <Link href="/" className="hover:text-foreground transition-colors">Visit Site</Link>
@@ -242,3 +242,4 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     </AdminAuthProvider>
   );
 }
+

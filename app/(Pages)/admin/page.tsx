@@ -65,7 +65,7 @@ export default function AdminDashboardPage() {
     <div>
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
-        <p className="text-sm text-textMuted">Overview of your admin panel</p>
+        <p className="text-sm text-muted-foreground">Overview of your admin panel</p>
       </div>
 
       <motion.div
@@ -76,7 +76,7 @@ export default function AdminDashboardPage() {
         <h2 className="text-xl font-semibold text-foreground">
           {greeting()}, {user?.displayName || user?.email?.split("@")[0] || "Admin"} 👋
         </h2>
-        <p className="text-sm text-textMuted mt-1">
+        <p className="text-sm text-muted-foreground mt-1">
           Welcome back to the <span className="font-semibold text-foreground">LayerNLooms</span> admin panel.
           {isSuperAdmin
             ? " You have full control over the system."
@@ -107,7 +107,7 @@ export default function AdminDashboardPage() {
               <card.icon className="w-5 h-5" />
             </div>
             <p className="text-2xl font-bold text-foreground">{card.value}</p>
-            <p className="text-xs text-textMuted mt-0.5">{card.label}</p>
+            <p className="text-xs text-muted-foreground mt-0.5">{card.label}</p>
           </motion.div>
         ))}
       </div>
@@ -123,7 +123,7 @@ export default function AdminDashboardPage() {
             <Clock className="w-5 h-5 text-amber-500 mt-0.5 shrink-0" />
             <div>
               <h3 className="font-semibold text-foreground">Pending Approvals</h3>
-              <p className="text-sm text-textMuted mt-1">
+              <p className="text-sm text-muted-foreground mt-1">
                 {stats.pending} user{stats.pending > 1 ? "s" : ""} pending your approval.
               </p>
             </div>
@@ -133,3 +133,4 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
+

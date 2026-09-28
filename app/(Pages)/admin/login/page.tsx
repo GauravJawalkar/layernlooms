@@ -66,7 +66,7 @@ export default function AdminLoginPage() {
             <Shield className="w-7 h-7 text-primary" />
           </div>
           <h1 className="text-2xl font-bold text-foreground">Admin Panel</h1>
-          <p className="text-sm text-textMuted mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             {mode === "login" ? "Sign in to your account" : mode === "register" ? "Request admin access" : "Reset your password"}
           </p>
         </div>
@@ -75,7 +75,7 @@ export default function AdminLoginPage() {
           <div>
             <label className="block text-sm font-medium text-foreground mb-1.5">Email</label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-textMuted" />
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input
                 type="email"
                 value={email}
@@ -93,7 +93,7 @@ export default function AdminLoginPage() {
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-1.5">Display Name</label>
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-textMuted" />
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     <input
                       type="text"
                       value={displayName}
@@ -108,7 +108,7 @@ export default function AdminLoginPage() {
               <div>
                 <label className="block text-sm font-medium text-foreground mb-1.5">Password</label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-textMuted" />
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <input
                     type={showPassword ? "text" : "password"}
                     value={password}
@@ -121,7 +121,7 @@ export default function AdminLoginPage() {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-textMuted hover:text-foreground transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -130,7 +130,7 @@ export default function AdminLoginPage() {
                   <button
                     type="button"
                     onClick={() => { setMode("forgot"); setError(""); setResetSent(false); }}
-                    className="text-xs text-textMuted hover:text-primary transition-colors mt-1"
+                    className="text-xs text-muted-foreground hover:text-primary transition-colors mt-1"
                   >
                     Forgot password?
                   </button>
@@ -179,7 +179,7 @@ export default function AdminLoginPage() {
           {mode === "forgot" ? (
             <button
               onClick={() => { setMode("login"); setError(""); setResetSent(false); }}
-              className="inline-flex items-center gap-1 text-sm text-textMuted hover:text-foreground transition-colors"
+              className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               <ArrowLeft className="w-3 h-3" />
               Back to sign in
@@ -187,7 +187,7 @@ export default function AdminLoginPage() {
           ) : (
             <button
               onClick={() => { setMode(mode === "login" ? "register" : "login"); setError(""); }}
-              className="text-sm text-textMuted hover:text-foreground transition-colors"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               {mode === "login"
                 ? "Don't have an account? Request access"
@@ -199,3 +199,4 @@ export default function AdminLoginPage() {
     </div>
   );
 }
+

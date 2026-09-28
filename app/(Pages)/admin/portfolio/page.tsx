@@ -159,7 +159,7 @@ export default function AdminPortfolioPage() {
           <div className="flex items-center gap-2">
             <button
               onClick={cancelEdit}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-border text-sm font-medium text-textMuted hover:text-foreground hover:bg-secondary transition-all"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-border text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary transition-all"
             >
               <X className="w-4 h-4" />
               Cancel
@@ -306,7 +306,7 @@ export default function AdminPortfolioPage() {
             </button>
             <div>
               <p className="text-sm font-medium text-foreground">Visible on website</p>
-              <p className="text-xs text-textMuted">Toggle to show or hide on the public site</p>
+              <p className="text-xs text-muted-foreground">Toggle to show or hide on the public site</p>
             </div>
           </label>
         </div>
@@ -319,7 +319,7 @@ export default function AdminPortfolioPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Portfolio</h1>
-          <p className="text-sm text-textMuted">Manage your portfolio projects</p>
+          <p className="text-sm text-muted-foreground">Manage your portfolio projects</p>
         </div>
         <button
           onClick={startNew}
@@ -341,8 +341,8 @@ export default function AdminPortfolioPage() {
 
       {!loadError && projects.length === 0 ? (
         <div className="rounded-2xl border border-border bg-card p-10 text-center">
-          <FolderKanban className="w-8 h-8 text-textMuted mx-auto mb-3" />
-          <p className="text-sm text-textMuted">No projects yet. Create your first project.</p>
+          <FolderKanban className="w-8 h-8 text-muted-foreground mx-auto mb-3" />
+          <p className="text-sm text-muted-foreground">No projects yet. Create your first project.</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -363,17 +363,17 @@ export default function AdminPortfolioPage() {
                     />
                   ) : (
                     <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center shrink-0">
-                      <FolderKanban className="w-5 h-5 text-textMuted" />
+                      <FolderKanban className="w-5 h-5 text-muted-foreground" />
                     </div>
                   )}
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
                       <p className="font-medium text-foreground truncate">{p.title}</p>
                       {p.visible === false && (
-                        <span className="text-[10px] font-medium text-textMuted bg-secondary px-1.5 py-0.5 rounded shrink-0">Hidden</span>
+                        <span className="text-[10px] font-medium text-muted-foreground bg-secondary px-1.5 py-0.5 rounded shrink-0">Hidden</span>
                       )}
                     </div>
-                    <p className="text-xs text-textMuted truncate">/{p.slug}</p>
+                    <p className="text-xs text-muted-foreground truncate">/{p.slug}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-1 shrink-0">
@@ -382,7 +382,7 @@ export default function AdminPortfolioPage() {
                     disabled={togglingId === p.id}
                     className={`p-2 rounded-xl transition-all ${
                       p.visible === false
-                        ? "text-textMuted hover:text-foreground hover:bg-secondary"
+                        ? "text-muted-foreground hover:text-foreground hover:bg-secondary"
                         : "text-primary hover:bg-primary/10"
                     }`}
                     title={p.visible === false ? "Show on website" : "Hide from website"}
@@ -397,7 +397,7 @@ export default function AdminPortfolioPage() {
                   </button>
                   <button
                     onClick={() => startEdit(p)}
-                    className="p-2 rounded-xl text-textMuted hover:text-foreground hover:bg-secondary transition-all"
+                    className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-secondary transition-all"
                   >
                     <Edit3 className="w-4 h-4" />
                   </button>
@@ -411,7 +411,7 @@ export default function AdminPortfolioPage() {
                       </button>
                       <button
                         onClick={() => setDeleteId(null)}
-                        className="p-2 rounded-xl text-textMuted hover:text-foreground hover:bg-secondary transition-all"
+                        className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-secondary transition-all"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -426,7 +426,7 @@ export default function AdminPortfolioPage() {
                   )}
                   <button
                     onClick={() => setExpandedId(expandedId === p.id ? null : p.id)}
-                    className="p-2 rounded-xl text-textMuted hover:text-foreground hover:bg-secondary transition-all"
+                    className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-secondary transition-all"
                   >
                     {expandedId === p.id ? (
                       <ChevronUp className="w-4 h-4" />
@@ -441,20 +441,20 @@ export default function AdminPortfolioPage() {
                 <div className="px-4 pb-4 pt-0 border-t border-border">
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-3 text-xs">
                       <div>
-                        <p className="text-textMuted">Category</p>
+                        <p className="text-muted-foreground">Category</p>
                         <p className="font-medium text-foreground">{p.category}</p>
                       </div>
                       <div>
-                        <p className="text-textMuted">Technologies</p>
+                        <p className="text-muted-foreground">Technologies</p>
                         <p className="font-medium text-foreground">{p.technologies?.length || 0}</p>
                       </div>
                       <div>
-                        <p className="text-textMuted">Year</p>
+                        <p className="text-muted-foreground">Year</p>
                         <p className="font-medium text-foreground">{p.year}</p>
                       </div>
                     </div>
                   {p.description && (
-                    <p className="text-xs text-textMuted mt-3 line-clamp-2">{p.description}</p>
+                    <p className="text-xs text-muted-foreground mt-3 line-clamp-2">{p.description}</p>
                   )}
                 </div>
               )}
@@ -510,7 +510,7 @@ function ArrayEditor({
         {items.map((item, i) => (
           <div key={i} className="flex items-center gap-2">
             <div className="w-6 h-6 rounded-lg bg-secondary flex items-center justify-center shrink-0">
-              <span className="text-[10px] font-bold text-textMuted">{i + 1}</span>
+              <span className="text-[10px] font-bold text-muted-foreground">{i + 1}</span>
             </div>
             <input
               type="text"
@@ -529,9 +529,10 @@ function ArrayEditor({
           </div>
         ))}
         {items.length === 0 && (
-          <p className="text-xs text-textMuted">No items added yet</p>
+          <p className="text-xs text-muted-foreground">No items added yet</p>
         )}
       </div>
     </div>
   );
 }
+

@@ -7,13 +7,13 @@ import { ArrowRight, Calendar, Clock, Loader2 } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
 import { getAllBlogPostsFromDb, AdminBlogPost } from "../../lib/admin/blog";
 
-const themeColors = {
-  zinc: "#a1a1aa",
-  purple: "#a78bfa",
-  green: "#34d399",
-  cyan: "#22d3ee",
-  amber: "#fb923c",
-  pink: "#f472b6",
+const themeColors: Record<string, string> = {
+  zinc: "oklch(0.708 0 0)",
+  purple: "oklch(0.7 0.22 270)",
+  green: "oklch(0.65 0.15 150)",
+  cyan: "oklch(0.75 0.15 200)",
+  amber: "oklch(0.8 0.18 80)",
+  pink: "oklch(0.75 0.22 340)",
 };
 
 const containerVariants = {
@@ -74,18 +74,18 @@ setPosts(
               Insights
             </span>
           </h2>
-          <p className="mt-4 text-lg text-textMuted max-w-2xl mx-auto">
+          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
             Thoughts, tutorials, and stories from our team on building great software.
           </p>
         </motion.div>
 
         {loading ? (
-          <div className="mt-16 flex items-center justify-center py-16 text-textMuted">
+          <div className="mt-16 flex items-center justify-center py-16 text-muted-foreground">
             <Loader2 className="w-5 h-5 animate-spin mr-2" />
             <span className="text-sm">Loading posts...</span>
           </div>
         ) : recentPosts.length === 0 ? (
-          <div className="mt-16 text-center py-16 text-textMuted">
+          <div className="mt-16 text-center py-16 text-muted-foreground">
             <p className="text-sm">No blog posts yet. Check back soon!</p>
           </div>
         ) : (
@@ -116,7 +116,7 @@ setPosts(
                     </div>
                   </div>
                   <div className="p-5">
-                    <div className="flex items-center gap-3 text-[11px] text-textMuted mb-3">
+                    <div className="flex items-center gap-3 text-[11px] text-muted-foreground mb-3">
                       <span className="flex items-center gap-1">
                         <Calendar className="w-3 h-3" />
                         {post.date}
@@ -126,10 +126,10 @@ setPosts(
                         {post.readTime}
                       </span>
                     </div>
-                    <h3 className="text-base font-bold text-foreground mb-2 transition-colors group-hover:text-primary line-clamp-2">
+                    <h3 className="text-base font-bold text-foreground mb-2 transition-colors group-hover:text-accent-current line-clamp-2">
                       {post.title}
                     </h3>
-                    <p className="text-xs text-textMuted leading-relaxed line-clamp-2">
+                    <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
                       {post.excerpt}
                     </p>
                     <div className="mt-4 flex items-center gap-1 text-xs font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -161,3 +161,4 @@ setPosts(
     </section>
   );
 }
+

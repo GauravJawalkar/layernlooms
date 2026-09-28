@@ -56,7 +56,7 @@ function FAQItem({ q, a }: { q: string; a: string }) {
             <div className="flex justify-between items-center gap-4">
                 <span className="text-base font-bold transition-colors duration-300 text-foreground">{q}</span>
                 <motion.span
-                    className="text-xl transition-colors duration-300 text-textMuted"
+                    className="text-xl transition-colors duration-300 text-muted-foreground"
                     animate={{ rotate: open ? 45 : 0 }}
                     transition={{ duration: 0.3 }}
                 >
@@ -69,7 +69,7 @@ function FAQItem({ q, a }: { q: string; a: string }) {
                 transition={{ duration: 0.3 }}
                 className="overflow-hidden"
             >
-                <p className="text-sm leading-relaxed transition-colors duration-300 text-textMuted">{a}</p>
+                <p className="text-sm leading-relaxed transition-colors duration-300 text-muted-foreground">{a}</p>
             </motion.div>
         </motion.div>
     );
@@ -111,7 +111,7 @@ export default function PricingPage() {
                         animate={isHeroInView ? { width: 80 } : { width: 0 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
                     />
-                    <p className="text-lg max-w-xl mx-auto transition-colors duration-300 text-textMuted">
+                    <p className="text-lg max-w-xl mx-auto transition-colors duration-300 text-muted-foreground">
                         Choose the model that works best for your project needs.
                     </p>
                 </motion.div>
@@ -145,7 +145,7 @@ export default function PricingPage() {
                                     </motion.span>
                                 )}
                                 <h2 className={`text-2xl font-black mb-2 ${plan.featured ? "text-background" : "text-foreground"}`}>{plan.title}</h2>
-                                <p className={`text-sm leading-relaxed ${plan.featured ? "opacity-80" : "text-textMuted"}`}>{plan.description}</p>
+                                <p className={`text-sm leading-relaxed ${plan.featured ? "opacity-80" : "text-muted-foreground"}`}>{plan.description}</p>
                             </div>
 
                             <ul className="space-y-3 flex-1">
@@ -204,7 +204,7 @@ export default function PricingPage() {
                             transition={{ duration: 0.4, delay: i * 0.1 }}
                         >
                             <div className="text-3xl font-black transition-colors duration-300 text-foreground">{stat}</div>
-                            <div className="text-xs mt-1 tracking-wide uppercase transition-colors duration-300 text-textMuted">{label}</div>
+                            <div className="text-xs mt-1 tracking-wide uppercase transition-colors duration-300 text-muted-foreground">{label}</div>
                         </motion.div>
                     ))}
                 </motion.div>
@@ -221,7 +221,7 @@ export default function PricingPage() {
                     <h2 className="text-3xl font-black mb-2 text-center transition-colors duration-300 text-foreground">
                         Frequently Asked Questions
                     </h2>
-                    <p className="text-sm text-center mb-10 transition-colors duration-300 text-textMuted">
+                    <p className="text-sm text-center mb-10 transition-colors duration-300 text-muted-foreground">
                         Everything you need to know before getting started.
                     </p>
                     {faqs.map((item) => (
@@ -257,3 +257,4 @@ export default function PricingPage() {
         </main>
     );
 }
+

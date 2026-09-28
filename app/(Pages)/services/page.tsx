@@ -7,6 +7,7 @@ import { ArrowRight } from "lucide-react";
 import { getAllServices } from "@/app/data/services";
 import ServiceCard from "../../components/services/ServiceCard";
 import JsonLd, { getBreadcrumbSchema } from "@/app/components/JsonLd";
+import { useTheme } from "@/app/context/ThemeContext";
 
 export default function ServicesPage() {
   const services = getAllServices();
@@ -14,6 +15,7 @@ export default function ServicesPage() {
   const ctaRef = useRef(null);
   const isServicesInView = useInView(servicesRef, { once: true, amount: 0.1 });
   const isCtaInView = useInView(ctaRef, { once: true, amount: 0.1 });
+  const { pointerTheme } = useTheme();
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -25,7 +27,7 @@ export default function ServicesPage() {
   };
 
   return (
-    <div className="min-h-screen text-white selection:bg-white selection:text-black">
+    <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
       <JsonLd data={getBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "Services", url: "/services" }])} />
       
       {/* Hero Section */}
@@ -37,13 +39,13 @@ export default function ServicesPage() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="flex flex-col items-center"
           >
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-foreground tracking-tight">
               Our Services
             </h1>
             
-            <div className="w-24 h-[3px] bg-white mx-auto mt-4 mb-6 rounded-full" />
+            <div className="w-24 h-[3px] bg-accent-current mx-auto mt-4 mb-6 rounded-full" />
             
-            <p className="text-base md:text-lg text-zinc-300 max-w-2xl mx-auto leading-relaxed font-normal">
+            <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed font-normal">
               Explore our comprehensive capabilities where design meets engineering excellence. We build digital products that drive results.
             </p>
           </motion.div>
@@ -72,7 +74,7 @@ export default function ServicesPage() {
             }}
           >
             {services.length === 0 ? (
-              <div className="col-span-full text-center py-20 text-sm text-zinc-500 border border-dashed border-white/10 rounded-3xl">
+              <div className="col-span-full text-center py-20 text-sm text-muted-foreground border border-dashed border-border rounded-3xl">
                 No services available yet.
               </div>
             ) : (
@@ -87,12 +89,12 @@ export default function ServicesPage() {
       {/* CTA Section */}
       <section
         ref={ctaRef}
-        className="relative py-16 mb-12 sm:mb-16 mx-4 sm:mx-8 md:mx-12 lg:mx-20 rounded-[2rem] sm:rounded-[3rem] overflow-hidden bg-black border border-white/10 shadow-[0_0_100px_rgba(255,255,255,0.02)]"
+        className="relative py-16 mb-12 sm:mb-16 mx-4 sm:mx-8 md:mx-12 lg:mx-20 rounded-[2rem] sm:rounded-[3rem] overflow-hidden bg-card border border-border shadow-[0_0_100px_rgba(0,0,0,0.02)] dark:shadow-[0_0_100px_rgba(0,0,0,0.3)]"
       >
         <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-white/[0.02] rounded-[100%] blur-[120px]" />
-            <div className="absolute inset-0 bg-grid-white/[0.03] bg-[length:24px_24px]" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-accent-current/5 rounded-[100%] blur-[120px]" />
+            <div className="absolute inset-0 bg-grid-foreground/[0.03] bg-[length:24px_24px]" />
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
         </div>
         
         <div className="relative mx-auto max-w-4xl px-6 lg:px-8 text-center z-10">
@@ -103,14 +105,14 @@ export default function ServicesPage() {
             className="flex flex-col items-center"
           >
             <motion.h2
-              className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tighter text-white mb-6 leading-tight"
+              className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tighter text-foreground mb-6 leading-tight"
               variants={containerVariants}
             >
               Ready to engineer your<br />next breakthrough?
             </motion.h2>
             
             <motion.p
-              className="text-base sm:text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-10"
+              className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10"
               variants={containerVariants}
             >
               Connect with our technical architects to discuss your infrastructure, platform, or product requirements.
@@ -122,7 +124,7 @@ export default function ServicesPage() {
             >
               <Link
                 href="/contact"
-                className="group w-full sm:w-auto inline-flex items-center justify-center rounded-full px-8 py-4 text-sm font-bold shadow-xl transition-all duration-300 bg-white text-black hover:scale-105 hover:shadow-[0_0_30px_rgba(255,255,255,0.3)]"
+                className="group w-full sm:w-auto inline-flex items-center justify-center rounded-full px-8 py-4 text-sm font-bold shadow-xl transition-all duration-300 bg-primary text-primary-foreground hover:scale-105 hover:shadow-[0_0_30px_rgba(0,0,0,0.15)] dark:hover:shadow-[0_0_30px_rgba(255,255,255,0.15)]"
               >
                 Initiate Project
                 <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -130,7 +132,7 @@ export default function ServicesPage() {
               
               <Link
                 href="/portfolio"
-                className="group w-full sm:w-auto inline-flex items-center justify-center text-sm font-bold border rounded-full px-8 py-4 transition-all duration-300 text-white border-white/20 hover:bg-white/5 hover:border-white/40"
+                className="group w-full sm:w-auto inline-flex items-center justify-center text-sm font-bold border rounded-full px-8 py-4 transition-all duration-300 text-foreground border-border hover:bg-accent-current-muted hover:border-accent-current"
               >
                 Review Case Studies
               </Link>

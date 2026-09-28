@@ -4,13 +4,13 @@ import { motion } from "framer-motion";
 import { Handshake, Timer, PiggyBank, Scale } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
 
-const themeColors = {
-  zinc: "#a1a1aa",
-  purple: "#a78bfa",
-  green: "#34d399",
-  cyan: "#22d3ee",
-  amber: "#fb923c",
-  pink: "#f472b6",
+const themeColors: Record<string, string> = {
+  zinc: "oklch(0.708 0 0)",
+  purple: "oklch(0.7 0.22 270)",
+  green: "oklch(0.65 0.15 150)",
+  cyan: "oklch(0.75 0.15 200)",
+  amber: "oklch(0.8 0.18 80)",
+  pink: "oklch(0.75 0.22 340)",
 };
 
 const models = [
@@ -74,7 +74,7 @@ export default function EngagementModels() {
               Models
             </span>
           </h2>
-          <p className="mt-4 text-lg text-textMuted max-w-2xl mx-auto">
+          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
             Flexible engagement options tailored to your project needs and budget.
           </p>
         </motion.div>
@@ -98,7 +98,7 @@ export default function EngagementModels() {
               <h3 className="mt-6 text-lg font-semibold text-foreground">
                 {model.title}
               </h3>
-              <p className="mt-3 text-sm text-textMuted leading-relaxed">
+              <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
                 {model.description}
               </p>
             </motion.div>
@@ -108,3 +108,4 @@ export default function EngagementModels() {
     </section>
   );
 }
+

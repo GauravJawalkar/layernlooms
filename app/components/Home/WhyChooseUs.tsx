@@ -5,13 +5,13 @@ import { useState } from "react";
 import { Check } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
 
-const themeColors = {
-  zinc: "#a1a1aa",
-  purple: "#a78bfa",
-  green: "#34d399",
-  cyan: "#22d3ee",
-  amber: "#fb923c",
-  pink: "#f472b6",
+const themeColors: Record<string, string> = {
+  zinc: "oklch(0.708 0 0)",
+  purple: "oklch(0.7 0.22 270)",
+  green: "oklch(0.65 0.15 150)",
+  cyan: "oklch(0.75 0.15 200)",
+  amber: "oklch(0.8 0.18 80)",
+  pink: "oklch(0.75 0.22 340)",
 };
 
 const reasons = [
@@ -434,7 +434,7 @@ function ValueCard({
     <motion.div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="group relative flex flex-col h-full rounded-3xl border border-neutral-200/50 dark:border-white/[0.05] bg-white dark:bg-zinc-950/40 p-5 sm:p-6 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl dark:hover:shadow-[0_24px_60px_rgba(0,0,0,0.4)] hover:border-neutral-300 dark:hover:border-white/[0.14]"
+      className="group relative flex flex-col h-full rounded-3xl border border-border bg-card/50 p-5 sm:p-6 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-accent-current/5 hover:border-accent-current/20"
     >
       <div
         className="absolute inset-x-0 top-0 h-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
@@ -460,7 +460,7 @@ function ValueCard({
         >
           {title}
         </h3>
-        <p className="text-sm text-textMuted leading-relaxed">
+        <p className="text-sm text-muted-foreground leading-relaxed">
           {description}
         </p>
       </div>
@@ -478,10 +478,10 @@ const containerVariants = {
 
 export default function WhyChooseUs() {
   const { pointerTheme } = useTheme();
-  const activeColor = themeColors[pointerTheme] || "#a1a1aa";
+  const activeColor = themeColors[pointerTheme] || "oklch(0.708 0 0)";
 
   return (
-    <section className="relative py-16 sm:py-20 bg-secondary/60 dark:bg-zinc-950/20 overflow-hidden">
+    <section className="relative py-16 sm:py-20 bg-secondary/60 overflow-hidden">
       <div className="absolute inset-0 pointer-events-none -z-10">
         <div className="absolute top-1/4 -right-40 h-[400px] w-[400px] rounded-full bg-neutral-200/40 dark:bg-zinc-900/10 blur-3xl opacity-75" />
         <div className="absolute bottom-1/4 -left-40 h-[400px] w-[400px] rounded-full bg-neutral-200/40 dark:bg-zinc-900/10 blur-3xl opacity-75" />
@@ -495,7 +495,7 @@ export default function WhyChooseUs() {
           transition={{ duration: 0.5 }}
           className="text-center"
         >
-          <span className="inline-flex items-center gap-2 rounded-full border border-neutral-200/60 dark:border-white/[0.08] bg-white/50 dark:bg-white/[0.03] backdrop-blur-md px-3.5 py-1.5 text-xs font-semibold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
+          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/50 backdrop-blur-md px-3.5 py-1.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
             <span className="h-1.5 w-1.5 rounded-full animate-pulse" style={{ backgroundColor: activeColor }} />
             Why Choose Us
           </span>
@@ -510,7 +510,7 @@ export default function WhyChooseUs() {
               Success
             </span>
           </h2>
-          <p className="mt-4 text-lg text-textMuted max-w-2xl mx-auto">
+          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
             Our core values fuel every decision, inspire every project, and define who we are as a team.
           </p>
         </motion.div>
@@ -536,3 +536,4 @@ export default function WhyChooseUs() {
     </section>
   );
 }
+

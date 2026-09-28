@@ -3,64 +3,158 @@
 @variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --card: #ffffff;
-  --card-foreground: #171717;
-  --popover: #ffffff;
-  --popover-foreground: #171717;
-  --primary: #171717;
-  --primary-foreground: #ffffff;
-  --secondary: #f3f4f6;
-  --secondary-foreground: #171717;
-  --muted: #f3f4f6;
-  --muted-foreground: #4b5563;
-  --accent: #f3f4f6;
-  --accent-foreground: #171717;
-  --destructive: #ef4444;
-  --destructive-foreground: #f8fafc;
-  --border: #e2e8f0;
-  --input: #e2e8f0;
-  --ring: #171717;
+  /* Base neutral palette (zinc-like) in OKLCH */
+  --neutral-0: oklch(1 0 0);
+  --neutral-50: oklch(0.985 0 0);
+  --neutral-100: oklch(0.97 0 0);
+  --neutral-200: oklch(0.922 0 0);
+  --neutral-300: oklch(0.87 0 0);
+  --neutral-400: oklch(0.708 0 0);
+  --neutral-500: oklch(0.556 0 0);
+  --neutral-600: oklch(0.439 0 0);
+  --neutral-700: oklch(0.37 0 0);
+  --neutral-800: oklch(0.269 0 0);
+  --neutral-900: oklch(0.205 0 0);
+  --neutral-950: oklch(0.145 0 0);
 
-  /* Customizer variables default */
-  --scrollbar-thumb-color: #52525b;
-  --scrollbar-thumb-hover: #27272a;
-  --scrollbar-track-border: #f3f4f6;
-  --cursor-color: #171717;
-  --cursor-glow-color: rgba(23, 23, 23, 0.15);
+  /* Light mode semantic tokens */
+  --background: var(--neutral-0);
+  --foreground: var(--neutral-950);
+  --card: var(--neutral-0);
+  --card-foreground: var(--neutral-950);
+  --popover: var(--neutral-0);
+  --popover-foreground: var(--neutral-950);
+  --primary: var(--neutral-950);
+  --primary-foreground: var(--neutral-0);
+  --secondary: var(--neutral-100);
+  --secondary-foreground: var(--neutral-950);
+  --muted: var(--neutral-100);
+  --muted-foreground: var(--neutral-500);
+  --accent: var(--neutral-100);
+  --accent-foreground: var(--neutral-950);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: var(--neutral-0);
+  --border: var(--neutral-200);
+  --input: var(--neutral-200);
+  --ring: var(--neutral-700);
+
+  /* Accent color variants (light mode) */
+  --accent-zinc: oklch(0.37 0 0);
+  --accent-zinc-foreground: var(--neutral-0);
+  --accent-zinc-muted: oklch(0.97 0 0);
+  --accent-zinc-muted-foreground: var(--neutral-500);
+
+  --accent-purple: oklch(0.55 0.22 270);
+  --accent-purple-foreground: var(--neutral-0);
+  --accent-purple-muted: oklch(0.96 0.03 270);
+  --accent-purple-muted-foreground: oklch(0.45 0.15 270);
+
+  --accent-green: oklch(0.55 0.15 150);
+  --accent-green-foreground: var(--neutral-0);
+  --accent-green-muted: oklch(0.95 0.03 150);
+  --accent-green-muted-foreground: oklch(0.4 0.1 150);
+
+  --accent-cyan: oklch(0.65 0.15 200);
+  --accent-cyan-foreground: var(--neutral-0);
+  --accent-cyan-muted: oklch(0.96 0.03 200);
+  --accent-cyan-muted-foreground: oklch(0.45 0.1 200);
+
+  --accent-amber: oklch(0.7 0.18 80);
+  --accent-amber-foreground: var(--neutral-950);
+  --accent-amber-muted: oklch(0.96 0.04 80);
+  --accent-amber-muted-foreground: oklch(0.5 0.12 80);
+
+  --accent-pink: oklch(0.6 0.22 340);
+  --accent-pink-foreground: var(--neutral-0);
+  --accent-pink-muted: oklch(0.96 0.03 340);
+  --accent-pink-muted-foreground: oklch(0.45 0.15 340);
+
+  /* Default accent = zinc */
+  --accent-current: var(--accent-zinc);
+  --accent-current-foreground: var(--accent-zinc-foreground);
+  --accent-current-muted: var(--accent-zinc-muted);
+  --accent-current-muted-foreground: var(--accent-zinc-muted-foreground);
+
+  /* Customizer variables */
+  --scrollbar-thumb-color: var(--neutral-500);
+  --scrollbar-thumb-hover: var(--neutral-700);
+  --scrollbar-track-border: var(--neutral-100);
+  --cursor-color: var(--neutral-950);
+  --cursor-glow-color: oklch(0.145 0 0 / 0.15);
+
+  /* Radius */
+  --radius: 0.625rem;
 }
 
-:root.dark, .dark {
-  --background: #0a0a0a;
-  --foreground: #fafafa;
-  --card: #09090b;
-  --card-foreground: #fafafa;
-  --popover: #09090b;
-  --popover-foreground: #fafafa;
-  --primary: #fafafa;
-  --primary-foreground: #09090b;
-  --secondary: #18181b;
-  --secondary-foreground: #fafafa;
-  --muted: #18181b;
-  --muted-foreground: #a1a1aa;
-  --accent: #18181b;
-  --accent-foreground: #fafafa;
-  --destructive: #ef4444;
-  --destructive-foreground: #fafafa;
-  --border: #27272a;
-  --input: #27272a;
-  --ring: #d4d4d8;
+.dark {
+  /* Dark mode semantic tokens */
+  --background: var(--neutral-950);
+  --foreground: var(--neutral-0);
+  --card: var(--neutral-900);
+  --card-foreground: var(--neutral-0);
+  --popover: var(--neutral-900);
+  --popover-foreground: var(--neutral-0);
+  --primary: var(--neutral-0);
+  --primary-foreground: var(--neutral-950);
+  --secondary: var(--neutral-800);
+  --secondary-foreground: var(--neutral-0);
+  --muted: var(--neutral-800);
+  --muted-foreground: var(--neutral-400);
+  --accent: var(--neutral-800);
+  --accent-foreground: var(--neutral-0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: var(--neutral-0);
+  --border: var(--neutral-800);
+  --input: var(--neutral-800);
+  --ring: var(--neutral-400);
 
-  /* Customizer variables dark default */
-  --scrollbar-thumb-color: #a1a1aa;
-  --scrollbar-thumb-hover: #f4f4f5;
-  --scrollbar-track-border: #1f1f22;
-  --cursor-color: #fafafa;
-  --cursor-glow-color: rgba(250, 250, 250, 0.15);
+  /* Accent color variants (dark mode) - brighter for dark backgrounds */
+  --accent-zinc: oklch(0.708 0 0);
+  --accent-zinc-foreground: var(--neutral-950);
+  --accent-zinc-muted: var(--neutral-800);
+  --accent-zinc-muted-foreground: var(--neutral-400);
+
+  --accent-purple: oklch(0.7 0.22 270);
+  --accent-purple-foreground: var(--neutral-950);
+  --accent-purple-muted: oklch(0.25 0.08 270);
+  --accent-purple-muted-foreground: oklch(0.8 0.15 270);
+
+  --accent-green: oklch(0.65 0.15 150);
+  --accent-green-foreground: var(--neutral-950);
+  --accent-green-muted: oklch(0.22 0.06 150);
+  --accent-green-muted-foreground: oklch(0.75 0.12 150);
+
+  --accent-cyan: oklch(0.75 0.15 200);
+  --accent-cyan-foreground: var(--neutral-950);
+  --accent-cyan-muted: oklch(0.22 0.06 200);
+  --accent-cyan-muted-foreground: oklch(0.8 0.12 200);
+
+  --accent-amber: oklch(0.8 0.18 80);
+  --accent-amber-foreground: var(--neutral-950);
+  --accent-amber-muted: oklch(0.25 0.08 80);
+  --accent-amber-muted-foreground: oklch(0.85 0.15 80);
+
+  --accent-pink: oklch(0.75 0.22 340);
+  --accent-pink-foreground: var(--neutral-950);
+  --accent-pink-muted: oklch(0.25 0.08 340);
+  --accent-pink-muted-foreground: oklch(0.8 0.15 340);
+
+  /* Default accent = zinc */
+  --accent-current: var(--accent-zinc);
+  --accent-current-foreground: var(--accent-zinc-foreground);
+  --accent-current-muted: var(--accent-zinc-muted);
+  --accent-current-muted-foreground: var(--accent-zinc-muted-foreground);
+
+  /* Customizer variables dark */
+  --scrollbar-thumb-color: var(--neutral-400);
+  --scrollbar-thumb-hover: var(--neutral-200);
+  --scrollbar-track-border: var(--neutral-800);
+  --cursor-color: var(--neutral-0);
+  --cursor-glow-color: oklch(1 0 0 / 0.15);
 }
 
 @theme {
+  /* Semantic color tokens */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -81,10 +175,55 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
+  /* Accent color tokens (current theme) */
+  --color-accent-current: var(--accent-current);
+  --color-accent-current-foreground: var(--accent-current-foreground);
+  --color-accent-current-muted: var(--accent-current-muted);
+  --color-accent-current-muted-foreground: var(--accent-current-muted-foreground);
+
+  /* Individual accent palettes for direct access */
+  --color-accent-zinc: var(--accent-zinc);
+  --color-accent-zinc-foreground: var(--accent-zinc-foreground);
+  --color-accent-zinc-muted: var(--accent-zinc-muted);
+  --color-accent-zinc-muted-foreground: var(--accent-zinc-muted-foreground);
+
+  --color-accent-purple: var(--accent-purple);
+  --color-accent-purple-foreground: var(--accent-purple-foreground);
+  --color-accent-purple-muted: var(--accent-purple-muted);
+  --color-accent-purple-muted-foreground: var(--accent-purple-muted-foreground);
+
+  --color-accent-green: var(--accent-green);
+  --color-accent-green-foreground: var(--accent-green-foreground);
+  --color-accent-green-muted: var(--accent-green-muted);
+  --color-accent-green-muted-foreground: var(--accent-green-muted-foreground);
+
+  --color-accent-cyan: var(--accent-cyan);
+  --color-accent-cyan-foreground: var(--accent-cyan-foreground);
+  --color-accent-cyan-muted: var(--accent-cyan-muted);
+  --color-accent-cyan-muted-foreground: var(--accent-cyan-muted-foreground);
+
+  --color-accent-amber: var(--accent-amber);
+  --color-accent-amber-foreground: var(--accent-amber-foreground);
+  --color-accent-amber-muted: var(--accent-amber-muted);
+  --color-accent-amber-muted-foreground: var(--accent-amber-muted-foreground);
+
+  --color-accent-pink: var(--accent-pink);
+  --color-accent-pink-foreground: var(--accent-pink-foreground);
+  --color-accent-pink-muted: var(--accent-pink-muted);
+  --color-accent-pink-muted-foreground: var(--accent-pink-muted-foreground);
+
+  /* Text color aliases */
   --color-textColor: var(--foreground);
   --color-textMuted: var(--muted-foreground);
 
+  /* Fonts */
   --font-space-grotesk: var(--font-space-grotesk);
+
+  /* Radius */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
 @layer base {
@@ -98,13 +237,11 @@
   }
 
   /* Custom Scrollbar Styles */
-  /* Firefox */
   * {
     scrollbar-width: thin;
     scrollbar-color: var(--scrollbar-thumb-color) transparent;
   }
 
-  /* Chrome, Safari, and Opera */
   ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
@@ -147,7 +284,7 @@
       90deg,
       var(--foreground) 0%,
       var(--foreground) 30%,
-      var(--primary) 50%,
+      var(--accent-current) 50%,
       var(--foreground) 70%,
       var(--foreground) 100%
     );
@@ -162,5 +299,15 @@
   .custom-cursor-active textarea,
   .custom-cursor-active [contenteditable] {
     cursor: text !important;
+  }
+
+  /* Focus visible styles */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  /* Selection */
+  ::selection {
+    @apply bg-primary text-primary-foreground;
   }
 }

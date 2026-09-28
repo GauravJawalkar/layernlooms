@@ -76,7 +76,7 @@ export default function AdminSettingsPage() {
   return (
     <div className="max-w-2xl">
       <h1 className="text-2xl font-bold text-foreground mb-1">Settings</h1>
-      <p className="text-sm text-textMuted mb-8">Manage your profile and account security</p>
+      <p className="text-sm text-muted-foreground mb-8">Manage your profile and account security</p>
 
       {/* Profile Section */}
       <motion.div
@@ -92,7 +92,7 @@ export default function AdminSettingsPage() {
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-foreground mb-1.5">Email</label>
-            <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-secondary/50 text-sm text-textMuted">
+            <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-secondary/50 text-sm text-muted-foreground">
               <Mail className="w-4 h-4" />
               {user?.email}
             </div>
@@ -156,7 +156,7 @@ export default function AdminSettingsPage() {
               <button
                 type="button"
                 onClick={() => setShowPw(!showPw)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-textMuted hover:text-foreground transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
               >
                 {showPw ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
@@ -200,3 +200,4 @@ export default function AdminSettingsPage() {
     </div>
   );
 }
+

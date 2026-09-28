@@ -52,11 +52,11 @@ export default function FAQSection() {
   };
 
   return (
-    <section className="relative py-16 sm:py-20 bg-secondary/60 dark:bg-zinc-950/20 overflow-hidden">
+    <section className="relative py-16 sm:py-20 bg-secondary/60 overflow-hidden">
       <JsonLd data={getFAQPageSchema(faqs)} />
       <div className="absolute inset-0 pointer-events-none -z-10">
-        <div className="absolute top-1/2 -left-40 h-[400px] w-[400px] rounded-full bg-neutral-200/40 dark:bg-zinc-900/10 blur-3xl opacity-75" />
-        <div className="absolute bottom-1/2 -right-40 h-[400px] w-[400px] rounded-full bg-neutral-200/40 dark:bg-zinc-900/10 blur-3xl opacity-75" />
+        <div className="absolute top-1/2 -left-40 h-[400px] w-[400px] rounded-full bg-secondary/40 blur-3xl opacity-75" />
+        <div className="absolute bottom-1/2 -right-40 h-[400px] w-[400px] rounded-full bg-secondary/40 blur-3xl opacity-75" />
       </div>
 
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
@@ -73,7 +73,7 @@ export default function FAQSection() {
               Questions
             </span>
           </h2>
-          <p className="mt-4 text-lg text-textMuted max-w-2xl mx-auto">
+          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
             Everything you need to know about working with us.
           </p>
         </motion.div>
@@ -92,7 +92,7 @@ export default function FAQSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: index * 0.05 }}
-              className="rounded-2xl border border-neutral-200/50 dark:border-white/[0.06] bg-white dark:bg-zinc-950/40 overflow-hidden transition-colors duration-300"
+              className="rounded-2xl border border-border bg-card overflow-hidden transition-colors duration-300"
             >
               <button
                 onClick={() => toggle(index)}
@@ -102,12 +102,12 @@ export default function FAQSection() {
                 <span className="text-sm sm:text-base font-semibold text-foreground tracking-tight pr-2">
                   {faq.question}
                 </span>
-                <span className="shrink-0 w-6 h-6 flex items-center justify-center rounded-full bg-neutral-100 dark:bg-zinc-800 transition-colors duration-300">
+                <span className="shrink-0 w-6 h-6 flex items-center justify-center rounded-full bg-secondary transition-colors duration-300">
                   <motion.span
                     animate={{ rotate: openIndex === index ? 45 : 0 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
                   >
-                    <Plus className="w-4 h-4 text-textMuted" />
+                    <Plus className="w-4 h-4 text-muted-foreground" />
                   </motion.span>
                 </span>
               </button>
@@ -122,7 +122,7 @@ export default function FAQSection() {
                     className="overflow-hidden"
                   >
                     <div className="px-5 sm:px-6 pb-4 sm:pb-5">
-                      <p className="text-sm text-textMuted leading-relaxed">
+                      <p className="text-sm text-muted-foreground leading-relaxed">
                         {faq.answer}
                       </p>
                     </div>
@@ -143,7 +143,7 @@ export default function FAQSection() {
           <h3 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">
             Still have questions?
           </h3>
-          <p className="mt-2 text-sm sm:text-base text-textMuted">
+          <p className="mt-2 text-sm sm:text-base text-muted-foreground">
             Can't find what you're looking for? Our team is here to help with personalized answers.
           </p>
           <a
@@ -157,3 +157,4 @@ export default function FAQSection() {
     </section>
   );
 }
+

@@ -37,7 +37,7 @@ export default function CloudinaryUpload({ value, onChange, folder = "layernloom
 
   return (
     <div className="space-y-2">
-      <div className="flex items-center gap-1.5 text-[10px] font-bold tracking-wider uppercase text-textMuted mb-1">
+      <div className="flex items-center gap-1.5 text-[10px] font-bold tracking-wider uppercase text-muted-foreground mb-1">
         <FolderOpen className="w-3 h-3" />
         {folder}/
       </div>
@@ -64,7 +64,7 @@ export default function CloudinaryUpload({ value, onChange, folder = "layernloom
             htmlFor="cloudinary-upload"
             className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium cursor-pointer transition-all ${
               uploading
-                ? "bg-secondary text-textMuted pointer-events-none"
+                ? "bg-secondary text-muted-foreground pointer-events-none"
                 : "bg-primary text-background hover:opacity-90"
             }`}
           >
@@ -102,3 +102,4 @@ export default function CloudinaryUpload({ value, onChange, folder = "layernloom
     </div>
   );
 }
+

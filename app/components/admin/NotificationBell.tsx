@@ -76,7 +76,7 @@ export default function NotificationBell() {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen((p) => !p)}
-        className="relative p-2 rounded-xl text-textMuted hover:text-foreground hover:bg-secondary transition-all"
+        className="relative p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-secondary transition-all"
         title="Notifications"
       >
         <Bell className="w-4 h-4" />
@@ -100,12 +100,12 @@ export default function NotificationBell() {
             </div>
             <div className="max-h-72 overflow-y-auto">
               {loading ? (
-                <div className="flex items-center justify-center py-8 text-textMuted">
+                <div className="flex items-center justify-center py-8 text-muted-foreground">
                   <Loader2 className="w-4 h-4 animate-spin mr-2" />
                   <span className="text-xs">Loading...</span>
                 </div>
               ) : count === 0 ? (
-                <div className="py-8 text-center text-textMuted">
+                <div className="py-8 text-center text-muted-foreground">
                   <Bell className="w-6 h-6 mx-auto mb-2 opacity-40" />
                   <p className="text-xs">No new notifications</p>
                 </div>
@@ -130,7 +130,7 @@ export default function NotificationBell() {
                     </div>
                     <div className="min-w-0">
                       <p className="text-sm font-medium text-foreground truncate">{n.title}</p>
-                      <p className="text-xs text-textMuted truncate">{n.description}</p>
+                      <p className="text-xs text-muted-foreground truncate">{n.description}</p>
                     </div>
                   </Link>
                 ))
@@ -151,3 +151,4 @@ export default function NotificationBell() {
     </div>
   );
 }
+

@@ -77,7 +77,7 @@ setProjects(data.filter((p) => p.visible !== false));
             animate={isHeroInView ? { width: 80 } : { width: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           />
-          <p className="text-lg max-w-xl mx-auto transition-colors duration-300 text-textMuted mb-12">
+          <p className="text-lg max-w-xl mx-auto transition-colors duration-300 text-muted-foreground mb-12">
             Explore our latest projects where design meets engineering excellence.
             We build digital products that drive results.
           </p>
@@ -91,7 +91,7 @@ setProjects(data.filter((p) => p.visible !== false));
                   onClick={() => setActiveCategory(category)}
                   className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${activeCategory === category
                       ? "bg-primary text-background shadow-lg"
-                      : "bg-secondary text-textMuted hover:bg-secondary/80"
+                      : "bg-secondary text-muted-foreground hover:bg-secondary/80"
                     }`}
                 >
                   {category}
@@ -125,7 +125,7 @@ setProjects(data.filter((p) => p.visible !== false));
           ) : filteredProjects.length === 0 ? (
             <div className="text-center py-20 max-w-md mx-auto border border-dashed border-border rounded-3xl p-10 bg-card/30 animate-pulse">
               <p className="text-sm font-medium text-foreground mb-2">No Portfolio Available</p>
-              <p className="text-xs text-textMuted">We are currently updating our portfolio. Please check back later!</p>
+              <p className="text-xs text-muted-foreground">We are currently updating our portfolio. Please check back later!</p>
             </div>
           ) : (
             <motion.div
@@ -192,14 +192,14 @@ setProjects(data.filter((p) => p.visible !== false));
                           {project.category}
                         </span>
                         <span className="w-1 h-1 bg-border rounded-full" />
-                        <span className="text-xs font-medium text-textMuted/60">
+                        <span className="text-xs font-medium text-muted-foreground/60">
                           {project.year}
                         </span>
                       </div>
                       <h3 className="text-2xl font-bold text-foreground mb-2 transition-colors">
                         {project.title}
                       </h3>
-                      <p className="text-textMuted leading-relaxed">
+                      <p className="text-muted-foreground leading-relaxed">
                         {project.description}
                       </p>
                     </div>
@@ -268,3 +268,4 @@ setProjects(data.filter((p) => p.visible !== false));
     </div>
   );
 }
+

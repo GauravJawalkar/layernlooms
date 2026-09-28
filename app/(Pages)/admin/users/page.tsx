@@ -138,7 +138,7 @@ export default function AdminUsersPage() {
   return (
     <div>
       <h1 className="text-2xl font-bold text-foreground mb-1">User Management</h1>
-      <p className="text-sm text-textMuted mb-8">Manage admin accounts and approvals</p>
+      <p className="text-sm text-muted-foreground mb-8">Manage admin accounts and approvals</p>
 
       {/* Pending Approvals */}
       {pending.length > 0 && (
@@ -164,7 +164,7 @@ export default function AdminUsersPage() {
                   </div>
                   <div className="min-w-0">
                     <p className="font-medium text-foreground truncate">{u.displayName || u.email}</p>
-                    <p className="text-xs text-textMuted">{u.displayName ? u.email : "Requesting admin access"}</p>
+                    <p className="text-xs text-muted-foreground">{u.displayName ? u.email : "Requesting admin access"}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
@@ -197,8 +197,8 @@ export default function AdminUsersPage() {
 
       {pending.length === 0 && (
         <div className="mb-10 rounded-2xl border border-border bg-card p-6 text-center">
-          <Shield className="w-8 h-8 text-textMuted mx-auto mb-2" />
-          <p className="text-sm text-textMuted">No pending approval requests</p>
+          <Shield className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
+          <p className="text-sm text-muted-foreground">No pending approval requests</p>
         </div>
       )}
 
@@ -216,10 +216,10 @@ export default function AdminUsersPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border bg-secondary/50">
-                <th className="text-left px-5 py-3 font-medium text-textMuted">Email</th>
-                <th className="text-left px-5 py-3 font-medium text-textMuted">Role</th>
-                <th className="text-left px-5 py-3 font-medium text-textMuted">Status</th>
-                <th className="text-right px-5 py-3 font-medium text-textMuted">Actions</th>
+                <th className="text-left px-5 py-3 font-medium text-muted-foreground">Email</th>
+                <th className="text-left px-5 py-3 font-medium text-muted-foreground">Role</th>
+                <th className="text-left px-5 py-3 font-medium text-muted-foreground">Status</th>
+                <th className="text-right px-5 py-3 font-medium text-muted-foreground">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -232,10 +232,10 @@ export default function AdminUsersPage() {
                   <tr key={u.id} className="border-b border-border last:border-0 hover:bg-secondary/30 transition-colors">
                     <td className="px-5 py-3.5">
                       <div className="flex items-center gap-2">
-                        <Mail className="w-4 h-4 text-textMuted shrink-0" />
+                        <Mail className="w-4 h-4 text-muted-foreground shrink-0" />
                         <div className="min-w-0">
                           <p className="text-foreground font-medium truncate">{u.displayName || u.email}</p>
-                          {u.displayName && <p className="text-xs text-textMuted truncate">{u.email}</p>}
+                          {u.displayName && <p className="text-xs text-muted-foreground truncate">{u.email}</p>}
                         </div>
                         {isSelf && (
                           <span className="text-[10px] font-bold tracking-wider uppercase bg-primary/10 text-primary px-1.5 py-0.5 rounded">You</span>
@@ -246,7 +246,7 @@ export default function AdminUsersPage() {
                       <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium ${
                         u.role === "superadmin"
                           ? "bg-primary/10 text-primary"
-                          : "bg-secondary text-textMuted"
+                          : "bg-secondary text-muted-foreground"
                       }`}>
                         <Shield className="w-3 h-3" />
                         {u.role}
@@ -271,7 +271,7 @@ export default function AdminUsersPage() {
                     <td className="px-5 py-3.5 text-right">
                       {confirmId === u.id && confirmAction ? (
                         <div className="flex items-center justify-end gap-2">
-                          <span className="text-xs text-textMuted mr-1">
+                          <span className="text-xs text-muted-foreground mr-1">
                             {confirmAction === "suspend" ? "Suspend?" : confirmAction === "unsuspend" ? "Reactivate?" : "Delete?"}
                           </span>
                           <button
@@ -288,7 +288,7 @@ export default function AdminUsersPage() {
                           </button>
                           <button
                             onClick={cancelConfirm}
-                            className="px-3 py-1.5 rounded-lg bg-secondary text-textMuted text-xs font-medium hover:text-foreground transition-colors"
+                            className="px-3 py-1.5 rounded-lg bg-secondary text-muted-foreground text-xs font-medium hover:text-foreground transition-colors"
                           >
                             No
                           </button>
@@ -324,7 +324,7 @@ export default function AdminUsersPage() {
                           </button>
                         </div>
                       ) : (
-                        <span className="text-xs text-textMuted">—</span>
+                        <span className="text-xs text-muted-foreground">—</span>
                       )}
                     </td>
                   </tr>
@@ -337,3 +337,4 @@ export default function AdminUsersPage() {
     </div>
   );
 }
+

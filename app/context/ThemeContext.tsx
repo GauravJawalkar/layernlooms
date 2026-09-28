@@ -42,6 +42,19 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+function applyAccentVariables(root: HTMLElement, theme: PointerTheme, isDark: boolean) {
+  const mode = isDark ? 'dark' : 'light';
+  const prefix = `--accent-${theme}`;
+  const foreground = `${prefix}-foreground`;
+  const muted = `${prefix}-muted`;
+  const mutedForeground = `${prefix}-muted-foreground`;
+
+  root.style.setProperty('--accent-current', `var(${prefix})`);
+  root.style.setProperty('--accent-current-foreground', `var(${foreground})`);
+  root.style.setProperty('--accent-current-muted', `var(${muted})`);
+  root.style.setProperty('--accent-current-muted-foreground', `var(${mutedForeground})`);
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>('system');
   const [scrollbarTheme, setScrollbarThemeState] = useState<ScrollbarTheme>('zinc');
@@ -119,7 +132,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       const root = document.documentElement;
       const isDark = theme === 'dark' || (theme === 'system' && mediaQuery.matches);
 
-      // Theme class
       if (theme === 'dark') {
         root.classList.add('dark');
       } else if (theme === 'light') {
@@ -132,19 +144,18 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         }
       }
 
-      // Scrollbar variables
       const mode = isDark ? 'dark' : 'light';
       const scrollbarColors = scrollbarThemes[scrollbarTheme] || scrollbarThemes.zinc;
       root.style.setProperty('--scrollbar-thumb-color', scrollbarColors[mode]);
       root.style.setProperty('--scrollbar-thumb-hover', scrollbarColors[isDark ? 'hoverDark' : 'hoverLight']);
       root.style.setProperty('--scrollbar-track-border', isDark ? '#1f1f22' : '#f3f4f6');
 
-      // Cursor variables
       const pointerColors = pointerThemes[pointerTheme] || pointerThemes.zinc;
       root.style.setProperty('--cursor-color', pointerColors[mode]);
       root.style.setProperty('--cursor-glow-color', pointerColors[isDark ? 'glowDark' : 'glowLight']);
 
-      // Custom cursor active class
+      applyAccentVariables(root, pointerTheme, isDark);
+
       if (pointerEnabled) {
         root.classList.add('custom-cursor-active');
       } else {

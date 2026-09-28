@@ -7,12 +7,12 @@ import { useTheme } from "../../context/ThemeContext";
 import { getAllServices } from "@/app/data/services";
 
 const themeColors: Record<string, string> = {
-  zinc: "#a1a1aa",
-  purple: "#a78bfa",
-  green: "#34d399",
-  cyan: "#22d3ee",
-  amber: "#fb923c",
-  pink: "#f472b6",
+  zinc: "oklch(0.708 0 0)",
+  purple: "oklch(0.7 0.22 270)",
+  green: "oklch(0.65 0.15 150)",
+  cyan: "oklch(0.75 0.15 200)",
+  amber: "oklch(0.8 0.18 80)",
+  pink: "oklch(0.75 0.22 340)",
 };
 
 const containerVariants = {
@@ -34,11 +34,11 @@ export default function OurServices() {
   const services = getAllServices();
 
   return (
-    <section className="relative py-20 bg-secondary/30 dark:bg-zinc-950/20 overflow-hidden">
+    <section className="relative py-20 bg-secondary/30 overflow-hidden">
       {/* Ambient glassmorphic glows */}
       <div className="absolute inset-0 pointer-events-none -z-10">
-        <div className="absolute top-1/3 -left-40 h-[450px] w-[450px] rounded-full bg-neutral-200/20 dark:bg-zinc-900/10 blur-3xl opacity-75" />
-        <div className="absolute bottom-1/3 -right-40 h-[450px] w-[450px] rounded-full bg-neutral-200/20 dark:bg-zinc-900/10 blur-3xl opacity-75" />
+        <div className="absolute top-1/3 -left-40 h-[450px] w-[450px] rounded-full bg-secondary/20 blur-3xl opacity-75" />
+        <div className="absolute bottom-1/3 -right-40 h-[450px] w-[450px] rounded-full bg-secondary/20 blur-3xl opacity-75" />
       </div>
 
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -60,7 +60,7 @@ export default function OurServices() {
               Services
             </span>
           </h2>
-          <p className="mt-4 text-lg text-textMuted max-w-2xl mx-auto">
+          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
             End-to-end digital services tailored to your business needs.
           </p>
         </motion.div>
@@ -73,7 +73,7 @@ export default function OurServices() {
           className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
         >
           {services.length === 0 ? (
-            <div className="col-span-full text-center py-16 text-sm text-textMuted">
+            <div className="col-span-full text-center py-16 text-sm text-muted-foreground">
               No services available yet.
             </div>
           ) : (
@@ -81,7 +81,7 @@ export default function OurServices() {
               <motion.div
                 key={s.slug}
                 variants={itemVariants}
-                className="group relative rounded-2xl border border-neutral-200/60 dark:border-white/[0.06] bg-white/70 dark:bg-white/[0.03] backdrop-blur-md p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_60px_rgba(0,0,0,0.06)] dark:hover:shadow-[0_24px_60px_rgba(0,0,0,0.35)] hover:border-neutral-300 dark:hover:border-white/[0.14] flex flex-col justify-between overflow-hidden"
+                className="group relative rounded-2xl border border-border bg-card/70 backdrop-blur-md p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-accent-current/5 hover:border-accent-current/20 flex flex-col justify-between overflow-hidden"
               >
                 <div className="absolute inset-x-0 top-0 h-px opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                   style={{ background: `linear-gradient(to right, transparent, ${activeColor}88, transparent)` }}
@@ -90,17 +90,17 @@ export default function OurServices() {
                   <h3 className="text-lg font-semibold text-foreground">
                     {s.title}
                   </h3>
-                  <p className="mt-2 text-sm text-textMuted leading-relaxed line-clamp-3">
+                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed line-clamp-3">
                     {s.description}
                   </p>
                 </div>
-                <div className="mt-6 flex items-center justify-between border-t border-neutral-200/50 dark:border-white/[0.06] pt-4">
-                  <span className="text-xs font-medium uppercase tracking-wider text-neutral-400 dark:text-neutral-500">
+                <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
+                  <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                     0{i + 1}
                   </span>
                   <Link
                     href={`/services/${s.slug}`}
-                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-neutral-800 dark:text-neutral-200 transition-all hover:text-primary dark:hover:text-white hover:gap-2.5"
+                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-foreground transition-all hover:text-accent-current hover:gap-2.5"
                   >
                     Learn More <ArrowRight className="h-4 w-4" />
                   </Link>
@@ -119,7 +119,7 @@ export default function OurServices() {
         >
           <Link
             href="/services"
-            className="inline-flex items-center gap-2 rounded-xl border border-neutral-200/50 dark:border-white/[0.08] bg-white/40 dark:bg-white/[0.02] backdrop-blur-md px-6 py-3 text-sm font-semibold text-foreground transition-all hover:bg-white/80 dark:hover:bg-white/[0.06] hover:border-neutral-300 dark:hover:border-white/[0.15] hover:shadow-lg"
+            className="inline-flex items-center gap-2 rounded-xl border border-border bg-card/50 backdrop-blur-md px-6 py-3 text-sm font-semibold text-foreground transition-all hover:bg-card hover:border-accent-current/30 hover:shadow-lg"
           >
             View All Services <ArrowRight className="h-4 w-4" />
           </Link>
@@ -128,3 +128,4 @@ export default function OurServices() {
     </section>
   );
 }
+

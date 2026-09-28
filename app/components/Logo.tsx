@@ -16,3 +16,4 @@ const Logo = ({ className = "w-auto h-12" }: { className?: string }) => {
 };
 
 export default Logo;
+

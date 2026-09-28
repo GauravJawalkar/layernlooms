@@ -98,7 +98,7 @@ export default function PartnershipsSection() {
               Success
             </span>
           </h2>
-          <p className="mt-4 text-lg text-textMuted max-w-2xl mx-auto">
+          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
             We collaborate with industry-leading companies to deliver exceptional results.
           </p>
         </motion.div>
@@ -125,7 +125,7 @@ export default function PartnershipsSection() {
                 >
                   {partner.name}
                 </h3>
-                <p className="text-sm text-textMuted leading-relaxed truncate">
+                <p className="text-sm text-muted-foreground leading-relaxed truncate">
                   {partner.description}
                 </p>
               </div>
@@ -153,7 +153,7 @@ export default function PartnershipsSection() {
                   <h3 className="text-sm font-bold text-foreground tracking-tight truncate">
                     {partner.name}
                   </h3>
-                  <p className="text-xs text-textMuted leading-relaxed truncate">
+                  <p className="text-xs text-muted-foreground leading-relaxed truncate">
                     {partner.description}
                   </p>
                 </div>
@@ -165,3 +165,4 @@ export default function PartnershipsSection() {
     </section>
   );
 }
+
