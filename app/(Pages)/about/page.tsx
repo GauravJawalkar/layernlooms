@@ -122,12 +122,12 @@ export default function AboutPage() {
 
               <motion.h1
                 variants={fadeUp}
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground leading-[1.05]"
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.05]"
               >
                 Where vision meets{" "}
                 <span className="bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">execution</span>
                 <br />
-                <span className="text-muted-foreground/30">we build what matters</span>
+                <span className="text-muted-foreground/60">we build what matters</span>
               </motion.h1>
 
               <motion.p
