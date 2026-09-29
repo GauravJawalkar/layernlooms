@@ -226,9 +226,7 @@ export default function ProcessSection() {
                       </span>
 
                       <div className="relative z-10">
-                        <span className="text-xs font-bold tracking-widest text-muted-foreground uppercase">
-                          Step {index + 1}
-                        </span>
+                      
                         <h3 className="mt-1 text-xl font-bold tracking-tight text-foreground transition-colors duration-300">
                           {step.title}
                         </h3>
@@ -267,9 +265,7 @@ export default function ProcessSection() {
                       </span>
 
                       <div className="relative z-10">
-                        <span className="text-xs font-bold tracking-widest text-muted-foreground uppercase">
-                          Step {index + 1}
-                        </span>
+                        
                         <h3 className="mt-1 text-xl font-bold tracking-tight text-foreground transition-colors duration-300">
                           {step.title}
                         </h3>
