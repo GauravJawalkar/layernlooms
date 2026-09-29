@@ -6,7 +6,7 @@ import { Linkedin, Instagram, Mail, Phone, MapPin, ArrowRight } from "lucide-rea
 import Logo from "./Logo";
 import { useState } from "react";
 import ThemeToggle from "./ThemeToggle";
-import { GoogleIcon, WhatsAppIcon } from "./Icons";
+import { GoogleIcon, WhatsAppIcon, XIcon } from "./Icons";
 
 const footerData = {
   company: {
@@ -33,6 +33,7 @@ const footerData = {
     googleBusiness: "https://share.google/S46H7wVpxAKJO4Eom",
   },
   social: [
+    { name: "X", href: "https://x.com/Layernlooms", icon: XIcon },
     { name: "LinkedIn", href: "https://linkedin.com/company/layernlooms", icon: Linkedin },
     { name: "Instagram", href: "https://www.instagram.com/layernlooms", icon: Instagram },
     { name: "Google Business", href: "https://share.google/S46H7wVpxAKJO4Eom", icon: GoogleIcon },

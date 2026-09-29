@@ -66,9 +66,9 @@ export default function EngagementModels() {
           <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-5xl">
             Engagement{" "}
             <span
-              className="bg-clip-text text-transparent transition-all duration-500 font-extrabold"
+              className="transition-all duration-500 font-extrabold"
               style={{
-                backgroundImage: `linear-gradient(to right, ${activeColor}, ${activeColor}bb)`,
+                color: activeColor,
               }}
             >
               Models

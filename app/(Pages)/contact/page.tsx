@@ -6,9 +6,10 @@ import { StepsCard } from "../../components/Contact/ContactCard";
 import { Linkedin, Instagram, Mail, MapPin, Phone, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import JsonLd, { getBreadcrumbSchema } from "@/app/components/JsonLd";
-import { GoogleIcon, WhatsAppIcon } from "@/app/components/Icons";
+import { GoogleIcon, WhatsAppIcon, XIcon } from "@/app/components/Icons";
 
 const socialLinks = [
+    { name: "X", icon: XIcon, href: "https://x.com/Layernlooms", color: "hover:text-primary" },
     { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com/company/layernlooms", color: "hover:text-[#0077b5]" },
     { name: "Instagram", icon: Instagram, href: "https://www.instagram.com/layernlooms", color: "hover:text-[#e4405f]" },
     { name: "Google Business", icon: GoogleIcon, href: "https://share.google/S46H7wVpxAKJO4Eom", color: "hover:text-[#4285F4]" },

@@ -502,9 +502,9 @@ export default function WhyChooseUs() {
           <h2 className="mt-5 text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
             What Drives Our{" "}
             <span
-              className="bg-clip-text text-transparent transition-all duration-500 font-extrabold"
+              className="transition-all duration-500 font-extrabold"
               style={{
-                backgroundImage: `linear-gradient(to right, ${activeColor}, ${activeColor}bb)`,
+                color: activeColor,
               }}
             >
               Success
