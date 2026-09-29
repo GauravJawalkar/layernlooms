@@ -1,20 +1,23 @@
 "use client";
 
-import React, { useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
   Float,
   Environment,
+  Lightformer,
   ContactShadows,
-  Sparkles,
   RoundedBox,
   MeshDistortMaterial,
   useCursor,
 } from "@react-three/drei";
+import { useInView } from "framer-motion";
 import * as THREE from "three";
 
 /* ------------------------------------------------------------------ */
 /* Shared black & white materials                                      */
+/* NOTE: module-level materials are intentionally never disposed -     */
+/* they are reused by every services canvas on the page.               */
 /* ------------------------------------------------------------------ */
 const M = {
   white: new THREE.MeshPhysicalMaterial({
@@ -37,6 +40,11 @@ const M = {
     roughness: 0.12,
   }),
   glow: new THREE.MeshBasicMaterial({ color: "#ffffff" }),
+  screen: new THREE.MeshStandardMaterial({
+    color: "#050505",
+    roughness: 0.05,
+    metalness: 0.4,
+  }),
 };
 
 type V3 = [number, number, number];
@@ -97,6 +105,7 @@ function Ripple({
       }),
     [color]
   );
+  useEffect(() => () => mat.dispose(), [mat]);
   useFrame(({ clock }) => {
     const p = (clock.elapsedTime * speed + offset) % 1;
     if (ref.current) ref.current.scale.setScalar(0.2 + p * max);
@@ -104,7 +113,7 @@ function Ripple({
   });
   return (
     <mesh ref={ref} rotation={rotation} position={position} material={mat}>
-      <torusGeometry args={[1, 0.02, 8, 64]} />
+      <torusGeometry args={[1, 0.02, 8, 48]} />
     </mesh>
   );
 }
@@ -135,7 +144,7 @@ function Browser() {
       <RB size={[3.02, 0.34, 0.16]} pos={[0, 0.88, 0]} mat={M.black} r={0.07} />
       {[-1.25, -1.1, -0.95].map((x, i) => (
         <mesh key={i} position={[x, 0.88, 0.1]} material={M.white}>
-          <sphereGeometry args={[0.05, 16, 16]} />
+          <sphereGeometry args={[0.05, 12, 12]} />
         </mesh>
       ))}
       <RB size={[1.4, 0.13, 0.03]} pos={[0.5, 0.88, 0.09]} mat={M.chrome} r={0.01} />
@@ -193,11 +202,11 @@ function Phone() {
     <group ref={ref} scale={0.92}>
       <RB size={[1.4, 2.8, 0.17]} mat={M.black} r={0.22} />
       <RB size={[1.3, 2.7, 0.02]} pos={[0, 0, 0.09]} mat={M.chrome} r={0.17} />
-      <RB size={[1.26, 2.66, 0.02]} pos={[0, 0, 0.1]} mat={new THREE.MeshStandardMaterial({ color: "#050505", roughness: 0.05, metalness: 0.4 })} r={0.15} />
+      <RB size={[1.26, 2.66, 0.02]} pos={[0, 0, 0.1]} mat={M.screen} r={0.15} />
       <RB size={[0.36, 0.09, 0.02]} pos={[0, 1.2, 0.115]} mat={M.chrome} r={0.04} />
       <RB size={[1.0, 0.55, 0.015]} pos={[0, 0.7, 0.115]} mat={M.white} r={0.07} />
       <mesh material={M.glow} position={[0, 0.7, 0.13]}>
-        <circleGeometry args={[0.13, 32]} />
+        <circleGeometry args={[0.13, 24]} />
       </mesh>
       <group ref={ui} position={[0, 0.1, 0.115]}>
         {[0.15, -0.1, -0.35].map((y, i) => (
@@ -219,7 +228,7 @@ function Phone() {
       <RB size={[0.58, 0.58, 0.05]} pos={[-0.3, 0.95, -0.11]} mat={M.chrome} r={0.12} />
       {[[-0.42, 1.09], [-0.18, 1.09], [-0.3, 0.83]].map(([x, y], i) => (
         <mesh key={i} position={[x, y, -0.15]} rotation={[Math.PI / 2, 0, 0]} material={M.black}>
-          <cylinderGeometry args={[0.09, 0.09, 0.05, 32]} />
+          <cylinderGeometry args={[0.09, 0.09, 0.05, 24]} />
         </mesh>
       ))}
       {/* floating notifications */}
@@ -269,7 +278,7 @@ function Neural() {
   return (
     <group>
       <mesh>
-        <icosahedronGeometry args={[0.7, 4]} />
+        <icosahedronGeometry args={[0.7, 3]} />
         <MeshDistortMaterial color="#0d0d0d" distort={0.45} speed={2.5} roughness={0.15} metalness={0.9} />
       </mesh>
       <lineSegments>
@@ -281,7 +290,7 @@ function Neural() {
       <group ref={nodes}>
         {pts.map((p, i) => (
           <mesh key={i} position={p} material={i % 2 ? M.black : M.white}>
-            <sphereGeometry args={[0.1, 20, 20]} />
+            <sphereGeometry args={[0.1, 16, 16]} />
           </mesh>
         ))}
       </group>
@@ -318,7 +327,7 @@ function Cloud() {
           [0.1, -0.2, 0.7],
         ].map(([x, y, r], i) => (
           <mesh key={i} position={[x, y, 0]} material={M.white}>
-            <sphereGeometry args={[r, 40, 40]} />
+            <sphereGeometry args={[r, 24, 24]} />
           </mesh>
         ))}
       </group>
@@ -330,7 +339,7 @@ function Cloud() {
         ))}
       </group>
       <mesh position={[0.1, -1.55, 0]} material={M.black}>
-        <cylinderGeometry args={[1.5, 1.6, 0.14, 64]} />
+        <cylinderGeometry args={[1.5, 1.6, 0.14, 48]} />
       </mesh>
       <Ripple position={[0.1, -1.45, 0]} offset={0} speed={0.35} max={1.6} />
       <Ripple position={[0.1, -1.45, 0]} offset={0.5} speed={0.35} max={1.6} />
@@ -357,6 +366,7 @@ function Design() {
     []
   );
   const tube = useMemo(() => new THREE.TubeGeometry(curve, 64, 0.035, 8, false), [curve]);
+  useEffect(() => () => tube.dispose(), [tube]);
 
   useFrame(({ clock }) => {
     const t = clock.elapsedTime;
@@ -386,7 +396,7 @@ function Design() {
         <group>
           <RB size={[2.2, 2.9, 0.06]} mat={M.white} r={0.1} />
           <mesh position={[-0.55, 1.0, 0.05]} rotation={[Math.PI / 2, 0, 0]} material={M.black}>
-            <cylinderGeometry args={[0.28, 0.28, 0.03, 32]} />
+            <cylinderGeometry args={[0.28, 0.28, 0.03, 24]} />
           </mesh>
           <RB size={[0.9, 0.12, 0.03]} pos={[0.3, 1.05, 0.04]} mat={M.black} r={0.01} />
           <RB size={[0.6, 0.09, 0.03]} pos={[0.15, 0.85, 0.04]} mat={M.chrome} r={0.01} />
@@ -411,6 +421,20 @@ function Megaphone() {
   const wave = useRef<THREE.Group>(null);
   const body = useRef<THREE.Group>(null);
 
+  const waveMats = useMemo(
+    () =>
+      [0, 1, 2].map(
+        () =>
+          new THREE.MeshBasicMaterial({
+            color: "#ffffff",
+            transparent: true,
+            depthWrite: false,
+          })
+      ),
+    []
+  );
+  useEffect(() => () => waveMats.forEach((m) => m.dispose()), [waveMats]);
+
   useFrame(({ clock }) => {
     const t = clock.elapsedTime;
     if (body.current) {
@@ -429,26 +453,20 @@ function Megaphone() {
     <group position={[-0.9, 0, 0]}>
       <group ref={body}>
         <mesh material={M.white} rotation={[0, 0, -Math.PI / 2]} position={[0.2, 0, 0]}>
-          <cylinderGeometry args={[0.95, 0.35, 1.5, 64]} />
+          <cylinderGeometry args={[0.95, 0.35, 1.5, 48]} />
         </mesh>
         <mesh material={M.black} rotation={[0, Math.PI / 2, 0]} position={[0.96, 0, 0]}>
-          <torusGeometry args={[0.95, 0.07, 16, 64]} />
+          <torusGeometry args={[0.95, 0.07, 12, 48]} />
         </mesh>
         <mesh material={M.chrome} rotation={[0, 0, -Math.PI / 2]} position={[-0.75, 0, 0]}>
-          <cylinderGeometry args={[0.38, 0.3, 0.5, 48]} />
+          <cylinderGeometry args={[0.38, 0.3, 0.5, 32]} />
         </mesh>
         <RB size={[0.32, 0.7, 0.28]} pos={[-0.15, -0.75, 0]} mat={M.black} r={0.1} />
       </group>
       <group ref={wave}>
-        {[0, 1, 2].map((i) => (
-          <mesh
-            key={i}
-            rotation={[0, Math.PI / 2, 0]}
-            material={
-              new THREE.MeshBasicMaterial({ color: "#ffffff", transparent: true, depthWrite: false })
-            }
-          >
-            <torusGeometry args={[1, 0.03, 8, 64]} />
+        {waveMats.map((m, i) => (
+          <mesh key={i} rotation={[0, Math.PI / 2, 0]} material={m}>
+            <torusGeometry args={[1, 0.03, 8, 48]} />
           </mesh>
         ))}
       </group>
@@ -459,20 +477,23 @@ function Megaphone() {
 /* ------------------------------------------------------------------ */
 /* SaaS analytics: growing bars and a trend line with a live marker    */
 /* ------------------------------------------------------------------ */
+const HEIGHTS = [0.8, 1.2, 1.0, 1.7, 2.3];
+
 function Analytics() {
   const bars = useRef<THREE.Group>(null);
   const orb = useRef<THREE.Mesh>(null);
   const intro = useRef(0);
-  const heights = [0.8, 1.2, 1.0, 1.7, 2.3];
+  const heights = HEIGHTS;
 
   const curve = useMemo(
     () =>
       new THREE.CatmullRomCurve3(
         heights.map((h, i) => new THREE.Vector3(-1.2 + i * 0.6, -1.0 + h + 0.3, 0.3))
       ),
-    []
+    [heights]
   );
   const tube = useMemo(() => new THREE.TubeGeometry(curve, 80, 0.03, 8, false), [curve]);
+  useEffect(() => () => tube.dispose(), [tube]);
 
   useFrame(({ clock }, delta) => {
     const t = clock.elapsedTime;
@@ -498,7 +519,7 @@ function Analytics() {
       </group>
       <mesh geometry={tube} material={M.chrome} />
       <mesh ref={orb} material={M.glow}>
-        <sphereGeometry args={[0.1, 20, 20]} />
+        <sphereGeometry args={[0.1, 16, 16]} />
       </mesh>
     </group>
   );
@@ -527,11 +548,11 @@ function Bag() {
         <RB size={[1.7, 1.9, 0.9]} pos={[0, -0.1, 0]} mat={M.white} r={0.1} />
         <RB size={[1.72, 0.32, 0.92]} pos={[0, 0.72, 0]} mat={M.black} r={0.08} />
         <mesh position={[0, 0.88, 0]} material={M.chrome}>
-          <torusGeometry args={[0.42, 0.045, 12, 32, Math.PI]} />
+          <torusGeometry args={[0.42, 0.045, 10, 28, Math.PI]} />
         </mesh>
         <RB size={[0.6, 0.6, 0.03]} pos={[0, -0.25, 0.46]} mat={M.black} r={0.1} />
         <mesh position={[0, -0.25, 0.48]} material={M.glow}>
-          <circleGeometry args={[0.13, 32]} />
+          <circleGeometry args={[0.13, 24]} />
         </mesh>
       </group>
       <group ref={orbit}>
@@ -550,7 +571,7 @@ function Bag() {
 function Orb() {
   return (
     <mesh>
-      <sphereGeometry args={[1.3, 64, 64]} />
+      <sphereGeometry args={[1.3, 48, 48]} />
       <MeshDistortMaterial color="#0d0d0d" distort={0.4} speed={2} roughness={0.15} metalness={0.9} />
     </mesh>
   );
@@ -570,7 +591,7 @@ const MODELS: Record<string, { Model: () => React.JSX.Element; spin: boolean }> 
 /* ------------------------------------------------------------------ */
 /* Rig: entrance pop, mouse-follow tilt, hover scale, slow spin        */
 /* ------------------------------------------------------------------ */
-function Rig({ slug }: { slug: string }) {
+function Rig({ slug, baseScale = 1 }: { slug: string; baseScale?: number }) {
   const outer = useRef<THREE.Group>(null);
   const inner = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
@@ -582,7 +603,7 @@ function Rig({ slug }: { slug: string }) {
   useFrame((state, delta) => {
     const k = 1 - Math.exp(-delta * 6);
     if (outer.current) {
-      const s = hovered ? 1.1 : 1;
+      const s = baseScale * (hovered ? 1.1 : 1);
       outer.current.scale.setScalar(lerp(outer.current.scale.x, s, k));
       outer.current.rotation.y = lerp(outer.current.rotation.y, state.pointer.x * 0.5, k);
       outer.current.rotation.x = lerp(outer.current.rotation.x, -state.pointer.y * 0.35, k);
@@ -610,21 +631,89 @@ function Rig({ slug }: { slug: string }) {
 /* ------------------------------------------------------------------ */
 /* Export                                                              */
 /* ------------------------------------------------------------------ */
-export default function Service3DModel({ slug, className }: { slug: string; className?: string }) {
+export default function Service3DModel({
+  slug,
+  className,
+  variant = "hero",
+}: {
+  slug: string;
+  className?: string;
+  variant?: "card" | "hero";
+}) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  // everInView latches true on first intersection (mount gate),
+  // inView tracks current visibility to pause the frameloop off-screen.
+  const everInView = useInView(containerRef, { once: true, amount: 0 });
+  const inView = useInView(containerRef, { amount: 0 });
+  const isCard = variant === "card";
+
   return (
-    <div className={`w-full h-full relative ${className || ""}`}>
-      <Canvas camera={{ position: [0, 0, 6.2], fov: 45 }} dpr={[1, 2]}>
-        <ambientLight intensity={0.6} />
-        <spotLight position={[8, 10, 8]} angle={0.2} penumbra={1} intensity={1.4} />
-        <pointLight position={[-8, -4, -6]} intensity={0.6} color="#ffffff" />
+    <div ref={containerRef} className={`w-full h-full relative ${className || ""}`}>
+      {everInView && (
+        <Canvas
+          camera={{ position: [0, 0, isCard ? 6.8 : 6.2], fov: 45 }}
+          dpr={isCard ? [1, 1.75] : [1, 2]}
+          frameloop={inView ? "always" : "never"}
+          gl={{
+            antialias: true,
+            alpha: true,
+            stencil: false,
+            powerPreference: isCard ? "default" : "high-performance",
+          }}
+        >
+          <ambientLight intensity={0.6} />
+          <spotLight position={[8, 10, 8]} angle={0.2} penumbra={1} intensity={1.4} />
+          <pointLight position={[-8, -4, -6]} intensity={0.6} color="#ffffff" />
 
-        <Float speed={1.8} rotationIntensity={0.25} floatIntensity={0.9}>
-          <Rig slug={slug} />
-        </Float>
+          <Float speed={1.8} rotationIntensity={0.25} floatIntensity={0.9}>
+            <Rig slug={slug} baseScale={isCard ? 0.9 : 1} />
+          </Float>
 
-        <Environment preset="studio" />
-        <ContactShadows position={[0, -2.2, 0]} opacity={0.45} scale={10} blur={2.5} far={4} color="#000000" />
-      </Canvas>
+          {/* Local Lightformer rig - no remote HDRI fetch, works offline */}
+          <Environment resolution={64} frames={1}>
+            <Lightformer
+              form="rect"
+              intensity={2.6}
+              position={[0, 4, 3]}
+              scale={[7, 3, 1]}
+              rotation={[-Math.PI / 3, 0, 0]}
+              color="#ffffff"
+            />
+            <Lightformer
+              form="rect"
+              intensity={1.4}
+              position={[-5, 1, 2]}
+              scale={[4, 5, 1]}
+              rotation={[0, Math.PI / 3, 0]}
+              color="#ffffff"
+            />
+            <Lightformer
+              form="rect"
+              intensity={1}
+              position={[5, -1, -3]}
+              scale={[5, 5, 1]}
+              rotation={[0, -Math.PI / 3, 0]}
+              color="#ffffff"
+            />
+            <Lightformer
+              form="ring"
+              intensity={1.6}
+              position={[0, -3, 3]}
+              scale={3}
+              color="#ffffff"
+            />
+          </Environment>
+          <ContactShadows
+            position={[0, -2.2, 0]}
+            opacity={0.45}
+            scale={10}
+            blur={2.5}
+            far={4}
+            color="#000000"
+            frames={isCard ? 90 : Infinity}
+          />
+        </Canvas>
+      )}
     </div>
   );
 }

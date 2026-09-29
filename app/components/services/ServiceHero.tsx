@@ -3,8 +3,13 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 import { ArrowLeft, Sparkles, ArrowRight } from "lucide-react";
-import Service3DModel from "./Service3DModel";
+
+const Service3DModel = dynamic(() => import("./Service3DModel"), {
+  ssr: false,
+  loading: () => null,
+});
 
 interface ServiceHeroProps {
     service: {

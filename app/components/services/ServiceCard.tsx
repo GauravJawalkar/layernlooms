@@ -2,9 +2,14 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { ArrowRight } from "lucide-react";
-import Service3DModel from "./Service3DModel";
 import { useState } from "react";
+
+const Service3DModel = dynamic(() => import("./Service3DModel"), {
+  ssr: false,
+  loading: () => null,
+});
 
 interface ServiceCardProps {
     service: {
@@ -34,7 +39,7 @@ export default function ServiceCard({ service, index }: ServiceCardProps) {
                 {/* 3D Model Section */}
                 <div className="relative h-48 sm:h-64 w-full bg-secondary overflow-hidden flex items-center justify-center border-b border-border">
                     <div className="absolute inset-0 bg-grid-foreground/[0.03] bg-[length:24px_24px]" />
-                    <Service3DModel slug={service.slug} className="transition-transform duration-700 ease-out group-hover:scale-110" />
+                    <Service3DModel slug={service.slug} variant="card" className="transition-transform duration-700 ease-out group-hover:scale-110" />
                     
                     {/* Glowing orb effect on hover */}
                     <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-foreground/10 rounded-full blur-3xl transition-opacity duration-700 ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
