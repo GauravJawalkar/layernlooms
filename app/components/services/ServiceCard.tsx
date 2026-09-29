@@ -6,10 +6,7 @@ import dynamic from "next/dynamic";
 import { ArrowRight } from "lucide-react";
 import { useState } from "react";
 
-const Service3DModel = dynamic(() => import("./Service3DModel"), {
-  ssr: false,
-  loading: () => null,
-});
+import Image from "next/image";
 
 interface ServiceCardProps {
     service: {
@@ -18,6 +15,7 @@ interface ServiceCardProps {
         subtitle: string;
         description: string;
         features: string[];
+        image: string;
     };
     index: number;
 }
@@ -36,13 +34,20 @@ export default function ServiceCard({ service, index }: ServiceCardProps) {
                 onMouseLeave={() => setIsHovered(false)}
                 className="group relative flex flex-1 flex-col overflow-hidden rounded-[2rem] border border-border bg-card backdrop-blur-xl transition-all duration-500 hover:-translate-y-2 hover:border-accent-current hover:bg-card/80 hover:shadow-xl justify-between"
             >
-                {/* 3D Model Section */}
-                <div className="relative h-48 sm:h-64 w-full bg-secondary overflow-hidden flex items-center justify-center border-b border-border">
-                    <div className="absolute inset-0 bg-grid-foreground/[0.03] bg-[length:24px_24px]" />
-                    <Service3DModel slug={service.slug} variant="card" className="transition-transform duration-700 ease-out group-hover:scale-110" />
+                {/* 3D Image Section */}
+                <div className="relative aspect-[16/10] sm:aspect-[4/3] w-full bg-secondary/20 overflow-hidden flex items-center justify-center border-b border-border/50">
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent z-10 pointer-events-none" />
+                    <Image 
+                        src={service.image || "/web-dev-bw.jpg"} 
+                        alt={service.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 shadow-[inset_0_0_40px_rgba(0,0,0,0.5)] z-10 pointer-events-none" />
                     
                     {/* Glowing orb effect on hover */}
-                    <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-foreground/10 rounded-full blur-3xl transition-opacity duration-700 ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
+                    <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-foreground/5 rounded-full blur-3xl transition-opacity duration-700 pointer-events-none ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
                 </div>
 
                 {/* Content */}

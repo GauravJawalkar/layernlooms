@@ -32,7 +32,7 @@ export const services: Service[] = [
         longDescription: "Our web development services deliver high-performance, scalable, and secure web applications tailored to your business needs. We use the latest frameworks and best practices to ensure your web presence stands out.",
         metaDescription: "Custom web application development in React, Next.js and Node.js. Scalable, secure, SEO-first builds from $5,000. Book a free scoping call.",
         icon: "/icons/web-dev.svg",
-        image: "/web-dev.png",
+        image: "/web-dev-bw.jpg",
         features: [
             "Custom Web Applications",
             "Responsive Design",
@@ -78,7 +78,7 @@ export const services: Service[] = [
         longDescription: "We develop high-quality mobile applications that deliver exceptional user experiences. Whether you need native iOS/Android apps or cross-platform solutions, we've got you covered.",
         metaDescription: "Native and cross-platform mobile app development for iOS and Android using React Native, Flutter, Swift and Kotlin. From $10,000.",
         icon: "/icons/mobile-dev.svg",
-        image: "/mobile-app.png",
+        image: "/mobile-app-bw.jpg",
         features: [
             "Native iOS Development (Swift)",
             "Native Android Development (Kotlin)",
@@ -114,7 +114,7 @@ export const services: Service[] = [
         longDescription: "Harness the power of artificial intelligence and machine learning to automate processes, gain insights, and create intelligent products that learn and adapt.",
         metaDescription: "Custom AI and machine learning solutions: LLM integrations, RAG systems, NLP, computer vision and predictive models built into production products.",
         icon: "/icons/ai-ml.svg",
-        image: "/ai-ml.png",
+        image: "/ai-ml-bw.jpg",
         features: [
             "Machine Learning Models",
             "Natural Language Processing",
@@ -145,7 +145,7 @@ export const services: Service[] = [
         longDescription: "Transform your infrastructure with cloud-native solutions. We help you leverage the full potential of cloud computing for scalability, reliability, and cost efficiency.",
         metaDescription: "Cloud infrastructure and DevOps engineering on AWS, Azure and GCP. Kubernetes, Terraform, CI/CD pipelines and cost optimisation for production workloads.",
         icon: "/icons/cloud.svg",
-        image: "/cloud-infra.png",
+        image: "/cloud-infra-bw.jpg",
         features: [
             "Cloud Migration",
             "DevOps Implementation",
@@ -175,7 +175,7 @@ export const services: Service[] = [
         longDescription: "Our design team creates beautiful, intuitive interfaces that users love. We focus on user-centered design to ensure your product is both functional and aesthetically pleasing.",
         metaDescription: "User-centred UI/UX design and design systems in Figma. Wireframes, prototypes and usability testing that raise conversion and cut rework.",
         icon: "/icons/design.svg",
-        image: "/ui-ux.png",
+        image: "/ui-ux-bw.jpg",
         features: [
             "User Research",
             "Wireframing & Prototyping",
@@ -205,7 +205,7 @@ export const services: Service[] = [
         longDescription: "Drive traffic, engagement, and conversions with our comprehensive digital marketing services. We use data-driven strategies to achieve measurable results.",
         metaDescription: "Technical SEO, content marketing, PPC and lifecycle campaigns for B2B software companies. Analytics-first, reported against pipeline not impressions.",
         icon: "/icons/marketing.svg",
-        image: "/digital-marketing.png",
+        image: "/digital-marketing-bw.jpg",
         features: [
             "SEO Optimization",
             "Content Marketing",
@@ -235,7 +235,7 @@ export const services: Service[] = [
         longDescription: "Our SaaS analytics platform helps businesses monitor performance, understand user behavior, and make data-driven decisions. With real-time dashboards and advanced data visualization, you gain complete visibility into your product's growth and performance.",
         metaDescription: "Real-time SaaS analytics platforms: custom dashboards, product telemetry, funnel and cohort analysis with third-party integrations. From $3,000.",
         icon: "/icons/analytics.svg",
-        image: "/saas-analytics.png",
+        image: "/saas-analytics-bw.jpg",
         features: [
             "Real-time Data Tracking",
             "Custom Dashboards",
@@ -283,7 +283,7 @@ export const services: Service[] = [
         longDescription: "We design and build e-commerce experiences that convert browsers into buyers. From headless Shopify storefronts to fully custom platforms, every build is optimised for speed, SEO, and checkout conversion.",
         metaDescription: "Custom e-commerce development on Shopify, WooCommerce and headless platforms. Performance-first storefronts with payment integration, inventory and analytics from $6,000.",
         icon: "/icons/ecommerce.svg",
-        image: "/ecommerce.png",
+        image: "/ecommerce-bw.jpg",
         features: [
             "Custom Shopify & WooCommerce Development",
             "Headless Commerce Architecture",

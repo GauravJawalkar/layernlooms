@@ -6,6 +6,7 @@ import { ThemeProvider } from "./context/ThemeContext";
 import CustomCursor from "./components/CustomCursor";
 import ThemeCustomizer from "./components/ThemeCustomizer";
 import GoogleAnalytics from "./components/GoogleAnalytics";
+import Preloader from "./components/Preloader";
 import JsonLd, { organizationSchema, websiteSchema } from "./components/JsonLd";
 import { site } from "@/app/lib/site";
 
@@ -122,11 +123,15 @@ export default function RootLayout({
                 } else {
                   document.documentElement.classList.remove('dark');
                 }
+                if (sessionStorage.getItem('lnl-preloaded') === '1') {
+                  document.documentElement.classList.add('preloaded-skip');
+                }
               } catch (_) {}
             `,
           }}
         />
         <ThemeProvider>
+          <Preloader />
           <LayoutWrapper>{children}</LayoutWrapper>
           <CustomCursor />
           <ThemeCustomizer />

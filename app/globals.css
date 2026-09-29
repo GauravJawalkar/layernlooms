@@ -311,3 +311,8 @@
     @apply bg-primary text-primary-foreground;
   }
 }
+
+/* Preloader: hidden before first paint on repeat visits within a session */
+.preloaded-skip #site-preloader {
+  display: none !important;
+}

@@ -6,10 +6,7 @@ import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { ArrowLeft, Sparkles, ArrowRight } from "lucide-react";
 
-const Service3DModel = dynamic(() => import("./Service3DModel"), {
-  ssr: false,
-  loading: () => null,
-});
+import Image from "next/image";
 
 interface ServiceHeroProps {
     service: {
@@ -17,6 +14,7 @@ interface ServiceHeroProps {
         title: string;
         subtitle: string;
         longDescription: string;
+        image: string;
     };
 }
 
@@ -24,7 +22,7 @@ export default function ServiceHero({ service }: ServiceHeroProps) {
     const router = useRouter();
 
     return (
-        <section className="relative overflow-hidden bg-background text-foreground border-b border-border pt-8 pb-12 sm:pt-12 sm:pb-16 lg:pt-20 lg:pb-28">
+        <section className="relative overflow-hidden bg-background text-foreground border-b border-border pt-4 pb-12 sm:pt-6 sm:pb-16 lg:pt-10 lg:pb-24">
             {/* Ambient Background Elements */}
             <div className="absolute inset-0 pointer-events-none">
                 <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-foreground/[0.03] rounded-full blur-[120px] translate-x-1/3 -translate-y-1/3" />
@@ -40,18 +38,18 @@ export default function ServiceHero({ service }: ServiceHeroProps) {
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="mb-8 sm:mb-12"
+                    className="mb-6 sm:mb-8"
                 >
                     <button
                         onClick={() => router.back()}
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-card/50 hover:bg-card backdrop-blur-md text-muted-foreground hover:text-foreground transition-all group"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/50 bg-card/30 hover:bg-card/80 backdrop-blur-md text-muted-foreground hover:text-foreground transition-all group"
                     >
                         <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
                         <span className="text-xs sm:text-sm font-medium">Back to Services</span>
                     </button>
                 </motion.div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
                     <motion.div
                         initial={{ opacity: 0, x: -30 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -63,7 +61,7 @@ export default function ServiceHero({ service }: ServiceHeroProps) {
                             <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-accent-current">Specialized Domain</span>
                         </div>
 
-                        <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black tracking-tighter text-foreground leading-[1.1] mb-6">
+                        <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tighter text-foreground leading-[1.1] mb-6">
                             {service.title}
                         </h1>
 
@@ -77,32 +75,42 @@ export default function ServiceHero({ service }: ServiceHeroProps) {
                             {service.longDescription}
                         </p>
 
-                        <div className="mt-10 flex flex-col sm:flex-row items-center gap-4">
+                        <div className="mt-8 flex flex-col sm:flex-row items-center gap-4">
                             <Link
                                 href="/contact"
-                                className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-primary text-primary-foreground px-8 py-4 text-sm font-bold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
+                                className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-foreground text-background px-8 py-4 text-sm font-bold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
                             >
                                 Initiate Project
                                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                             </Link>
                             <Link
                                 href="/portfolio"
-                                className="w-full sm:w-auto inline-flex items-center justify-center rounded-full bg-transparent border border-border px-8 py-4 text-sm font-bold text-foreground hover:bg-card hover:border-accent-current transition-all"
+                                className="w-full sm:w-auto inline-flex items-center justify-center rounded-full bg-transparent border border-border/50 px-8 py-4 text-sm font-bold text-foreground hover:bg-card hover:border-foreground/50 transition-all"
                             >
                                 Technical Case Studies
                             </Link>
                         </div>
                     </motion.div>
 
-                    {/* 3D Model Display */}
+                    {/* 3D Image Display */}
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                        className="relative h-[300px] sm:h-[400px] lg:h-[600px] w-full flex items-center justify-center rounded-3xl overflow-hidden border border-border bg-secondary backdrop-blur-3xl shadow-2xl order-1 lg:order-2"
+                        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                        className="relative w-full aspect-[4/3] sm:aspect-video lg:aspect-[4/3] xl:aspect-[16/11] flex items-center justify-center rounded-[2.5rem] overflow-hidden border border-border/40 bg-card/20 shadow-2xl order-1 lg:order-2 group"
                     >
-                        <div className="absolute inset-0 bg-grid-foreground/[0.03] bg-[length:24px_24px]" />
-                        <Service3DModel slug={service.slug} className="w-full h-full" />
+                        <div className="absolute inset-0 bg-gradient-to-tr from-background/40 via-transparent to-transparent z-10 pointer-events-none" />
+                        <div className="absolute inset-0 bg-grid-foreground/[0.02] bg-[length:24px_24px] z-10 pointer-events-none" />
+                        <Image
+                            src={service.image || "/web-dev-bw.jpg"}
+                            alt={service.title}
+                            fill
+                            className="object-cover object-center group-hover:scale-105 transition-transform duration-1000 ease-out"
+                            priority
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
+                        />
+                        {/* Soft Glow */}
+                        <div className="absolute inset-0 shadow-[inset_0_0_100px_rgba(0,0,0,0.5)] z-10 pointer-events-none rounded-[2.5rem]" />
                     </motion.div>
                 </div>
             </div>
