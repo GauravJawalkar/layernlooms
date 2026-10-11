@@ -28,13 +28,6 @@ export default function Home() {
         <TechStackSection />
       </div>
       <div className="rounded-2xl border border-neutral-300 dark:border-white/[0.06] overflow-hidden">
-        <BlogSection />
-      </div>
-      
-      <div className="rounded-2xl border border-neutral-300 dark:border-white/[0.06] overflow-hidden">
-        <EngagementModels />
-      </div>
-      <div className="rounded-2xl border border-neutral-300 dark:border-white/[0.06] overflow-hidden">
         <FAQSection />
       </div>
       <CTASection />
