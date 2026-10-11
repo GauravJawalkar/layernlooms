@@ -15,24 +15,22 @@ export default function Home() {
   return (
     <div className="flex flex-col gap-4 bg-background text-foreground transition-colors duration-300">
       <HeroSection />
-      <div className="rounded-2xl border border-neutral-300 dark:border-white/[0.06] overflow-hidden">
+      <div className="">
         <WhyChooseUs />
       </div>
-      <div className="rounded-2xl border border-neutral-300 dark:border-white/[0.06] overflow-hidden">
+      <div className="">
         <OurServices />
       </div>
       <div className="rounded-2xl border border-neutral-300 dark:border-white/[0.06] overflow-hidden">
         <ProcessSection />
       </div>
-      <div className="rounded-2xl border border-neutral-300 dark:border-white/[0.06] overflow-hidden">
+      <div className="">
         <TechStackSection />
       </div>
       <div className="rounded-2xl border border-neutral-300 dark:border-white/[0.06] overflow-hidden">
         <BlogSection />
       </div>
-      <div className="rounded-2xl border border-neutral-300 dark:border-white/[0.06] overflow-hidden">
-        <PartnershipsSection />
-      </div>
+      
       <div className="rounded-2xl border border-neutral-300 dark:border-white/[0.06] overflow-hidden">
         <EngagementModels />
       </div>

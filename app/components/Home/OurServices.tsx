@@ -34,7 +34,7 @@ export default function OurServices() {
   const services = getAllServices();
 
   return (
-    <section className="relative py-20 bg-secondary/30 overflow-hidden">
+    <section className="relative py-20  overflow-hidden">
       {/* Ambient glassmorphic glows */}
       <div className="absolute inset-0 pointer-events-none -z-10">
         <div className="absolute top-1/3 -left-40 h-[450px] w-[450px] rounded-full bg-secondary/20 blur-3xl opacity-75" />

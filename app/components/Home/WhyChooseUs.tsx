@@ -481,7 +481,7 @@ export default function WhyChooseUs() {
   const activeColor = themeColors[pointerTheme] || "oklch(0.708 0 0)";
 
   return (
-    <section className="relative py-16 sm:py-20 bg-secondary/60 overflow-hidden">
+    <section className="relative py-16 sm:py-20 overflow-hidden">
       <div className="absolute inset-0 pointer-events-none -z-10">
         <div className="absolute top-1/4 -right-40 h-[400px] w-[400px] rounded-full bg-neutral-200/40 dark:bg-zinc-900/10 blur-3xl opacity-75" />
         <div className="absolute bottom-1/4 -left-40 h-[400px] w-[400px] rounded-full bg-neutral-200/40 dark:bg-zinc-900/10 blur-3xl opacity-75" />

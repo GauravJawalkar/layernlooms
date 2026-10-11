@@ -6,7 +6,7 @@ import { ArrowUp } from "lucide-react";
 
 export default function CTASection() {
   return (
-    <section className="relative w-full py-24 sm:py-36 flex items-center justify-center overflow-hidden bg-secondary/40 text-foreground transition-colors duration-300 rounded-2xl border border-border">
+    <section className="relative w-full py-24 sm:py-36 flex items-center justify-center overflow-hidden text-foreground transition-colors duration-300 rounded-2xl border border-border">
       
       {/* Background Huge Text */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden opacity-[0.05] dark:opacity-[0.03]">
