@@ -229,7 +229,7 @@ export default function AboutPage() {
       </section>
 
       {/* ═══ MISSION & VISION ═══ */}
-      <section className="relative z-10 py-12 sm:py-16 bg-secondary/30 border-t border-border">
+      <section className="relative z-10 py-12 sm:py-16 ">
         <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-16">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FadeInSection>
@@ -270,7 +270,7 @@ export default function AboutPage() {
       </section>
 
       {/* ═══ CORE VALUES ═══ */}
-      <section className="relative z-10 py-12 sm:py-16 border-t border-border">
+      <section className="relative z-10 py-12 sm:py-16 ">
         <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-16">
           <FadeInSection>
             {sectionHeader("Core Values")}
@@ -305,7 +305,7 @@ export default function AboutPage() {
       </section>
 
       {/* ═══ TEAM ═══ */}
-      <section className="relative z-10 py-12 sm:py-16 bg-secondary/30 border-t border-border overflow-hidden">
+      <section className="relative z-10 py-12 sm:py-16 border-t border-border overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[150px]" />
         </div>
