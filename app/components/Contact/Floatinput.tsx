@@ -71,14 +71,14 @@ export default function FloatInput({
                 autoComplete="off"
                 placeholder={active ? placeholder : ""}
                 required={required}
-                className={`w-full border rounded-2xl px-4 py-3 text-sm outline-none transition-all duration-200 bg-secondary/30 text-foreground placeholder:text-muted-foreground/50 placeholder:text-sm
-                    ${active ? "pt-7 pb-3" : "pt-3 pb-3"}
-                    ${icon ? "pl-10" : "px-4"}
-                    ${suffix ? "pr-16" : "pr-4"}
+                className={`w-full border rounded-lg text-sm outline-none transition-all duration-200 bg-secondary/40 text-foreground placeholder:text-muted-foreground/50 placeholder:text-sm
+                    ${active ? "pt-7 pb-3 px-4" : "p-4"}
+                    ${icon ? "pl-10" : ""}
+                    ${suffix ? "pr-16" : ""}
                     ${
                         focused === name
-                            ? "border-primary ring-1 ring-primary bg-background shadow-sm"
-                            : "border-border hover:border-textMuted/30"
+                            ? "border-primary ring-1 ring-primary bg-background"
+                            : "border-border hover:border-muted-foreground/40"
                     }
                     disabled:bg-secondary disabled:cursor-not-allowed disabled:opacity-60
                 `}
@@ -90,9 +90,6 @@ export default function FloatInput({
                     {suffix}
                 </div>
             )}
-
-            {/* Bottom Border Animation (Alternative Design) */}
-            {/* <div className={`absolute bottom-0 left-0 h-0.5 bg-black transition-all duration-300 ${focused === name ? "w-full" : "w-0"}`} /> */}
         </div>
     );
 }

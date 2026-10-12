@@ -1,9 +1,9 @@
-    "use client";
+"use client";
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import FloatInput from "./Floatinput";
-import { Send, CheckCircle2, Plus, X, Sparkles } from "lucide-react";
+import { Send, CheckCircle2, Plus, X } from "lucide-react";
 
 const defaultProjectTypes = [
     "Web Development",
@@ -80,28 +80,20 @@ export default function ContactForm() {
     return (
         <form
             onSubmit={handleSubmit}
-            className="w-full relative overflow-hidden rounded-2xl sm:rounded-[2.5rem] border border-border bg-card/80 backdrop-blur-2xl p-5 sm:p-8 lg:p-10 shadow-2xl shadow-primary/5 flex flex-col gap-6 sm:gap-7"
+            className="w-full rounded-xl sm:rounded-2xl border border-border bg-card p-5 sm:p-8 flex flex-col gap-5 sm:gap-6"
         >
-            {/* Decorative gradient */}
-            <div className="absolute top-0 left-0 right-0" />
-            <div className="absolute top-0 right-0 w-40 h-40 bg-secondary/50 rounded-full blur-[80px] -mr-20 -mt-20" />
-
             {/* Form Header */}
-            <div className="relative flex items-start gap-4">
-                <div className="shrink-0 w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <Sparkles className="w-5 h-5 text-primary" />
-                </div>
+            <div className="flex items-baseline justify-between gap-4">
                 <div>
-                    <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">Project Brief</h2>
+                    <h2 className="text-lg sm:text-xl font-bold tracking-tight text-foreground">Project Brief</h2>
                     <p className="text-xs sm:text-sm text-muted-foreground mt-1">Tell us about your vision and we&apos;ll take it from there.</p>
                 </div>
             </div>
 
-            {/* Divider */}
             <div className="w-full h-px bg-border" />
 
             {/* Name + Email */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <FloatInput label="Full Name" name="name" type="text" value={form.name} focused={focused} onChange={handleChange} onFocus={() => setFocused("name")} onBlur={() => setFocused(null)} required />
                 <FloatInput label="Email Address" name="email" type="email" value={form.email} focused={focused} onChange={handleChange} onFocus={() => setFocused("email")} onBlur={() => setFocused(null)} required />
             </div>
@@ -110,7 +102,7 @@ export default function ContactForm() {
             <FloatInput label="Company / Organization" name="company" type="text" value={form.company} focused={focused} onChange={handleChange} onFocus={() => setFocused("company")} onBlur={() => setFocused(null)} />
 
             {/* Project Type + Budget */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="relative w-full group">
                     <label
                         htmlFor="projectType"
@@ -128,7 +120,7 @@ export default function ContactForm() {
                         onChange={handleChange}
                         onFocus={() => setFocused("projectType")}
                         onBlur={() => setFocused(null)}
-                        className={`w-full border rounded-xl sm:rounded-2xl px-4 pt-7 pb-3 text-sm appearance-none cursor-pointer outline-none transition-all duration-200 bg-secondary/30 text-foreground ${focused === "projectType" ? "border-primary ring-1 ring-primary bg-background" : "border-border hover:border-textMuted/30"}`}
+                        className={`w-full border rounded-lg px-4 pt-7 pb-3 text-sm appearance-none cursor-pointer outline-none transition-all duration-200 bg-secondary/40 text-foreground ${focused === "projectType" ? "border-primary ring-1 ring-primary bg-background" : "border-border hover:border-muted-foreground/40"}`}
                     >
                         <option value="" disabled hidden />
                         {projectTypes.map((p) => (
@@ -155,16 +147,16 @@ export default function ContactForm() {
                         exit={{ opacity: 0, height: 0 }}
                         className="overflow-hidden"
                     >
-                        <div className="p-4 rounded-xl sm:rounded-2xl bg-secondary border border-border">
+                        <div className="p-4 rounded-lg bg-secondary border border-border">
                             <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
                                 <div className="w-full sm:flex-1">
                                     <FloatInput label="Describe Specialty" name="customType" type="text" value={customType} focused={focused} onChange={(e) => setCustomType(e.target.value)} onFocus={() => setFocused("customType")} onBlur={() => setFocused(null)} />
                                 </div>
                                 <div className="flex gap-2 justify-end sm:w-auto">
-                                    <button type="button" onClick={handleCancelCustom} className="flex items-center justify-center p-3 sm:p-3 rounded-xl bg-card border border-border text-muted-foreground hover:text-foreground transition-colors">
-                                        <X className="w-5 h-5 sm:w-4 sm:h-4" />
+                                    <button type="button" onClick={handleCancelCustom} aria-label="Cancel" className="flex items-center justify-center p-3 rounded-lg bg-card border border-border text-muted-foreground hover:text-foreground transition-colors">
+                                        <X className="w-4 h-4" />
                                     </button>
-                                    <button type="button" onClick={handleAddCustomType} className="flex items-center justify-center px-6 py-3 rounded-xl bg-primary text-background font-bold text-sm sm:text-xs uppercase tracking-widest hover:opacity-90 transition-colors">
+                                    <button type="button" onClick={handleAddCustomType} className="flex items-center justify-center px-6 py-3 rounded-lg bg-primary text-background font-bold text-xs uppercase tracking-widest hover:opacity-90 transition-opacity">
                                         Add
                                     </button>
                                 </div>
@@ -193,47 +185,45 @@ export default function ContactForm() {
                     onChange={handleChange}
                     onFocus={() => setFocused("message")}
                     onBlur={() => setFocused(null)}
-                    className={`w-full border rounded-xl sm:rounded-3xl px-4 pt-10 pb-4 text-sm resize-none outline-none transition-all duration-200 bg-secondary/30 text-foreground ${focused === "message" ? "border-primary ring-1 ring-primary bg-background shadow-sm" : "border-border hover:border-textMuted/30"}`}
+                    className={`w-full border rounded-lg px-4 pt-10 pb-4 text-sm resize-none outline-none transition-all duration-200 bg-secondary/40 text-foreground ${focused === "message" ? "border-primary ring-1 ring-primary bg-background" : "border-border hover:border-muted-foreground/40"}`}
                     placeholder={focused === "message" || form.message ? "Tell us about your mission, goals and timelines..." : ""}
                 />
             </div>
 
-            {/* Divider */}
             <div className="w-full h-px bg-border" />
 
             {/* Submit */}
             <div className="flex flex-col gap-4">
                 <motion.button
-                    whileHover={{ scale: 1.01 }}
-                    whileTap={{ scale: 0.99 }}
+                    type="submit"
+                    whileHover={{ scale: 1.005 }}
+                    whileTap={{ scale: 0.995 }}
                     disabled={submitted}
-                    className={`group relative overflow-hidden w-full py-4 sm:py-5 rounded-xl sm:rounded-2xl font-bold text-xs tracking-[.25em] uppercase transition-all duration-500 ${submitted
-                            ? "bg-emerald-500 text-white"
-                            : "bg-primary text-background hover:opacity-90 shadow-lg shadow-primary/10"
+                    className={`w-full py-4 rounded-lg font-bold text-xs tracking-[0.2em] uppercase transition-opacity duration-300 ${submitted
+                            ? "bg-emerald-600 text-white"
+                            : "bg-primary text-background hover:opacity-85"
                         }`}
                 >
-                    <span className="relative z-10 flex items-center justify-center gap-2">
+                    <span className="flex items-center justify-center gap-2">
                         {submitted ? (
                             <>
-                                <CheckCircle2 className="w-4 h-4 animate-bounce" />
+                                <CheckCircle2 className="w-4 h-4" />
                                 Sent Successfully
                             </>
                         ) : (
                             <>
-                                <Send className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                                <Send className="w-4 h-4" />
                                 Send Message
                             </>
                         )}
                     </span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                 </motion.button>
 
-                <div className="flex items-center justify-center gap-3">
-                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <div className="flex items-center justify-center gap-2.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                     <p className="text-[10px] font-bold tracking-[0.1em] uppercase text-muted-foreground">Response in &lt; 24h</p>
                 </div>
             </div>
         </form>
     );
 }
-

@@ -312,6 +312,14 @@
   }
 }
 
+/* Force the default zinc accent within a subtree (overrides runtime accent vars) */
+.accent-zinc-scope {
+  --accent-current: var(--accent-zinc);
+  --accent-current-foreground: var(--accent-zinc-foreground);
+  --accent-current-muted: var(--accent-zinc-muted);
+  --accent-current-muted-foreground: var(--accent-zinc-muted-foreground);
+}
+
 /* Preloader: hidden before first paint on repeat visits within a session */
 .preloaded-skip #site-preloader {
   display: none !important;

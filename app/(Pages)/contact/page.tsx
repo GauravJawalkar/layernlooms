@@ -9,11 +9,11 @@ import JsonLd, { getBreadcrumbSchema } from "@/app/components/JsonLd";
 import { GoogleIcon, WhatsAppIcon, XIcon } from "@/app/components/Icons";
 
 const socialLinks = [
-    { name: "X", icon: XIcon, href: "https://x.com/Layernlooms", color: "hover:text-primary" },
-    { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com/company/layernlooms", color: "hover:text-[#0077b5]" },
-    { name: "Instagram", icon: Instagram, href: "https://www.instagram.com/layernlooms", color: "hover:text-[#e4405f]" },
-    { name: "Google Business", icon: GoogleIcon, href: "https://share.google/S46H7wVpxAKJO4Eom", color: "hover:text-[#4285F4]" },
-    { name: "WhatsApp", icon: WhatsAppIcon, href: "https://wa.me/9511864578", color: "hover:text-[#25D366]" },
+    { name: "X", icon: XIcon, href: "https://x.com/Layernlooms" },
+    { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com/company/layernlooms" },
+    { name: "Instagram", icon: Instagram, href: "https://www.instagram.com/layernlooms" },
+    { name: "Google Business", icon: GoogleIcon, href: "https://share.google/S46H7wVpxAKJO4Eom" },
+    { name: "WhatsApp", icon: WhatsAppIcon, href: "https://wa.me/9511864578" },
 ];
 
 const contactInfo = [
@@ -28,53 +28,54 @@ export default function ContactPage() {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
-            transition: { staggerChildren: 0.1, delayChildren: 0.2 }
+            transition: { staggerChildren: 0.08, delayChildren: 0.15 }
         }
     };
 
     const fadeUp = {
-        hidden: { opacity: 0, y: 30 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as const } }
+        hidden: { opacity: 0, y: 24 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const } }
     };
 
     return (
-        <div className="min-h-screen bg-background selection:bg-primary selection:text-background">
+        <div className="accent-zinc-scope min-h-screen bg-background selection:bg-primary selection:text-background">
             <JsonLd data={getBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "Contact", url: "/contact" }])} />
-            {/* ── Background Elements ── */}
+
+            {/* ── Background: subtle noise only ── */}
             <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-                <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/3 rounded-full blur-[150px] translate-x-1/3 -translate-y-1/3" />
-                <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-secondary/40 rounded-full blur-[120px] -translate-x-1/4 translate-y-1/4" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[200px] opacity-30" />
                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.02] mix-blend-overlay" />
             </div>
 
-            <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 lg:px-16 pt-12 sm:pt-16 pb-20">
+            <main className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 lg:px-16 pt-14 sm:pt-20 pb-16 sm:pb-24">
+                {/* ── Header ── */}
                 <motion.div
                     initial="hidden"
                     animate="visible"
                     variants={stagger}
-                    className="max-w-4xl mb-10 sm:mb-14"
+                    className="max-w-3xl mb-10 sm:mb-16"
                 >
-
+                    <motion.div variants={fadeUp} className="flex items-center gap-3 mb-5">
+                        <span className="w-8 h-px bg-primary" />
+                        <p className="text-[11px] font-bold tracking-[0.25em] uppercase text-muted-foreground">
+                            Get in Touch
+                        </p>
+                    </motion.div>
 
                     <motion.h1
                         variants={fadeUp}
-                        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[0.9]"
+                        className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05]"
                     >
                         <span className="text-reflect">
-                            Let&apos;s build
-                            <br />
-                            <span className="text-muted-foreground/50">something</span>{" "}
-                            <span className="text-primary">great</span>
+                            Let&apos;s build something{" "}
+                            <span className="text-muted-foreground/50">great</span>
                         </span>
                     </motion.h1>
 
                     <motion.p
                         variants={fadeUp}
-                        className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mt-4 leading-relaxed"
+                        className="text-sm sm:text-base text-muted-foreground max-w-xl mt-5 leading-relaxed"
                     >
-                        Have a vision? We have the engineering expertise to bring it to life.
-                        Tell us about your project and we&apos;ll get back to you within 24 hours.
+                        Have a vision? Tell us about your project and we&apos;ll get back to you within 24 hours.
                     </motion.p>
                 </motion.div>
 
@@ -83,40 +84,34 @@ export default function ContactPage() {
                     initial="hidden"
                     animate="visible"
                     variants={stagger}
-                    className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16"
+                    className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12"
                 >
                     {/* ── Left Column: Form ── */}
                     <motion.div
                         variants={fadeUp}
                         className="lg:col-span-7 order-2 lg:order-1"
                     >
-                        <div className="relative">
-                            <div className="absolute -inset-4 bg-gradient-to-br from-primary/10 via-transparent to-secondary/20 rounded-[3rem] blur-3xl opacity-80" />
-                            <div className="relative">
-                                <ContactForm />
-                            </div>
-                        </div>
+                        <ContactForm />
                     </motion.div>
 
                     {/* ── Right Column: Info ── */}
-                    <div className="lg:col-span-5 order-1 lg:order-2 space-y-6 sm:space-y-8">
+                    <div className="lg:col-span-5 order-1 lg:order-2 space-y-6">
                         {/* Contact Cards */}
-                        <motion.div variants={fadeUp} className="space-y-4">
+                        <motion.div variants={fadeUp} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
                             {contactInfo.map((info, i) => {
                                 const Icon = info.icon;
                                 return (
                                     <motion.div
                                         key={i}
-                                        initial={{ opacity: 0, x: 20 }}
-                                        whileInView={{ opacity: 1, x: 0 }}
+                                        initial={{ opacity: 0, y: 12 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
                                         viewport={{ once: true }}
-                                        transition={{ delay: i * 0.1 }}
-                                        className="group relative p-5 sm:p-6 rounded-2xl sm:rounded-[2rem] bg-card border border-border hover:border-primary/20 hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 overflow-hidden"
+                                        transition={{ delay: i * 0.06 }}
+                                        className="group rounded-xl border border-border bg-card p-4 sm:p-5 hover:border-primary/30 transition-colors duration-300"
                                     >
-                                        <div className="absolute top-0 right-0 w-20 h-20 bg-secondary rounded-full blur-3xl -mr-8 -mt-8 opacity-50 group-hover:opacity-80 transition-opacity" />
-                                        <div className="relative flex items-center gap-4">
-                                            <div className="shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center bg-secondary text-muted-foreground group-hover:bg-primary group-hover:text-background transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
-                                                <Icon className="w-5 h-5" />
+                                        <div className="flex items-center gap-3.5">
+                                            <div className="shrink-0 w-10 h-10 rounded-lg bg-secondary text-muted-foreground flex items-center justify-center group-hover:bg-primary group-hover:text-background transition-colors duration-300">
+                                                <Icon className="w-4 h-4" />
                                             </div>
                                             <div className="min-w-0">
                                                 <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-muted-foreground mb-0.5">{info.label}</p>
@@ -125,13 +120,13 @@ export default function ContactPage() {
                                                         href={info.href}
                                                         target={info.href.startsWith("http") ? "_blank" : undefined}
                                                         rel={info.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                                                        className="text-sm sm:text-base font-semibold text-foreground hover:text-primary transition-colors flex items-center gap-2 break-all"
+                                                        className="text-sm font-semibold text-foreground hover:text-primary transition-colors flex items-center gap-1.5 break-all"
                                                     >
                                                         {info.value}
-                                                        <ArrowUpRight className="w-4 h-4 shrink-0 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all" />
+                                                        <ArrowUpRight className="w-3.5 h-3.5 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
                                                     </Link>
                                                 ) : (
-                                                    <p className="text-sm sm:text-base font-semibold text-foreground">{info.value}</p>
+                                                    <p className="text-sm font-semibold text-foreground">{info.value}</p>
                                                 )}
                                             </div>
                                         </div>
@@ -141,9 +136,9 @@ export default function ContactPage() {
                         </motion.div>
 
                         {/* Social Links */}
-                        <motion.div variants={fadeUp} className="p-5 sm:p-6 rounded-2xl sm:rounded-[2rem] border border-border bg-card/50 backdrop-blur-sm">
-                            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-muted-foreground mb-4">Follow Us</p>
-                            <div className="flex flex-wrap gap-3">
+                        <motion.div variants={fadeUp} className="rounded-xl border border-border bg-card p-4 sm:p-5">
+                            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-muted-foreground mb-3.5">Follow Us</p>
+                            <div className="flex flex-wrap gap-2.5">
                                 {socialLinks.map((social) => (
                                     <Link
                                         key={social.name}
@@ -151,9 +146,9 @@ export default function ContactPage() {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         aria-label={social.name}
-                                        className={`w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center rounded-xl sm:rounded-2xl bg-secondary border border-border shadow-sm transition-all duration-300 group ${social.color}`}
+                                        className="w-10 h-10 flex items-center justify-center rounded-lg bg-secondary border border-border text-foreground hover:bg-primary hover:text-background transition-colors duration-300"
                                     >
-                                        <social.icon className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:scale-110 text-foreground" />
+                                        <social.icon className="w-4 h-4" />
                                     </Link>
                                 ))}
                             </div>
@@ -169,4 +164,3 @@ export default function ContactPage() {
         </div>
     );
 }
-
