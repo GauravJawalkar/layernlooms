@@ -49,7 +49,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   const title = `${service.title} | LayerNLooms Custom Software Services`;
-  const description = pickMetaDescription(undefined, service.description, service.longDescription);
+  const description = pickMetaDescription(service.metaDescription, service.description, service.longDescription);
   const url = `${site.url}/services/${service.slug}`;
   const image = service.image?.startsWith("http")
     ? service.image

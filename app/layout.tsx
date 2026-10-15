@@ -18,7 +18,7 @@ const spaceGrotesk = Space_Grotesk({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: "LayerNLooms | Custom Software Development, Web & Mobile Apps, AI Solutions",
+    default: "LayerNLooms | Custom Software & AI Development",
     template: "%s | LayerNLooms",
   },
   description:
@@ -26,25 +26,6 @@ export const metadata: Metadata = {
   applicationName: site.name,
   generator: "Next.js",
   referrer: "origin-when-cross-origin",
-  keywords: [
-    "custom software development",
-    "web application development",
-    "mobile app development",
-    "AI software solutions",
-    "enterprise software development",
-    "software development agency",
-    "full-stack development",
-    "AI integration services",
-    "digital transformation",
-    "custom web development",
-    "iOS Android app development",
-    "machine learning solutions",
-    "Next.js agency",
-    "React Native development",
-    "cloud infrastructure services",
-    "hire software developers",
-    "dedicated development team",
-  ],
   authors: [{ name: site.name, url: site.url }],
   creator: site.name,
   publisher: site.name,
@@ -106,10 +87,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="bg-background">
-      <head>
-        <JsonLd data={[organizationSchema, websiteSchema]} />
-      </head>
       <body className={`${spaceGrotesk.className} ${spaceGrotesk.variable} antialiased bg-background text-foreground transition-colors duration-300`}>
+        <JsonLd data={[organizationSchema, websiteSchema]} />
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
         <script
           suppressHydrationWarning

@@ -52,7 +52,7 @@ export async function POST(req: Request) {
                         <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                           <tr>
                             <td class="header-logo" style="vertical-align:middle">
-                              <img src="https://www.layernlooms.com/favicon.png" alt="LayerNLooms" width="40" height="40" style="display:inline-block;border-radius:8px;vertical-align:middle;margin-right:10px">
+                              <img src="https://layernlooms.com/favicon.png" alt="LayerNLooms" width="40" height="40" style="display:inline-block;border-radius:8px;vertical-align:middle;margin-right:10px">
                             </td>
                             <td class="header-badge" style="vertical-align:middle;text-align:right">
                               <span style="display:inline-block;font-size:11px;font-weight:600;color:#6366f1;background:#eef2ff;padding:4px 14px;border-radius:20px;letter-spacing:0.3px">CONTACT INQUIRY</span>

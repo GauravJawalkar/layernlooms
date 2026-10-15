@@ -213,7 +213,7 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
           </article>
 
           <div className="mt-12 pt-8 border-t border-border">
-            <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex items-center gap-2 flex-wrap mb-8">
               <Tag className="w-4 h-4 text-muted-foreground" />
               {post.tags.map((tag) => (
                 <span
@@ -223,6 +223,48 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
                   {tag}
                 </span>
               ))}
+            </div>
+
+            {/* Contextual Services Link for SEO & Internal Linking */}
+            <div className="p-6 sm:p-8 rounded-2xl border border-border bg-secondary/30 backdrop-blur-sm">
+              <h3 className="text-base sm:text-lg font-bold text-foreground mb-2">
+                Need engineering support for your product?
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed mb-5">
+                Our Pune-based engineering team specializes in architecting production web apps, mobile solutions, and custom AI systems for startups and enterprises worldwide.
+              </p>
+              <div className="flex flex-wrap gap-2.5">
+                <Link
+                  href="/services/web-development"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-secondary hover:bg-primary hover:text-primary-foreground text-xs font-semibold text-foreground transition-colors"
+                >
+                  Web Development →
+                </Link>
+                <Link
+                  href="/services/cloud-infrastructure"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-secondary hover:bg-primary hover:text-primary-foreground text-xs font-semibold text-foreground transition-colors"
+                >
+                  Cloud & DevOps →
+                </Link>
+                <Link
+                  href="/services/ai-ml-solutions"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-secondary hover:bg-primary hover:text-primary-foreground text-xs font-semibold text-foreground transition-colors"
+                >
+                  AI Solutions →
+                </Link>
+                <Link
+                  href="/services/mobile-app-development"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-secondary hover:bg-primary hover:text-primary-foreground text-xs font-semibold text-foreground transition-colors"
+                >
+                  Mobile Apps →
+                </Link>
+                <Link
+                  href="/services"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-border text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  All Services
+                </Link>
+              </div>
             </div>
           </div>
         </div>

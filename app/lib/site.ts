@@ -11,9 +11,10 @@ export const site = {
   foundingDate: "2024",
   priceRange: "$$$",
   address: {
-    streetAddress: "Pune",
+    streetAddress: "Pune, Maharashtra, India",
     addressLocality: "Pune",
     addressRegion: "Maharashtra",
+    postalCode: "411001",
     addressCountry: "IN",
   },
   geo: {

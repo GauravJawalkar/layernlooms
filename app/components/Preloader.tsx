@@ -10,12 +10,14 @@ type Phase = "count" | "exit" | "done";
 
 export default function Preloader() {
   const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
   const [phase, setPhase] = useState<Phase>("count");
   const rootRef = useRef<HTMLDivElement>(null);
   const numRef = useRef<HTMLSpanElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    setMounted(true);
     const root = rootRef.current;
 
     // Skip on admin routes and on repeat visits within this session.
@@ -78,7 +80,7 @@ export default function Preloader() {
     };
   }, [pathname]);
 
-  if (phase === "done") return null;
+  if (!mounted || phase === "done") return null;
 
   return (
     <motion.div
@@ -87,6 +89,7 @@ export default function Preloader() {
       role="status"
       aria-live="polite"
       aria-label="Loading website"
+      aria-hidden="true"
       className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-background"
       initial={{ opacity: 1, scale: 1 }}
       animate={phase === "exit" ? { opacity: 0, scale: 1.05 } : { opacity: 1, scale: 1 }}

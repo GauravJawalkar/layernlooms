@@ -29,6 +29,7 @@ const address = {
   streetAddress: site.address.streetAddress,
   addressLocality: site.address.addressLocality,
   addressRegion: site.address.addressRegion,
+  postalCode: site.address.postalCode,
   addressCountry: site.address.addressCountry,
 };
 

@@ -22,25 +22,32 @@ export const revalidate = 3600;
  * deploy teaches it to stop trusting the whole signal. The dynamic routes carry
  * real CMS write times.
  */
+const STATIC_CONTENT_DATE = new Date("2026-04-10T00:00:00.000Z");
+
 const staticRoutes: MetadataRoute.Sitemap = [
-  { url: site.url },
-  { url: `${site.url}/services` },
-  { url: `${site.url}/about` },
-  { url: `${site.url}/portfolio` },
-  { url: `${site.url}/blog` },
-  { url: `${site.url}/pricing` },
-  { url: `${site.url}/contact` },
-  { url: `${site.url}/terms` },
-  { url: `${site.url}/privacy` },
-  // /careers is deliberately omitted. It is noindex until the page is built
-  // out, and Google asks that noindex URLs stay out of the sitemap. It stays
-  // crawlable through the footer link so the noindex is picked up quickly.
+  { url: site.url, lastModified: STATIC_CONTENT_DATE, changeFrequency: "weekly", priority: 1.0 },
+  { url: `${site.url}/services`, lastModified: STATIC_CONTENT_DATE, changeFrequency: "weekly", priority: 0.9 },
+  { url: `${site.url}/about`, lastModified: STATIC_CONTENT_DATE, changeFrequency: "monthly", priority: 0.8 },
+  { url: `${site.url}/portfolio`, lastModified: STATIC_CONTENT_DATE, changeFrequency: "weekly", priority: 0.8 },
+  { url: `${site.url}/blog`, lastModified: STATIC_CONTENT_DATE, changeFrequency: "weekly", priority: 0.8 },
+  { url: `${site.url}/pricing`, lastModified: STATIC_CONTENT_DATE, changeFrequency: "monthly", priority: 0.7 },
+  { url: `${site.url}/contact`, lastModified: STATIC_CONTENT_DATE, changeFrequency: "monthly", priority: 0.7 },
+  { url: `${site.url}/terms`, lastModified: STATIC_CONTENT_DATE, changeFrequency: "yearly", priority: 0.3 },
+  { url: `${site.url}/privacy`, lastModified: STATIC_CONTENT_DATE, changeFrequency: "yearly", priority: 0.3 },
 ];
 
-function toEntry(path: string, lastModified: Date | null): MetadataRoute.Sitemap[number] {
-  return lastModified
-    ? { url: `${site.url}${path}`, lastModified }
-    : { url: `${site.url}${path}` };
+function toEntry(
+  path: string,
+  lastModified: Date | null,
+  changeFrequency: "weekly" | "monthly" = "monthly",
+  priority = 0.7
+): MetadataRoute.Sitemap[number] {
+  return {
+    url: `${site.url}${path}`,
+    lastModified: lastModified || STATIC_CONTENT_DATE,
+    changeFrequency,
+    priority,
+  };
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -51,10 +58,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     ...staticRoutes,
-    ...getAllServiceSlugs().map((service) => ({ url: `${site.url}/services/${service.slug}` })),
+    ...getAllServiceSlugs().map((service) => ({
+      url: `${site.url}/services/${service.slug}`,
+      lastModified: STATIC_CONTENT_DATE,
+      changeFrequency: "weekly" as const,
+      priority: 0.9,
+    })),
     ...projects.map((project) =>
-      toEntry(`/portfolio/${project.slug}`, resolveLastModified(project))
+      toEntry(`/portfolio/${project.slug}`, resolveLastModified(project), "monthly", 0.8)
     ),
-    ...posts.map((post) => toEntry(`/blog/${post.slug}`, resolveLastModified(post))),
+    ...posts.map((post) =>
+      toEntry(`/blog/${post.slug}`, resolveLastModified(post), "weekly", 0.7)
+    ),
   ];
 }

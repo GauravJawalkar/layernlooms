@@ -13,6 +13,7 @@ interface ServiceHeroProps {
         slug: string;
         title: string;
         subtitle: string;
+        description?: string;
         longDescription: string;
         image: string;
     };
@@ -72,7 +73,7 @@ export default function ServiceHero({ service }: ServiceHeroProps) {
                         <div className="w-16 h-0.5 bg-foreground/20 mb-6 rounded-full" />
 
                         <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl font-medium">
-                            {service.longDescription}
+                            {service.description || service.longDescription}. Engineered with modern architecture, rigorous security standards, and production-ready performance.
                         </p>
 
                         <div className="mt-8 flex flex-col sm:flex-row items-center gap-4">

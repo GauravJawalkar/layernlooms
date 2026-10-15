@@ -59,7 +59,7 @@ const stackItems = [
   {
     id: "frontend",
     title: "Modern Frontend",
-    description: "Custom interfaces engineered with React 19 and Next.js for sub-second page loads, SEO friendliness, and visual aesthetics.",
+    description: "Custom interfaces engineered with React 19 and Next.js for high-performance page loads, SEO excellence, and fluid user experience.",
     logo: FrontendIcon,
     tags: ["React 19 / Next.js", "Framer Motion", "TailwindCSS"],
   },
@@ -312,14 +312,8 @@ export default function TechStackSection() {
           </svg>
         </div>
 
-        {/* Desktop Cards Grid */}
-        <div className="hidden lg:grid grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {stackItems.map((item, index) => renderCard(item, index))}
-        </div>
-
-        {/* Mobile Connected Timeline Flow (visible on mobile/tablet) */}
-        <div className="lg:hidden flex flex-col items-center max-w-md mx-auto mt-12 gap-0">
-          {/* Centered Microchip (Technology Core / Powered By) */}
+        {/* Mobile Microchip Indicator (Mobile only) */}
+        <div className="lg:hidden flex flex-col items-center max-w-md mx-auto mt-8 mb-6">
           <div className="z-10 w-[240px] h-[60px] rounded-xl border border-neutral-200 dark:border-neutral-800 bg-gradient-to-b from-neutral-100 to-neutral-200 dark:from-neutral-800 dark:to-neutral-950 p-[1px] shadow-[0_10px_30px_rgba(0,0,0,0.08),inset_0_1px_1px_rgba(255,255,255,0.4)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.08)] flex items-center justify-center">
             <div className="w-full h-full rounded-[10px] bg-white dark:bg-neutral-900/95 flex flex-col items-center justify-center px-4 select-none">
               <span className="text-[9px] font-bold tracking-[0.25em] text-neutral-400 dark:text-neutral-500 uppercase">Technology Core</span>
@@ -329,54 +323,11 @@ export default function TechStackSection() {
               </span>
             </div>
           </div>
+        </div>
 
-          {/* Connector 1 */}
-          <div className="w-px h-12 bg-neutral-200 dark:bg-neutral-800 relative z-0">
-            <motion.div
-              className="absolute left-1/2 -translate-x-1/2 w-3.5 h-3.5 flex items-center justify-center pointer-events-none"
-              animate={{ y: [0, 48] }}
-              transition={{ duration: 1.8, repeat: Infinity, ease: "linear" }}
-            >
-              <span className="absolute w-3.5 h-3.5 rounded-full bg-neutral-900/10 dark:bg-white/10" />
-              <span className="absolute w-2 h-2 rounded-full bg-neutral-900/25 dark:bg-white/25" />
-              <span className="absolute w-1 h-1 rounded-full bg-neutral-900 dark:bg-white" />
-            </motion.div>
-          </div>
-
-          {/* Card 1 */}
-          {renderCard(stackItems[0], 0)}
-
-          {/* Connector 2 */}
-          <div className="w-px h-12 bg-neutral-200 dark:bg-neutral-800 relative z-0">
-            <motion.div
-              className="absolute left-1/2 -translate-x-1/2 w-3.5 h-3.5 flex items-center justify-center pointer-events-none"
-              animate={{ y: [0, 48] }}
-              transition={{ duration: 1.8, repeat: Infinity, ease: "linear" }}
-            >
-              <span className="absolute w-3.5 h-3.5 rounded-full bg-neutral-900/10 dark:bg-white/10" />
-              <span className="absolute w-2 h-2 rounded-full bg-neutral-900/25 dark:bg-white/25" />
-              <span className="absolute w-1 h-1 rounded-full bg-neutral-900 dark:bg-white" />
-            </motion.div>
-          </div>
-
-          {/* Card 2 */}
-          {renderCard(stackItems[1], 1)}
-
-          {/* Connector 3 */}
-          <div className="w-px h-12 bg-neutral-200 dark:bg-neutral-800 relative z-0">
-            <motion.div
-              className="absolute left-1/2 -translate-x-1/2 w-3.5 h-3.5 flex items-center justify-center pointer-events-none"
-              animate={{ y: [0, 48] }}
-              transition={{ duration: 1.8, repeat: Infinity, ease: "linear" }}
-            >
-              <span className="absolute w-3.5 h-3.5 rounded-full bg-neutral-900/10 dark:bg-white/10" />
-              <span className="absolute w-2 h-2 rounded-full bg-neutral-900/25 dark:bg-white/25" />
-              <span className="absolute w-1 h-1 rounded-full bg-neutral-900 dark:bg-white" />
-            </motion.div>
-          </div>
-
-          {/* Card 3 */}
-          {renderCard(stackItems[2], 2)}
+        {/* Unified Cards Grid (Rendered once in DOM, responsive for mobile & desktop) */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 max-w-md lg:max-w-5xl mx-auto mt-6 lg:mt-0">
+          {stackItems.map((item, index) => renderCard(item, index))}
         </div>
       </div>
     </section>
