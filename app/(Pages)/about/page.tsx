@@ -206,7 +206,7 @@ export default function AboutPage() {
                 <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-foreground leading-[1.1]">
                   From a bold vision to a
                   <br />
-                  <span className="text-muted-foreground/30">digital powerhouse</span>
+                  <span className="text-muted-foreground">digital powerhouse</span>
                 </h3>
               </div>
               <div className="space-y-4">

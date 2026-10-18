@@ -56,7 +56,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   /* ─── tokens ─── */
-  const bg = "bg-background";
+  const bg = "bg-card shadow-sm";
   const borderTop = "border-border";
   const bodyText = "text-muted-foreground";
   const labelText = "text-foreground";

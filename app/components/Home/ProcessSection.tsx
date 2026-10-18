@@ -56,8 +56,8 @@ const containerVariants = {
 };
 
 export default function ProcessSection() {
-  const { pointerTheme } = useTheme();
-  const activeColor = themeColors[pointerTheme as keyof typeof themeColors] || "#a1a1aa";
+  const { accentColor } = useTheme();
+  const activeColor = accentColor;
   const [activeStep, setActiveStep] = useState<number>(-1);
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
   const sectionRef = useRef<HTMLDivElement>(null);

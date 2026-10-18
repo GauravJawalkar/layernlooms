@@ -50,8 +50,8 @@ const itemVariants = {
 };
 
 export default function EngagementModels() {
-  const { pointerTheme } = useTheme();
-  const activeColor = themeColors[pointerTheme] || "#a1a1aa";
+  const { accentColor } = useTheme();
+  const activeColor = accentColor;
 
   return (
     <section className="py-20 bg-background">

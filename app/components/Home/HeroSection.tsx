@@ -12,7 +12,7 @@ const Scene = dynamic(() => import("./Scene"), {
 
 export default function HeroSection() {
   return (
-    <section className="relative h-[85vh] min-h-[600px] max-h-[800px] w-full overflow-hidden bg-black my-5 rounded-4xl ">
+    <section className="relative h-[85vh] min-h-[600px] max-h-[800px] w-full overflow-hidden bg-black my-5 rounded-4xl border border-black/10 dark:border-white/10 shadow-2xl shadow-black/10 dark:shadow-none ring-1 ring-black/5 dark:ring-white/5">
       <div className="absolute inset-0 z-[2]">
         <Scene />
       </div>

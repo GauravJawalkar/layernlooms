@@ -127,8 +127,8 @@ export default function PricingPage() {
                             variants={cardVariants}
                             initial="hidden"
                             animate={isCardsInView ? "visible" : "hidden"}
-                            className={`rounded-2xl p-6 sm:p-8 flex flex-col gap-6 transition-colors duration-300 ${plan.featured
-                                ? "bg-primary text-background md:scale-105 shadow-2xl z-10"
+                            className={`rounded-2xl p-6 sm:p-8 flex flex-col gap-6 transition-all duration-300 ${plan.featured
+                                ? "bg-gradient-to-b from-neutral-900 via-neutral-900 to-black text-white dark:from-white dark:via-neutral-100 dark:to-neutral-100 dark:text-neutral-950 md:scale-105 shadow-2xl border border-neutral-800 dark:border-neutral-200 ring-1 ring-black/10 dark:ring-white/20 z-10"
                                 : "bg-card border border-border shadow-sm hover:shadow-lg text-foreground"
                                 }`}
                             whileHover={!plan.featured ? { y: -4, transition: { duration: 0.2 } } : {}}
@@ -136,7 +136,7 @@ export default function PricingPage() {
                             <div>
                                 {plan.featured && (
                                     <motion.span
-                                        className="inline-block text-xs font-bold tracking-widest uppercase mb-3 opacity-60"
+                                        className="inline-block text-xs font-bold tracking-widest uppercase mb-3 px-3 py-1 rounded-full bg-white/10 dark:bg-black/10 text-white dark:text-neutral-950 border border-white/15 dark:border-black/15"
                                         initial={{ opacity: 0, x: -10 }}
                                         animate={isCardsInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
                                         transition={{ duration: 0.4, delay: i * 0.1 + 0.2 }}
@@ -144,8 +144,8 @@ export default function PricingPage() {
                                         Most Popular
                                     </motion.span>
                                 )}
-                                <h2 className={`text-2xl font-black mb-2 ${plan.featured ? "text-background" : "text-foreground"}`}>{plan.title}</h2>
-                                <p className={`text-sm leading-relaxed ${plan.featured ? "opacity-80" : "text-muted-foreground"}`}>{plan.description}</p>
+                                <h2 className={`text-2xl font-black mb-2 ${plan.featured ? "text-white dark:text-neutral-950" : "text-foreground"}`}>{plan.title}</h2>
+                                <p className={`text-sm leading-relaxed ${plan.featured ? "text-neutral-300 dark:text-neutral-600" : "text-muted-foreground"}`}>{plan.description}</p>
                             </div>
 
                             <ul className="space-y-3 flex-1">
@@ -163,15 +163,15 @@ export default function PricingPage() {
                                                 stroke="currentColor"
                                                 strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
                                         </svg>
-                                        <span className={`text-sm font-medium ${plan.featured ? "text-background" : "text-foreground/80"}`}>{f}</span>
+                                        <span className={`text-sm font-medium ${plan.featured ? "text-neutral-100 dark:text-neutral-900" : "text-foreground/80"}`}>{f}</span>
                                     </motion.li>
                                 ))}
                             </ul>
 
                             <motion.button
-                                className={`w-full py-3 rounded-xl text-sm font-bold tracking-wide transition-all duration-200 ${plan.featured
-                                    ? "bg-background text-foreground hover:opacity-90"
-                                    : "bg-primary text-background hover:opacity-90"
+                                className={`w-full py-3 rounded-xl text-sm font-bold tracking-wide transition-all duration-200 cursor-pointer ${plan.featured
+                                    ? "bg-white text-black hover:bg-neutral-200 dark:bg-black dark:text-white dark:hover:bg-neutral-800 shadow-md"
+                                    : "bg-primary text-primary-foreground hover:opacity-90 shadow-sm"
                                     }`}
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}

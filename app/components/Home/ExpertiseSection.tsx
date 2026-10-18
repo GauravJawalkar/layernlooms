@@ -60,8 +60,8 @@ const itemVariants = {
 };
 
 export default function ExpertiseSection() {
-  const { pointerTheme } = useTheme();
-  const activeColor = themeColors[pointerTheme] || "#a1a1aa";
+  const { accentColor } = useTheme();
+  const activeColor = accentColor;
 
   return (
     <section className="relative py-20 bg-background overflow-hidden">

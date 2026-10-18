@@ -69,8 +69,8 @@ function PartnerLogo({ initials, logo, color }: { initials: string; logo?: strin
 }
 
 export default function PartnershipsSection() {
-  const { pointerTheme } = useTheme();
-  const activeColor = themeColors[pointerTheme as keyof typeof themeColors] || "#a1a1aa";
+  const { accentColor } = useTheme();
+  const activeColor = accentColor;
 
   return (
     <section className="relative py-16 sm:py-20 bg-secondary/30 dark:bg-zinc-950/20 overflow-hidden">

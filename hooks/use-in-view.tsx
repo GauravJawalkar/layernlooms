@@ -4,7 +4,7 @@ import { useRef, useEffect, useState } from "react"
 
 export function useInView(options = { threshold: 0.1 }) {
   const ref = useRef<any>(null);
-  const [isInView, setIsInView] = useState(false);
+  const [_isInView, setIsInView] = useState(false);
 
   useEffect(() => {
     const node = ref.current;

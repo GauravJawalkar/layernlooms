@@ -30,8 +30,8 @@ const itemVariants = {
 };
 
 export default function BlogSection() {
-  const { pointerTheme } = useTheme();
-  const activeColor = themeColors[pointerTheme as keyof typeof themeColors] || "#a1a1aa";
+  const { accentColor } = useTheme();
+  const activeColor = accentColor;
   const [posts, setPosts] = useState<AdminBlogPost[]>([]);
   const [loading, setLoading] = useState(true);
 

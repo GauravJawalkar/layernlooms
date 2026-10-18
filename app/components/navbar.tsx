@@ -107,6 +107,7 @@ const Navbar = () => {
         </nav>
 
         <div className="flex items-center gap-3 shrink-0">
+          <ThemeToggle variant="toggle" />
           <Link
             href="/contact"
             className="relative group overflow-hidden px-5 py-2 text-xs font-semibold rounded-full border border-border text-foreground hover:text-primary-foreground transition-colors duration-300"
@@ -171,13 +172,16 @@ const Navbar = () => {
           <Logo className="w-auto h-8 lg:h-9" />
         </Link>
 
-        <button
-          onClick={() => setMenuOpen(true)}
-          className="p-2 rounded-xl text-foreground hover:bg-secondary transition-colors"
-          aria-label="Open menu"
-        >
-          <FiMenu className="w-5 h-5" />
-        </button>
+        <div className="flex items-center gap-2">
+          <ThemeToggle variant="toggle" />
+          <button
+            onClick={() => setMenuOpen(true)}
+            className="p-2 rounded-xl text-foreground hover:bg-secondary transition-colors"
+            aria-label="Open menu"
+          >
+            <FiMenu className="w-5 h-5" />
+          </button>
+        </div>
       </header>
 
       {/* ─── Mobile Bottom Tab Bar ─── */}

@@ -477,8 +477,8 @@ const containerVariants = {
 };
 
 export default function WhyChooseUs() {
-  const { pointerTheme } = useTheme();
-  const activeColor = themeColors[pointerTheme] || "oklch(0.708 0 0)";
+  const { accentColor } = useTheme();
+  const activeColor = accentColor;
 
   return (
     <section className="relative py-16 sm:py-20 overflow-hidden">

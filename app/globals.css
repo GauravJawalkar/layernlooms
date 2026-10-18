@@ -18,7 +18,7 @@
   --neutral-950: oklch(0.145 0 0);
 
   /* Light mode semantic tokens */
-  --background: var(--neutral-0);
+  --background: var(--neutral-50);
   --foreground: var(--neutral-950);
   --card: var(--neutral-0);
   --card-foreground: var(--neutral-950);
@@ -27,9 +27,9 @@
   --primary: var(--neutral-950);
   --primary-foreground: var(--neutral-0);
   --secondary: var(--neutral-100);
-  --secondary-foreground: var(--neutral-950);
+  --secondary-foreground: var(--neutral-900);
   --muted: var(--neutral-100);
-  --muted-foreground: var(--neutral-500);
+  --muted-foreground: var(--neutral-600);
   --accent: var(--neutral-100);
   --accent-foreground: var(--neutral-950);
   --destructive: oklch(0.577 0.245 27.325);
@@ -39,35 +39,35 @@
   --ring: var(--neutral-700);
 
   /* Accent color variants (light mode) */
-  --accent-zinc: oklch(0.37 0 0);
+  --accent-zinc: oklch(0.32 0 0);
   --accent-zinc-foreground: var(--neutral-0);
-  --accent-zinc-muted: oklch(0.97 0 0);
-  --accent-zinc-muted-foreground: var(--neutral-500);
+  --accent-zinc-muted: oklch(0.96 0 0);
+  --accent-zinc-muted-foreground: var(--neutral-700);
 
-  --accent-purple: oklch(0.55 0.22 270);
+  --accent-purple: oklch(0.50 0.23 275);
   --accent-purple-foreground: var(--neutral-0);
-  --accent-purple-muted: oklch(0.96 0.03 270);
-  --accent-purple-muted-foreground: oklch(0.45 0.15 270);
+  --accent-purple-muted: oklch(0.96 0.03 275);
+  --accent-purple-muted-foreground: oklch(0.40 0.16 275);
 
-  --accent-green: oklch(0.55 0.15 150);
+  --accent-green: oklch(0.46 0.16 150);
   --accent-green-foreground: var(--neutral-0);
   --accent-green-muted: oklch(0.95 0.03 150);
-  --accent-green-muted-foreground: oklch(0.4 0.1 150);
+  --accent-green-muted-foreground: oklch(0.35 0.12 150);
 
-  --accent-cyan: oklch(0.65 0.15 200);
+  --accent-cyan: oklch(0.48 0.16 210);
   --accent-cyan-foreground: var(--neutral-0);
-  --accent-cyan-muted: oklch(0.96 0.03 200);
-  --accent-cyan-muted-foreground: oklch(0.45 0.1 200);
+  --accent-cyan-muted: oklch(0.95 0.03 210);
+  --accent-cyan-muted-foreground: oklch(0.38 0.12 210);
 
-  --accent-amber: oklch(0.7 0.18 80);
-  --accent-amber-foreground: var(--neutral-950);
-  --accent-amber-muted: oklch(0.96 0.04 80);
-  --accent-amber-muted-foreground: oklch(0.5 0.12 80);
+  --accent-amber: oklch(0.56 0.20 65);
+  --accent-amber-foreground: var(--neutral-0);
+  --accent-amber-muted: oklch(0.96 0.04 65);
+  --accent-amber-muted-foreground: oklch(0.45 0.14 65);
 
-  --accent-pink: oklch(0.6 0.22 340);
+  --accent-pink: oklch(0.52 0.24 340);
   --accent-pink-foreground: var(--neutral-0);
   --accent-pink-muted: oklch(0.96 0.03 340);
-  --accent-pink-muted-foreground: oklch(0.45 0.15 340);
+  --accent-pink-muted-foreground: oklch(0.40 0.16 340);
 
   /* Default accent = zinc */
   --accent-current: var(--accent-zinc);

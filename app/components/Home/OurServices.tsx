@@ -29,8 +29,8 @@ const itemVariants = {
 };
 
 export default function OurServices() {
-  const { pointerTheme } = useTheme();
-  const activeColor = themeColors[pointerTheme] || "#a1a1aa";
+  const { accentColor } = useTheme();
+  const activeColor = accentColor;
   const services = getAllServices();
 
   return (

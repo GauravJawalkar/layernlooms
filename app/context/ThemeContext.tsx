@@ -29,8 +29,19 @@ const pointerThemes = {
   pink: { light: '#db2777', dark: '#f472b6', glowLight: 'rgba(219,39,119,0.2)', glowDark: 'rgba(244,114,182,0.2)' },
 };
 
+export const themeAccentColors: Record<PointerTheme, { light: string; dark: string }> = {
+  zinc: { light: '#27272a', dark: '#e4e4e7' },
+  purple: { light: '#7c3aed', dark: '#a78bfa' },
+  green: { light: '#059669', dark: '#34d399' },
+  cyan: { light: '#0891b2', dark: '#22d3ee' },
+  amber: { light: '#d97706', dark: '#fb923c' },
+  pink: { light: '#db2777', dark: '#f472b6' },
+};
+
 interface ThemeContextType {
   theme: Theme;
+  resolvedTheme: 'light' | 'dark';
+  accentColor: string;
   setTheme: (theme: Theme, event?: ThemeTransitionEvent) => void;
   toggleTheme: (event?: ThemeTransitionEvent) => void;
   scrollbarTheme: ScrollbarTheme;
@@ -61,6 +72,7 @@ function applyAccentVariables(root: HTMLElement, theme: PointerTheme) {
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>('system');
+  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('dark');
   const [scrollbarTheme, setScrollbarThemeState] = useState<ScrollbarTheme>('zinc');
   const [pointerTheme, setPointerThemeState] = useState<PointerTheme>('zinc');
   const [pointerEnabled, setPointerEnabledState] = useState<boolean>(true);
@@ -113,6 +125,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     // If there is no visual theme change needed or no click event passed
     if (willBeDark === currentlyDark || !event) {
       setThemeState(newTheme);
+      setResolvedTheme(willBeDark ? 'dark' : 'light');
       localStorage.setItem('theme', newTheme);
       return;
     }
@@ -120,6 +133,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (isReducedMotion) {
       setThemeState(newTheme);
+      setResolvedTheme(willBeDark ? 'dark' : 'light');
       localStorage.setItem('theme', newTheme);
       return;
     }
@@ -180,9 +194,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
           try {
             flushSync(() => {
               setThemeState(newTheme);
+              setResolvedTheme(willBeDark ? 'dark' : 'light');
             });
           } catch {
             setThemeState(newTheme);
+            setResolvedTheme(willBeDark ? 'dark' : 'light');
           }
           localStorage.setItem('theme', newTheme);
         });
@@ -231,6 +247,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         root.classList.remove('dark');
       }
       setThemeState(newTheme);
+      setResolvedTheme(willBeDark ? 'dark' : 'light');
       localStorage.setItem('theme', newTheme);
     }, 250);
 
@@ -280,6 +297,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const applyColors = () => {
       const root = document.documentElement;
       const isDark = theme === 'dark' || (theme === 'system' && mediaQuery.matches);
+      setResolvedTheme(isDark ? 'dark' : 'light');
 
       if (theme === 'dark') {
         root.classList.add('dark');
@@ -322,10 +340,15 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, [theme, scrollbarTheme, pointerTheme, pointerEnabled]);
 
+  const accentColor =
+    (themeAccentColors[pointerTheme] || themeAccentColors.zinc)[resolvedTheme];
+
   return (
     <ThemeContext.Provider
       value={{
         theme,
+        resolvedTheme,
+        accentColor,
         setTheme,
         toggleTheme,
         scrollbarTheme,
