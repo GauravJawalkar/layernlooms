@@ -192,10 +192,10 @@ export default function PricingPage() {
                     animate={isTrustInView ? "visible" : "hidden"}
                 >
                     {[
-                        { stat: "20+", label: "Projects Delivered" },
+                        { stat: "10+", label: "Projects Delivered" },
+                        { stat: "2+", label: "Years in Business" },
+                        { stat: "10+", label: "Team Members" },
                         { stat: "98%", label: "Client Satisfaction" },
-                        { stat: "5 yrs", label: "Industry Experience" },
-                        { stat: "24/7", label: "Support Available" },
                     ].map(({ stat, label }, i) => (
                         <motion.div
                             key={label}
