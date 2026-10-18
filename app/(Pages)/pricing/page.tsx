@@ -243,7 +243,7 @@ export default function PricingPage() {
                         Not sure which plan fits?
                     </h2>
                     <p className="text-base mb-8 opacity-60 text-background">
-                        Book a free 30-minute consultation and we'll find the right fit together.
+                        Book a free 30-minute consultation and we&apos;ll find the right fit together.
                     </p>
                     <motion.button
                         className="px-8 py-3 rounded-xl font-bold text-sm transition-colors duration-200 bg-background text-foreground hover:opacity-90"

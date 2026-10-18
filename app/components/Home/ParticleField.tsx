@@ -4,19 +4,26 @@ import { useRef, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
+const PARTICLE_COUNT = 600;
+
+function createDeterministicPositions(count: number) {
+  const pos = new Float32Array(count * 3);
+  for (let i = 0; i < count; i++) {
+    const s1 = Math.sin(i * 12.9898 + 1) * 43758.5453;
+    const s2 = Math.sin(i * 78.233 + 2) * 43758.5453;
+    const s3 = Math.sin(i * 45.164 + 3) * 43758.5453;
+    pos[i * 3] = (s1 - Math.floor(s1) - 0.5) * 20;
+    pos[i * 3 + 1] = (s2 - Math.floor(s2) - 0.5) * 20;
+    pos[i * 3 + 2] = (s3 - Math.floor(s3) - 0.5) * 10 - 3;
+  }
+  return pos;
+}
+
+const STATIC_POSITIONS = createDeterministicPositions(PARTICLE_COUNT);
+
 export default function ParticleField() {
   const ref = useRef<THREE.Points>(null);
-
-  const positions = useMemo(() => {
-    const count = 600;
-    const pos = new Float32Array(count * 3);
-    for (let i = 0; i < count; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 20;
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 20;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 10 - 3;
-    }
-    return pos;
-  }, []);
+  const positions = STATIC_POSITIONS;
 
   useFrame(() => {
     if (ref.current) {

@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import { ArrowRight, Check, Target, Eye, Heart, Shield, Zap, Users, Linkedin, Sparkles, Quote } from "lucide-react";
+import { ArrowRight, Target, Eye, Heart, Shield, Zap, Linkedin, Quote } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import JsonLd, { getBreadcrumbSchema, getPersonSchema, getProfilePageSchema } from "@/app/components/JsonLd";
@@ -16,11 +16,6 @@ const stagger = {
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const } }
-};
-
-const fadeIn = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
 };
 
 const sectionHeader = (title: string) => (
@@ -160,7 +155,14 @@ export default function AboutPage() {
               <div className="relative w-full max-w-lg mx-auto">
                 <div className="absolute -inset-4 bg-gradient-to-br from-primary/10 via-transparent to-secondary/20 rounded-[3rem] blur-3xl" />
                 <div className="relative aspect-[4/3] sm:aspect-[4/3] rounded-2xl sm:rounded-[2rem] overflow-hidden border border-border group shadow-xl grayscale hover:grayscale-0 transition-all duration-700">
-                  <Image src="/about.png" alt="About LayerNLooms" fill className="object-cover transition-all duration-700 group-hover:scale-105" />
+                  <Image
+                    src="/about.png"
+                    alt="About LayerNLooms"
+                    fill
+                    priority
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 512px"
+                    className="object-cover transition-all duration-700 group-hover:scale-105"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent" />
                 </div>
               </div>

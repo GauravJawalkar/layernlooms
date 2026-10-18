@@ -137,7 +137,7 @@ async function loadTexturesInternal(quality: Quality, signal?: AbortSignal): Pro
     });
   }
 
-  const [specularImg, normalImg, cloudsImg, lightsImg] = await Promise.all([
+  const [specularImg, _normalImg, cloudsImg, lightsImg] = await Promise.all([
     loadImg(`${base}earth_specular_2048.jpg`),
     loadImg(`${base}earth_normal_2048.jpg`),
     loadImg(`${base}earth_clouds_1024.png`),

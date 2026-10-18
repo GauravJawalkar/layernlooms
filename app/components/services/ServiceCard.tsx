@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import dynamic from "next/dynamic";
 import { ArrowRight } from "lucide-react";
 import { useState } from "react";
 

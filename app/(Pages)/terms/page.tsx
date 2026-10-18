@@ -2,8 +2,6 @@
 
 import { motion } from "framer-motion";
 import JsonLd, { getBreadcrumbSchema } from "@/app/components/JsonLd";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 
 export default function TermsPage() {
   return (
@@ -21,7 +19,7 @@ export default function TermsPage() {
             className="mb-10"
           >
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">Terms & Conditions</h1>
-            <p className="text-muted-foreground text-base">Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</p>
+            <p className="text-muted-foreground text-base">Last updated: October 2026</p>
           </motion.div>
 
           <motion.div
@@ -33,7 +31,7 @@ export default function TermsPage() {
             <div className="p-6 sm:p-8 rounded-2xl border border-border bg-card/50 backdrop-blur-sm shadow-sm prose prose-base sm:prose-lg dark:prose-invert max-w-none prose-headings:mt-0 prose-headings:mb-4 prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-primary">
               <h2>1. Introduction</h2>
               <p>
-                Welcome to LayerNLooms. These terms and conditions outline the rules and regulations for the use of LayerNLooms's Website and Services.
+                Welcome to LayerNLooms. These terms and conditions outline the rules and regulations for the use of LayerNLooms&apos;s Website and Services.
                 By accessing this website, we assume you accept these terms and conditions. Do not continue to use LayerNLooms if you do not agree to take all of the terms and conditions stated on this page.
               </p>
             </div>

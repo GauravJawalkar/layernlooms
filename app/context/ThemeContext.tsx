@@ -1,11 +1,15 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { flushSync } from 'react-dom';
 
 export type Theme = 'light' | 'dark' | 'system';
 export type ScrollbarTheme = 'zinc' | 'purple' | 'green' | 'cyan' | 'amber' | 'pink';
 export type PointerTheme = 'zinc' | 'purple' | 'green' | 'cyan' | 'amber' | 'pink';
 export type PointerStyle = 'classic' | 'glowing' | 'crosshair';
+export type ThemeTransitionEvent =
+  | React.MouseEvent<unknown>
+  | { clientX?: number; clientY?: number; currentTarget?: HTMLElement | null };
 
 const scrollbarThemes = {
   zinc: { light: '#52525b', dark: '#a1a1aa', hoverLight: '#27272a', hoverDark: '#f4f4f5' },
@@ -27,7 +31,8 @@ const pointerThemes = {
 
 interface ThemeContextType {
   theme: Theme;
-  setTheme: (theme: Theme) => void;
+  setTheme: (theme: Theme, event?: ThemeTransitionEvent) => void;
+  toggleTheme: (event?: ThemeTransitionEvent) => void;
   scrollbarTheme: ScrollbarTheme;
   setScrollbarTheme: (theme: ScrollbarTheme) => void;
   pointerTheme: PointerTheme;
@@ -42,8 +47,7 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-function applyAccentVariables(root: HTMLElement, theme: PointerTheme, isDark: boolean) {
-  const mode = isDark ? 'dark' : 'light';
+function applyAccentVariables(root: HTMLElement, theme: PointerTheme) {
   const prefix = `--accent-${theme}`;
   const foreground = `${prefix}-foreground`;
   const muted = `${prefix}-muted`;
@@ -95,9 +99,154 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const setTheme = (newTheme: Theme) => {
-    setThemeState(newTheme);
-    localStorage.setItem('theme', newTheme);
+  const setTheme = (newTheme: Theme, event?: ThemeTransitionEvent) => {
+    if (typeof window === 'undefined') {
+      setThemeState(newTheme);
+      return;
+    }
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const willBeDark =
+      newTheme === 'dark' || (newTheme === 'system' && mediaQuery.matches);
+    const currentlyDark = document.documentElement.classList.contains('dark');
+
+    // If there is no visual theme change needed or no click event passed
+    if (willBeDark === currentlyDark || !event) {
+      setThemeState(newTheme);
+      localStorage.setItem('theme', newTheme);
+      return;
+    }
+
+    const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (isReducedMotion) {
+      setThemeState(newTheme);
+      localStorage.setItem('theme', newTheme);
+      return;
+    }
+
+    // Calculate coordinates from the button / click event
+    let x = window.innerWidth / 2;
+    let y = window.innerHeight / 2;
+
+    if ('currentTarget' in event && event.currentTarget instanceof HTMLElement) {
+      const rect = event.currentTarget.getBoundingClientRect();
+      if (
+        typeof event.clientX === 'number' &&
+        typeof event.clientY === 'number' &&
+        (event.clientX !== 0 || event.clientY !== 0)
+      ) {
+        x = event.clientX;
+        y = event.clientY;
+      } else {
+        x = rect.left + rect.width / 2;
+        y = rect.top + rect.height / 2;
+      }
+    } else if (
+      typeof event.clientX === 'number' &&
+      typeof event.clientY === 'number'
+    ) {
+      x = event.clientX;
+      y = event.clientY;
+    }
+
+    const endRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
+
+    // Native View Transition API
+    if ('startViewTransition' in document) {
+      try {
+        const transition = (document as unknown as { startViewTransition: (cb: () => void) => { ready: Promise<void> } }).startViewTransition(() => {
+          const root = document.documentElement;
+          if (willBeDark) {
+            root.classList.add('dark');
+          } else {
+            root.classList.remove('dark');
+          }
+
+          const mode = willBeDark ? 'dark' : 'light';
+          const scrollbarColors = scrollbarThemes[scrollbarTheme] || scrollbarThemes.zinc;
+          root.style.setProperty('--scrollbar-thumb-color', scrollbarColors[mode]);
+          root.style.setProperty('--scrollbar-thumb-hover', scrollbarColors[willBeDark ? 'hoverDark' : 'hoverLight']);
+          root.style.setProperty('--scrollbar-track-border', willBeDark ? '#1f1f22' : '#f3f4f6');
+
+          const pointerColors = pointerThemes[pointerTheme] || pointerThemes.zinc;
+          root.style.setProperty('--cursor-color', pointerColors[mode]);
+          root.style.setProperty('--cursor-glow-color', pointerColors[willBeDark ? 'glowDark' : 'glowLight']);
+
+          applyAccentVariables(root, pointerTheme);
+
+          try {
+            flushSync(() => {
+              setThemeState(newTheme);
+            });
+          } catch {
+            setThemeState(newTheme);
+          }
+          localStorage.setItem('theme', newTheme);
+        });
+
+        transition.ready.then(() => {
+          document.documentElement.animate(
+            {
+              clipPath: [
+                `circle(0px at ${x}px ${y}px)`,
+                `circle(${endRadius}px at ${x}px ${y}px)`,
+              ],
+            },
+            {
+              duration: 500,
+              easing: 'ease-in-out',
+              pseudoElement: '::view-transition-new(root)',
+            }
+          );
+        });
+        return;
+      } catch {
+        // Fallback to state update if startViewTransition fails
+      }
+    }
+
+    // Fallback expanding circle overlay for browsers without View Transitions
+    const circle = document.createElement('div');
+    circle.style.position = 'fixed';
+    circle.style.inset = '0';
+    circle.style.pointerEvents = 'none';
+    circle.style.zIndex = '999999';
+    circle.style.backgroundColor = willBeDark ? '#09090b' : '#ffffff';
+    circle.style.clipPath = `circle(0px at ${x}px ${y}px)`;
+    circle.style.transition = 'clip-path 500ms ease-in-out, opacity 250ms ease 450ms';
+    document.body.appendChild(circle);
+
+    requestAnimationFrame(() => {
+      circle.style.clipPath = `circle(${endRadius}px at ${x}px ${y}px)`;
+    });
+
+    setTimeout(() => {
+      const root = document.documentElement;
+      if (willBeDark) {
+        root.classList.add('dark');
+      } else {
+        root.classList.remove('dark');
+      }
+      setThemeState(newTheme);
+      localStorage.setItem('theme', newTheme);
+    }, 250);
+
+    setTimeout(() => {
+      circle.style.opacity = '0';
+    }, 450);
+
+    setTimeout(() => {
+      circle.remove();
+    }, 750);
+  };
+
+  const toggleTheme = (event?: ThemeTransitionEvent) => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const isDark = theme === 'dark' || (theme === 'system' && mediaQuery.matches);
+    setTheme(isDark ? 'light' : 'dark', event);
   };
 
   const setScrollbarTheme = (newScrollbar: ScrollbarTheme) => {
@@ -154,7 +303,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       root.style.setProperty('--cursor-color', pointerColors[mode]);
       root.style.setProperty('--cursor-glow-color', pointerColors[isDark ? 'glowDark' : 'glowLight']);
 
-      applyAccentVariables(root, pointerTheme, isDark);
+      applyAccentVariables(root, pointerTheme);
 
       if (pointerEnabled) {
         root.classList.add('custom-cursor-active');
@@ -178,6 +327,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       value={{
         theme,
         setTheme,
+        toggleTheme,
         scrollbarTheme,
         setScrollbarTheme,
         pointerTheme,

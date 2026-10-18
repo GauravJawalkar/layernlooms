@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import JsonLd, { getFAQPageSchema } from "../JsonLd";
@@ -144,7 +144,7 @@ export default function FAQSection() {
             Still have questions?
           </h3>
           <p className="mt-2 text-sm sm:text-base text-muted-foreground">
-            Can't find what you're looking for? Our team is here to help with personalized answers.
+            Can&apos;t find what you&apos;re looking for? Our team is here to help with personalized answers.
           </p>
           <a
             href="/contact"

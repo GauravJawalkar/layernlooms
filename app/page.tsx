@@ -1,14 +1,10 @@
 "use client";
 import HeroSection from "./components/Home/HeroSection";
 import WhyChooseUs from "./components/Home/WhyChooseUs";
-import PartnershipsSection from "./components/Home/PartnershipsSection";
 import FAQSection from "./components/Home/FAQSection";
 import ProcessSection from "./components/Home/ProcessSection";
-import EngagementModels from "./components/Home/EngagementModels";
-import ExpertiseSection from "./components/Home/ExpertiseSection";
 import OurServices from "./components/Home/OurServices";
 import TechStackSection from "./components/Home/TechStackSection";
-import BlogSection from "./components/Home/BlogSection";
 import CTASection from "./components/Home/CTASection";
 
 export default function Home() {

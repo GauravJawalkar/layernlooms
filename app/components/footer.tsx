@@ -4,7 +4,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Linkedin, Instagram, Mail, Phone, MapPin, ArrowRight } from "lucide-react";
 import Logo from "./Logo";
-import { useState } from "react";
 import ThemeToggle from "./ThemeToggle";
 import { GoogleIcon, WhatsAppIcon, XIcon } from "./Icons";
 

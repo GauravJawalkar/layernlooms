@@ -14,7 +14,7 @@ const CLOUD_SCALE: Record<Quality, number> = { low: 1.004, medium: 1.006, high: 
 function useQuality(): Quality {
   return useMemo(() => {
     if (typeof window === "undefined") return "medium";
-    const mem = (navigator as any).deviceMemory;
+    const mem = (navigator as Navigator & { deviceMemory?: number }).deviceMemory;
     const cores = navigator.hardwareConcurrency || 4;
     if ((mem && mem < 2) || cores <= 2) return "low";
     if ((mem && mem < 4) || cores <= 4) return "medium";
@@ -24,11 +24,11 @@ function useQuality(): Quality {
 
 const EarthModel = memo(function EarthModel() {
   const quality = useQuality();
-
   const groupRef = useRef<THREE.Group>(null);
   const earthRef = useRef<THREE.Mesh>(null);
   const cloudsRef = useRef<THREE.Mesh>(null);
   const glowRef = useRef<THREE.Mesh>(null);
+  const elapsedRef = useRef(0);
 
   const { width, height } = useThree((state) => state.viewport);
   const [textures, setTextures] = useState<EarthTextures | null>(null);
@@ -55,8 +55,8 @@ const EarthModel = memo(function EarthModel() {
         if (!active) return;
         setTextures(tex);
         ready.current = true;
-      } catch (err: any) {
-        if (err?.name === "AbortError") return;
+      } catch (err: unknown) {
+        if (err instanceof Error && err.name === "AbortError") return;
         console.error("Earth textures failed:", err);
         if (active) { setError(true); ready.current = true; }
       }
@@ -65,14 +65,15 @@ const EarthModel = memo(function EarthModel() {
     return () => { active = false; ctrl.abort(); };
   }, [quality]);
 
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     const d = Math.min(delta, 0.1);
+    elapsedRef.current += d;
 
     if (groupRef.current) {
       const target = ready.current ? 1 : 0;
       const s = groupRef.current.scale.x;
       groupRef.current.scale.setScalar(s + (target - s) * 0.03);
-      groupRef.current.position.y = baseY + Math.sin(state.clock.elapsedTime * 0.4) * 0.05;
+      groupRef.current.position.y = baseY + Math.sin(elapsedRef.current * 0.4) * 0.05;
     }
 
     if (earthRef.current) earthRef.current.rotation.y += d * 0.025;

@@ -64,16 +64,19 @@ export default function InfinityModel() {
     return Math.min(width / 5.0, 1.1);
   }, [width]);
 
-  useFrame((state, delta) => {
+  const elapsedRef = useRef(0);
+
+  useFrame((_, delta) => {
     // Smoothen delta to prevent frame skips from snapping calculations
     const d = Math.min(delta, 0.1);
+    elapsedRef.current += d;
 
     // Float, tilt and rotate the main loop
     if (groupRef.current) {
-      groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.4) * 0.15;
-      groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.2) * 0.15;
+      groupRef.current.position.y = Math.sin(elapsedRef.current * 0.4) * 0.15;
+      groupRef.current.rotation.x = Math.sin(elapsedRef.current * 0.2) * 0.15;
       groupRef.current.rotation.y += d * 0.3;
-      groupRef.current.rotation.z = Math.cos(state.clock.elapsedTime * 0.1) * 0.08;
+      groupRef.current.rotation.z = Math.cos(elapsedRef.current * 0.1) * 0.08;
     }
 
     // Move particles along the 3D curve
@@ -81,7 +84,7 @@ export default function InfinityModel() {
       const posAttr = particlesRef.current.geometry.attributes.position as THREE.BufferAttribute;
       for (let i = 0; i < 40; i++) {
         // Increment progress (velocity is 0.05 units per frame/second)
-        let p = (particleProgress.current[i] + d * 0.04) % 1.0;
+        const p = (particleProgress.current[i] + d * 0.04) % 1.0;
         particleProgress.current[i] = p;
 
         const pt = curve.getPointAt(p);

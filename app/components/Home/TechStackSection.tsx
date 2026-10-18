@@ -246,6 +246,7 @@ export default function TechStackSection() {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
+              initial={{ opacity: 0 }}
               animate={{ opacity: hoveredCard === "frontend" ? 0.95 : 0 }}
               transition={{ duration: 0.3 }}
             />
@@ -256,6 +257,7 @@ export default function TechStackSection() {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
+              initial={{ opacity: 0 }}
               animate={{ opacity: hoveredCard === "backend" ? 0.95 : 0 }}
               transition={{ duration: 0.3 }}
             />
@@ -266,6 +268,7 @@ export default function TechStackSection() {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
+              initial={{ opacity: 0 }}
               animate={{ opacity: hoveredCard === "cloud" ? 0.95 : 0 }}
               transition={{ duration: 0.3 }}
             />
