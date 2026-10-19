@@ -43,6 +43,9 @@ export default function ThemeCustomizer() {
     { id: 'classic', label: 'Classic', desc: 'Dot + trailing ring' },
     { id: 'glowing', label: 'Glowing', desc: 'Dot + soft blur aura' },
     { id: 'crosshair', label: 'Crosshair', desc: 'Tech crosshair lines' },
+    { id: 'bracket', label: 'Bracket', desc: 'Cyber HUD targeting' },
+    { id: 'orbital', label: 'Orbital', desc: 'Cosmic satellite orbit' },
+    { id: 'sonar', label: 'Sonar', desc: 'Radar pulse rings' },
   ];
 
   return (

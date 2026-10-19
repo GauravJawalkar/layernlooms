@@ -6,7 +6,7 @@ import { flushSync } from 'react-dom';
 export type Theme = 'light' | 'dark' | 'system';
 export type ScrollbarTheme = 'zinc' | 'purple' | 'green' | 'cyan' | 'amber' | 'pink';
 export type PointerTheme = 'zinc' | 'purple' | 'green' | 'cyan' | 'amber' | 'pink';
-export type PointerStyle = 'classic' | 'glowing' | 'crosshair';
+export type PointerStyle = 'classic' | 'glowing' | 'crosshair' | 'bracket' | 'orbital' | 'sonar';
 export type ThemeTransitionEvent =
   | React.MouseEvent<unknown>
   | { clientX?: number; clientY?: number; currentTarget?: HTMLElement | null };

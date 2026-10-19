@@ -316,6 +316,190 @@ export default function CustomCursor() {
           </>
         );
 
+      case 'bracket':
+        return (
+          <>
+            <motion.div
+              className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-[99999]"
+              animate={{
+                width: dimensions.width + (isHovered ? 8 : 4),
+                height: dimensions.height + (isHovered ? 8 : 4),
+                borderRadius: dimensions.borderRadius,
+              }}
+              transition={{ type: 'spring', stiffness: 320, damping: 26 }}
+              style={{
+                x: ringX,
+                y: ringY,
+                opacity: showCursor ? (isHovered ? 1 : 0.75) : 0,
+                scale: isClicked ? 0.9 : 1,
+                transition: 'opacity 0.2s ease',
+              }}
+            >
+              {/* Top-Left Bracket */}
+              <div
+                className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2"
+                style={{ borderColor: 'var(--cursor-color)', borderRadius: '3px 0 0 0' }}
+              />
+              {/* Top-Right Bracket */}
+              <div
+                className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2"
+                style={{ borderColor: 'var(--cursor-color)', borderRadius: '0 3px 0 0' }}
+              />
+              {/* Bottom-Left Bracket */}
+              <div
+                className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2"
+                style={{ borderColor: 'var(--cursor-color)', borderRadius: '0 0 0 3px' }}
+              />
+              {/* Bottom-Right Bracket */}
+              <div
+                className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2"
+                style={{ borderColor: 'var(--cursor-color)', borderRadius: '0 0 3px 0' }}
+              />
+              {isHovered && (
+                <div
+                  className="absolute inset-0 bg-[var(--cursor-color)] opacity-5 rounded-lg"
+                />
+              )}
+            </motion.div>
+            <motion.div
+              className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none z-[99999]"
+              style={{
+                x: dotX,
+                y: dotY,
+                width: 5,
+                height: 5,
+                backgroundColor: 'var(--cursor-color)',
+                opacity: showCursor ? 1 : 0,
+                scale: isClicked ? 0.5 : 1,
+                transition: 'opacity 0.2s ease',
+              }}
+            />
+          </>
+        );
+
+      case 'orbital':
+        return (
+          <>
+            {/* Rotating Orbit Path */}
+            <motion.div
+              className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none z-[99999] flex items-center justify-center"
+              animate={{
+                width: dimensions.width + (isHovered ? 12 : 6),
+                height: dimensions.height + (isHovered ? 12 : 6),
+                rotate: 360,
+              }}
+              transition={{
+                rotate: { repeat: Infinity, duration: isHovered ? 3 : 6, ease: 'linear' },
+                width: { type: 'spring', stiffness: 300, damping: 25 },
+                height: { type: 'spring', stiffness: 300, damping: 25 },
+              }}
+              style={{
+                x: ringX,
+                y: ringY,
+                opacity: showCursor ? (isHovered ? 0.9 : 0.6) : 0,
+                scale: isClicked ? 0.8 : 1,
+                border: '1px dashed var(--cursor-color)',
+                borderRadius: '9999px',
+                transition: 'opacity 0.2s ease',
+              }}
+            >
+              {/* Orbiting Satellite Moon 1 */}
+              <div
+                className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full shadow-sm"
+                style={{
+                  backgroundColor: 'var(--cursor-color)',
+                  boxShadow: '0 0 8px var(--cursor-color)',
+                }}
+              />
+              {/* Orbiting Satellite Moon 2 */}
+              <div
+                className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full opacity-60"
+                style={{ backgroundColor: 'var(--cursor-color)' }}
+              />
+            </motion.div>
+
+            {/* Central Star Core */}
+            <motion.div
+              className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none z-[99999]"
+              style={{
+                x: dotX,
+                y: dotY,
+                width: 7,
+                height: 7,
+                backgroundColor: 'var(--cursor-color)',
+                boxShadow: '0 0 10px var(--cursor-color)',
+                opacity: showCursor ? 1 : 0,
+                scale: isClicked ? 0.6 : (isHovered ? 1.3 : 1),
+                transition: 'opacity 0.2s ease, scale 0.15s ease',
+              }}
+            />
+          </>
+        );
+
+      case 'sonar':
+        return (
+          <>
+            {/* Outer Perimeter Ring */}
+            <motion.div
+              className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 rounded-full border pointer-events-none z-[99999]"
+              animate={{
+                width: dimensions.width,
+                height: dimensions.height,
+                borderRadius: dimensions.borderRadius,
+              }}
+              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+              style={{
+                x: ringX,
+                y: ringY,
+                borderColor: 'var(--cursor-color)',
+                borderWidth: isHovered ? '2px' : '1px',
+                opacity: showCursor ? (isHovered ? 0.85 : 0.5) : 0,
+                scale: isClicked ? 0.75 : 1,
+                transition: 'opacity 0.2s ease',
+              }}
+            />
+
+            {/* Expanding Pulsing Sonar Wave */}
+            {showCursor && (
+              <motion.div
+                className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none z-[99998]"
+                animate={{
+                  scale: [1, isHovered ? 2.4 : 1.9],
+                  opacity: [0.65, 0],
+                }}
+                transition={{
+                  repeat: Infinity,
+                  duration: isHovered ? 1.2 : 1.8,
+                  ease: 'easeOut',
+                }}
+                style={{
+                  x: ringX,
+                  y: ringY,
+                  width: dimensions.width,
+                  height: dimensions.height,
+                  borderRadius: dimensions.borderRadius,
+                  border: '1.5px solid var(--cursor-color)',
+                }}
+              />
+            )}
+
+            {/* Central Reticle Point */}
+            <motion.div
+              className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none z-[99999]"
+              style={{
+                x: dotX,
+                y: dotY,
+                width: 6,
+                height: 6,
+                backgroundColor: 'var(--cursor-color)',
+                opacity: showCursor ? 1 : 0,
+                scale: isClicked ? 0.5 : 1,
+                transition: 'opacity 0.2s ease',
+              }}
+            />
+          </>
+        );
+
       case 'classic':
       default:
         return (
