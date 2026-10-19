@@ -74,7 +74,7 @@ const Navbar = () => {
         } ${visible ? 'translate-y-0 opacity-100' : '-translate-y-24 opacity-0'}`}
       >
         <Link href="/" className="shrink-0 flex items-center hover:scale-105 transition-transform duration-300">
-          <Logo className="w-auto h-10 lg:h-11" />
+          <Logo className="w-auto h-10 lg:h-11" priority={true} />
         </Link>
 
         <nav className="flex items-center gap-1.5 bg-secondary/50 px-2 py-1.5 rounded-full border border-border/20">
@@ -169,7 +169,7 @@ const Navbar = () => {
         } ${visible ? 'translate-y-0 opacity-100' : '-translate-y-24 opacity-0'}`}
       >
         <Link href="/" className="hover:opacity-95 transition-opacity">
-          <Logo className="w-auto h-8 lg:h-9" />
+          <Logo className="w-auto h-8 lg:h-9" priority={true} />
         </Link>
 
         <div className="flex items-center gap-2">

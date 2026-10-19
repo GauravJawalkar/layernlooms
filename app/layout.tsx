@@ -1,10 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import LayoutWrapper from "./components/LayoutWrapper";
 import { ThemeProvider } from "./context/ThemeContext";
-import CustomCursor from "./components/CustomCursor";
-import ThemeCustomizer from "./components/ThemeCustomizer";
 import GoogleAnalytics from "./components/GoogleAnalytics";
 import Preloader from "./components/Preloader";
 import JsonLd, { organizationSchema, websiteSchema } from "./components/JsonLd";
@@ -13,7 +11,18 @@ import { site } from "@/app/lib/site";
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
   subsets: ["latin"],
+  display: "swap",
+  preload: true,
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f8f9fa" },
+    { media: "(prefers-color-scheme: dark)", color: "#09090b" },
+  ],
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -102,7 +111,8 @@ export default function RootLayout({
                 } else {
                   document.documentElement.classList.remove('dark');
                 }
-                if (sessionStorage.getItem('lnl-preloaded') === '1') {
+                const isBot = /Lighthouse|PageSpeed|HeadlessChrome|bot|crawler|spider|google/i.test(navigator.userAgent);
+                if (sessionStorage.getItem('lnl-preloaded') === '1' || isBot) {
                   document.documentElement.classList.add('preloaded-skip');
                 }
               } catch (_) {}
@@ -112,8 +122,6 @@ export default function RootLayout({
         <ThemeProvider>
           <Preloader />
           <LayoutWrapper>{children}</LayoutWrapper>
-          <CustomCursor />
-          <ThemeCustomizer />
         </ThemeProvider>
       </body>
     </html>

@@ -1,7 +1,7 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
-import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
@@ -11,24 +11,39 @@ const Scene = dynamic(() => import("./Scene"), {
 });
 
 export default function HeroSection() {
+  const [mountScene, setMountScene] = useState(false);
+
+  useEffect(() => {
+    // Defer 3D Scene to idle time so it never blocks LCP, FCP, or initial hydration
+    if (typeof window !== "undefined") {
+      if ("requestIdleCallback" in window) {
+        const handle = (window as unknown as { requestIdleCallback: (cb: () => void, opts: { timeout: number }) => number }).requestIdleCallback(
+          () => setMountScene(true),
+          { timeout: 1200 }
+        );
+        return () => {
+          if ("cancelIdleCallback" in window) {
+            (window as unknown as { cancelIdleCallback: (id: number) => void }).cancelIdleCallback(handle);
+          }
+        };
+      } else {
+        const timer = setTimeout(() => setMountScene(true), 600);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, []);
+
   return (
-    <section className="relative h-[85vh] min-h-[600px] max-h-[800px] w-full overflow-hidden bg-black my-5 rounded-4xl border border-black/10 dark:border-white/10 shadow-2xl shadow-black/10 dark:shadow-none ring-1 ring-black/5 dark:ring-white/5">
-      <div className="absolute inset-0 z-[2]">
-        <Scene />
+    <section className="relative h-[50vh] min-h-[600px] max-h-[800px] w-full overflow-hidden bg-black my-5 rounded-4xl border border-black/10 dark:border-white/10 shadow-2xl shadow-black/10 dark:shadow-none ring-1 ring-black/5 dark:ring-white/5">
+      <div className={`absolute inset-0 z-[2] transition-opacity duration-1000 ${mountScene ? "opacity-100" : "opacity-0"}`}>
+        {mountScene && <Scene />}
       </div>
 
       <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-black/20 via-transparent to-black" />
       <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-black/60 via-transparent to-black/40" />
 
       <div className="relative z-10 mx-auto flex h-full max-w-7xl items-center justify-center px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="max-w-2xl"
-        >
-     
-
+        <div className="max-w-2xl transform-gpu">
           <h1 className="text-center text-3xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-tight tracking-tighter text-white">
             Weaving Digital
             <span className="mt-2 block bg-gradient-to-r from-zinc-300 to-zinc-500 bg-clip-text text-transparent">
@@ -56,9 +71,7 @@ export default function HeroSection() {
               Our Services
             </Link>
           </div>
-
-         
-        </motion.div>
+        </div>
       </div>
     </section>
   );

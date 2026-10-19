@@ -63,13 +63,17 @@ import https from "https";
     });
   };
 
-  for (const texture of textures) {
+  // Only check downloads if any texture is missing
+  const missingTextures = textures.filter(
+    (t) => !fs.existsSync(path.join(publicDir, t.name)) || fs.statSync(path.join(publicDir, t.name)).size < 10000
+  );
+
+  if (missingTextures.length === 0) {
+    return;
+  }
+
+  for (const texture of missingTextures) {
     const dest = path.join(publicDir, texture.name);
-    if (fs.existsSync(dest) && fs.statSync(dest).size > 10000) {
-      console.log(`[Earth textures] ${texture.name} already exists. Skipping.`);
-      continue;
-    }
-    
     let success = false;
     for (const url of texture.urls) {
       try {
@@ -88,7 +92,13 @@ import https from "https";
 })();
 
 const nextConfig: NextConfig = {
+  compress: true,
+  poweredByHeader: false,
+  reactStrictMode: true,
   images: {
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [360, 480, 640, 750, 828, 1080, 1200, 1920],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     remotePatterns: [
       {
         protocol: 'https',
@@ -109,6 +119,29 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       }
     ],
+  },
+  experimental: {
+    optimizePackageImports: [
+      'lucide-react',
+      'react-icons',
+      'framer-motion',
+      '@react-three/fiber',
+      '@react-three/drei',
+      'three',
+    ],
+  },
+  async headers() {
+    return [
+      {
+        source: '/:all*(svg|jpg|png|webp|avif|ico|woff2)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+    ];
   },
 };
 

@@ -1,9 +1,13 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import Navbar from "./navbar";
 import Footer from "./footer";
 import StarBackground from "./StarBackground";
+
+const CustomCursor = dynamic(() => import("./CustomCursor"), { ssr: false });
+const ThemeCustomizer = dynamic(() => import("./ThemeCustomizer"), { ssr: false });
 
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -19,6 +23,8 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
         <main className="mt-4">{children}</main>
         <Footer />
       </div>
+      <CustomCursor />
+      <ThemeCustomizer />
     </div>
   );
 }

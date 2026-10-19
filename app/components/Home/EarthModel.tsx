@@ -13,12 +13,12 @@ const CLOUD_SCALE: Record<Quality, number> = { low: 1.004, medium: 1.006, high: 
 
 function useQuality(): Quality {
   return useMemo(() => {
-    if (typeof window === "undefined") return "medium";
+    if (typeof window === "undefined") return "low";
+    if (window.innerWidth < 768) return "low";
     const mem = (navigator as Navigator & { deviceMemory?: number }).deviceMemory;
     const cores = navigator.hardwareConcurrency || 4;
-    if ((mem && mem < 2) || cores <= 2) return "low";
-    if ((mem && mem < 4) || cores <= 4) return "medium";
-    return "high";
+    if ((mem && mem < 4) || cores <= 4) return "low";
+    return "medium";
   }, []);
 }
 

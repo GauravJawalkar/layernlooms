@@ -159,14 +159,11 @@ export default function CustomCursor() {
 
     updateRect();
     window.addEventListener('scroll', updateRect, { passive: true });
-    window.addEventListener('resize', updateRect);
-
-    const interval = setInterval(updateRect, 100);
+    window.addEventListener('resize', updateRect, { passive: true });
 
     return () => {
       window.removeEventListener('scroll', updateRect);
       window.removeEventListener('resize', updateRect);
-      clearInterval(interval);
     };
   }, [hoveredElement, pointerEffects]);
 
