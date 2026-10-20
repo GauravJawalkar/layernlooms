@@ -96,7 +96,7 @@ export default function PricingPage() {
     };
 
     return (
-        <main className="w-full min-h-screen transition-colors duration-300 bg-background">
+        <main className="w-full min-h-screen transition-colors duration-300 ">
             <JsonLd data={[getBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "Pricing", url: "/pricing" }]), getFAQPageSchema(faqs.map(f => ({ question: f.q, answer: f.a })))]} />
 
             {/* ── HERO ── */}
@@ -186,7 +186,7 @@ export default function PricingPage() {
             {/* ── TRUST BAR ── */}
             <section ref={trustRef} className="py-10 px-6">
                 <motion.div
-                    className="max-w-4xl mx-auto rounded-2xl px-10 py-8 shadow-sm flex flex-col md:flex-row items-center justify-around gap-8 text-center border border-border transition-colors duration-300 bg-secondary"
+                    className="max-w-4xl mx-auto rounded-2xl px-10 py-8 shadow-sm flex flex-col md:flex-row items-center justify-around gap-8 text-center border border-border transition-colors duration-300 bg-secondary/10"
                     variants={containerVariants}
                     initial="hidden"
                     animate={isTrustInView ? "visible" : "hidden"}

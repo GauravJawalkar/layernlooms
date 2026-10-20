@@ -38,7 +38,7 @@ export default function ContactPage() {
     };
 
     return (
-        <div className="accent-zinc-scope min-h-screen bg-background selection:bg-primary selection:text-background">
+        <div className="accent-zinc-scope min-h-screen">
             <JsonLd data={getBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "Contact", url: "/contact" }])} />
 
             {/* ── Background: subtle noise only ── */}

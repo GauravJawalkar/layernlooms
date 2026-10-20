@@ -7,15 +7,15 @@ import { ArrowRight } from "lucide-react";
 import { getAllServices } from "@/app/data/services";
 import ServiceCard from "../../components/services/ServiceCard";
 import JsonLd, { getBreadcrumbSchema } from "@/app/components/JsonLd";
-import { useTheme } from "@/app/context/ThemeContext";
 
 export default function ServicesPage() {
   const services = getAllServices();
+  const heroRef = useRef(null);
   const servicesRef = useRef(null);
   const ctaRef = useRef(null);
+  const isHeroInView = useInView(heroRef, { once: true, amount: 0.1 });
   const isServicesInView = useInView(servicesRef, { once: true, amount: 0.1 });
   const isCtaInView = useInView(ctaRef, { once: true, amount: 0.1 });
-  const { pointerTheme } = useTheme();
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -27,29 +27,32 @@ export default function ServicesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
+    <div className="min-h-screen">
       <JsonLd data={getBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "Services", url: "/services" }])} />
       
       {/* Hero Section */}
-      <section className="relative pt-24 pb-8 md:pt-32 md:pb-12">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+      <section
+        ref={heroRef}
+        className="pt-24 pb-4 text-center px-6 transition-colors duration-300"
+      >
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate={isHeroInView ? "visible" : "hidden"}
+        >
+          <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-none mb-4 transition-colors duration-300 text-foreground">
+            Our Services
+          </h1>
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex flex-col items-center"
-          >
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-foreground tracking-tight">
-              Our Services
-            </h1>
-            
-            <div className="w-24 h-[3px] bg-accent-current mx-auto mt-4 mb-6 rounded-full" />
-            
-            <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed font-normal">
-              Explore our comprehensive capabilities where design meets engineering excellence. We build digital products that drive results.
-            </p>
-          </motion.div>
-        </div>
+            className="mx-auto w-20 h-1 rounded-full mb-6 transition-colors duration-300 bg-primary"
+            initial={{ width: 0 }}
+            animate={isHeroInView ? { width: 80 } : { width: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          />
+          <p className="text-lg max-w-xl mx-auto transition-colors duration-300 text-muted-foreground mb-12">
+            Explore our comprehensive capabilities where design meets engineering excellence. We build digital products that drive results.
+          </p>
+        </motion.div>
       </section>
 
       {/* Services Grid */}

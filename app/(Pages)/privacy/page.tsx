@@ -5,7 +5,7 @@ import JsonLd, { getBreadcrumbSchema } from "@/app/components/JsonLd";
 
 export default function PrivacyPolicyPage() {
   return (
-    <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
+    <div className="min-h-screen">
       <JsonLd data={getBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "Privacy Policy", url: "/privacy" }])} />
       
       <div className="relative pt-10 pb-16 overflow-hidden z-10">

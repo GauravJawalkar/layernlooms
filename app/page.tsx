@@ -10,7 +10,7 @@ const CTASection = dynamic(() => import("./components/Home/CTASection"));
 
 export default function Home() {
   return (
-    <div className="flex flex-col gap-4 bg-background text-foreground transition-colors duration-300">
+    <div className="0">
       <HeroSection />
       <div>
         <WhyChooseUs />
@@ -18,13 +18,13 @@ export default function Home() {
       <div>
         <OurServices />
       </div>
-      <div className="rounded-2xl border border-neutral-300 dark:border-white/[0.06] overflow-hidden">
+      <div>
         <ProcessSection />
       </div>
       <div>
         <TechStackSection />
       </div>
-      <div className="rounded-2xl border border-neutral-300 dark:border-white/[0.06] overflow-hidden">
+      <div>
         <FAQSection />
       </div>
       <CTASection />

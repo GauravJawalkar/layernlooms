@@ -1,4 +1,4 @@
-"use client";
+  "use client";
 
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -56,7 +56,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   /* ─── tokens ─── */
-  const bg = "bg-card shadow-sm";
+  const bg = "bg-card/50 shadow-sm";
   const borderTop = "border-border";
   const bodyText = "text-muted-foreground";
   const labelText = "text-foreground";

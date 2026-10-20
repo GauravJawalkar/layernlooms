@@ -48,12 +48,12 @@ export default function BlogPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen ">
       <JsonLd data={getBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "Blog", url: "/blog" }])} />
       {/* Hero Section */}
       <section
         ref={heroRef}
-        className="pt-24 pb-4 text-center px-6 transition-colors duration-300 bg-background"
+        className="pt-24 pb-4 text-center px-6 transition-colors duration-300 "
       >
         <motion.div
           variants={containerVariants}
@@ -95,7 +95,7 @@ export default function BlogPage() {
       {/* Blog Posts / Empty State */}
       <section
         ref={postsRef}
-        className="py-24 transition-colors duration-300 bg-background px-6 lg:px-8"
+        className="py-24 transition-colors duration-300  px-6 lg:px-8"
       >
         <div className="mx-auto max-w-7xl">
           {loading ? (

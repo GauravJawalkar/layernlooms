@@ -53,11 +53,9 @@ export default function FAQSection() {
 
   return (
     <section className="relative py-16 sm:py-20 overflow-hidden">
-      <JsonLd data={getFAQPageSchema(faqs)} />
-      <div className="absolute inset-0 pointer-events-none -z-10">
-        <div className="absolute top-1/2 -left-40 h-[400px] w-[400px] rounded-full bg-secondary/40 blur-3xl opacity-75" />
-        <div className="absolute bottom-1/2 -right-40 h-[400px] w-[400px] rounded-full bg-secondary/40 blur-3xl opacity-75" />
-      </div>
+      <JsonLd data={getFAQPageSchema(faqs)} />  
+      
+     
 
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <motion.div

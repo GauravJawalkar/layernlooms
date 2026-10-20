@@ -31,7 +31,7 @@ export default function ServiceCard({ service, index }: ServiceCardProps) {
                 transition={{ duration: 0.6, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
-                className="group relative flex flex-1 flex-col overflow-hidden rounded-[2rem] border border-border bg-card backdrop-blur-xl transition-all duration-500 hover:-translate-y-2 hover:border-accent-current hover:bg-card/80 hover:shadow-xl justify-between"
+                className="group relative flex flex-1 flex-col overflow-hidden rounded-[2rem] border border-border bg-card backdrop-blur-xl transition-all duration-500 hover:-translate-y-2 hover:border-accent-current/10 hover:bg-card/10 hover:shadow-xl justify-between"
             >
                 {/* Image Section */}
                 <div className="relative aspect-video w-full overflow-hidden border-b border-border/20 bg-card">

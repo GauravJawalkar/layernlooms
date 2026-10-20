@@ -121,16 +121,7 @@ export default function TechStackSection() {
 
   return (
     <section className="relative py-24 overflow-hidden transition-colors duration-300">
-      {/* 1. Dot Grid Background Pattern */}
-      <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#1c1c1c_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none -z-10" />
       
-      {/* 2. Radial Vignette Mask to fade out dots toward borders */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,transparent_30%,var(--background)_100%)] pointer-events-none -z-10" />
-
-      {/* 3. Ambient background glows */}
-      <div className="absolute inset-0 pointer-events-none -z-10">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full bg-neutral-100/50 dark:bg-zinc-950/20 blur-3xl opacity-40" />
-      </div>
 
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Title */}

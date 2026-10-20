@@ -7,7 +7,7 @@ import JsonLd, { getBreadcrumbSchema } from "@/app/components/JsonLd";
 
 export default function CareersPage() {
   return (
-    <main className="min-h-screen bg-background flex items-center justify-center px-6">
+    <main className="min-h-screen flex items-center justify-center px-6">
       <JsonLd data={getBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "Careers", url: "/careers" }])} />
       <div className="max-w-2xl mx-auto text-center">
         <motion.div

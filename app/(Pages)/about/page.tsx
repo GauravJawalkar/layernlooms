@@ -86,19 +86,14 @@ export default function AboutPage() {
   const [activeTeam, setActiveTeam] = useState<number | null>(null);
 
   return (
-    <div className="min-h-screen bg-background selection:bg-primary selection:text-background">
+    <div className="min-h-screen ">
       <JsonLd
         data={[
           getBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "About", url: "/about" }]),
           ...team.flatMap((member) => [getPersonSchema(member), getProfilePageSchema(member)]),
         ]}
       />
-      {/* Background */}
-      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/3 rounded-full blur-[150px]" />
-        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-secondary/40 rounded-full blur-[120px]" />
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.02] mix-blend-overlay" />
-      </div>
+  
 
       {/* ═══ HERO ═══ */}
       <section className="relative z-10 pt-10 pb-10 sm:pb-16 overflow-hidden">
@@ -110,10 +105,7 @@ export default function AboutPage() {
             className=" grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center"
           >
             <div className="order-2 ">
-              {/* <motion.div variants={fadeUp} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/5 border border-border mb-5">
-                <Sparkles className="w-3 h-3 text-primary" />
-                <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-muted-foreground">About Us</span>
-              </motion.div> */}
+            
 
               <motion.h1
                 variants={fadeUp}
