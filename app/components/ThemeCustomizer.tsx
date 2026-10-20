@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Paintbrush, Check, X, MousePointer, Settings, Eye, EyeOff } from 'lucide-react';
 import { useTheme, ScrollbarTheme, PointerTheme, PointerStyle, Theme } from '../context/ThemeContext';
-import { FiSun, FiMoon, FiMonitor } from 'react-icons/fi';
+import { Monitor, Moon, Sun, type LucideIcon } from 'lucide-react';
 
 export default function ThemeCustomizer() {
   const {
@@ -24,10 +24,10 @@ export default function ThemeCustomizer() {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const themeModes: { name: Theme; label: string; icon: any }[] = [
-    { name: 'light', label: 'Light', icon: FiSun },
-    { name: 'system', label: 'System', icon: FiMonitor },
-    { name: 'dark', label: 'Dark', icon: FiMoon },
+  const themeModes: { name: Theme; label: string; icon: LucideIcon }[] = [
+    { name: 'light', label: 'Light', icon: Sun },
+    { name: 'system', label: 'System', icon: Monitor },
+    { name: 'dark', label: 'Dark', icon: Moon },
   ];
 
   const colorOptions: { id: ScrollbarTheme; name: string; class: string }[] = [
@@ -281,4 +281,3 @@ export default function ThemeCustomizer() {
     </div>
   );
 }
-

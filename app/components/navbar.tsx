@@ -5,18 +5,18 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  FiHome,
-  FiInfo,
-  FiBriefcase,
-  FiDollarSign,
-  FiMail,
-  FiMenu,
-  FiX,
-  FiArrowUp,
-  FiBookOpen,
-  FiUsers,
-} from 'react-icons/fi';
-import { FaServicestack } from 'react-icons/fa';
+  ArrowUp,
+  BookOpen,
+  Briefcase,
+  DollarSign,
+  House,
+  Info,
+  Mail,
+  Menu,
+  Server,
+  Users,
+  X,
+} from 'lucide-react';
 import Logo from './Logo';
 import ThemeToggle from './ThemeToggle';
 
@@ -28,14 +28,14 @@ const Navbar = () => {
   const [visible, setVisible] = useState(true);
 
   const navItems = [
-    { name: 'Home', icon: FiHome, href: '/' },
-    { name: 'About', icon: FiInfo, href: '/about' },
-    { name: 'Services', icon: FaServicestack, href: '/services' },
-    { name: 'Portfolio', icon: FiBriefcase, href: '/portfolio' },
-    { name: 'Blog', icon: FiBookOpen, href: '/blog' },
-    { name: 'Careers', icon: FiUsers, href: '/careers' },
-    { name: 'Pricing', icon: FiDollarSign, href: '/pricing' },
-    { name: 'Contact', icon: FiMail, href: '/contact' },
+    { name: 'Home', icon: House, href: '/' },
+    { name: 'About', icon: Info, href: '/about' },
+    { name: 'Services', icon: Server, href: '/services' },
+    { name: 'Portfolio', icon: Briefcase, href: '/portfolio' },
+    { name: 'Blog', icon: BookOpen, href: '/blog' },
+    { name: 'Careers', icon: Users, href: '/careers' },
+    { name: 'Pricing', icon: DollarSign, href: '/pricing' },
+    { name: 'Contact', icon: Mail, href: '/contact' },
   ];
 
   useEffect(() => {
@@ -156,7 +156,7 @@ const Navbar = () => {
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-all cursor-pointer"
         >
-          <FiArrowUp className="w-4 h-4" />
+          <ArrowUp className="w-4 h-4" />
         </button>
       </nav>
 
@@ -179,7 +179,7 @@ const Navbar = () => {
             className="p-2 rounded-xl text-foreground hover:bg-secondary transition-colors"
             aria-label="Open menu"
           >
-            <FiMenu className="w-5 h-5" />
+            <Menu className="w-5 h-5" />
           </button>
         </div>
       </header>
@@ -244,7 +244,7 @@ return (
                   className="p-2 rounded-xl text-muted-foreground hover:bg-secondary transition-colors"
                   aria-label="Close menu"
                 >
-                  <FiX className="w-5 h-5" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
 
@@ -296,4 +296,3 @@ return (
 };
 
 export default Navbar;
-

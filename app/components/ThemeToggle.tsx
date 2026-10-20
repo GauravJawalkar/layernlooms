@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FiSun, FiMonitor, FiMoon } from 'react-icons/fi';
+import { Monitor, Moon, Sun, type LucideIcon } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
 type Theme = 'light' | 'dark' | 'system';
@@ -43,18 +43,18 @@ export default function ThemeToggle({ className = '', variant = 'pill' }: ThemeT
         aria-label="Toggle theme mode"
       >
         {isDark ? (
-          <FiSun className="w-4 h-4 text-amber-400" />
+          <Sun className="w-4 h-4 text-amber-400" />
         ) : (
-          <FiMoon className="w-4 h-4 text-neutral-800 dark:text-neutral-200" />
+          <Moon className="w-4 h-4 text-neutral-800 dark:text-neutral-200" />
         )}
       </button>
     );
   }
 
-  const themes: { name: Theme; icon: any }[] = [
-    { name: 'light', icon: FiSun },
-    { name: 'system', icon: FiMonitor },
-    { name: 'dark', icon: FiMoon },
+  const themes: { name: Theme; icon: LucideIcon }[] = [
+    { name: 'light', icon: Sun },
+    { name: 'system', icon: Monitor },
+    { name: 'dark', icon: Moon },
   ];
 
   return (
@@ -95,4 +95,3 @@ export default function ThemeToggle({ className = '', variant = 'pill' }: ThemeT
     </div>
   );
 }
-

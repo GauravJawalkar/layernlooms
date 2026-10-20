@@ -27,10 +27,10 @@ const EarthModel = memo(function EarthModel() {
   const groupRef = useRef<THREE.Group>(null);
   const earthRef = useRef<THREE.Mesh>(null);
   const cloudsRef = useRef<THREE.Mesh>(null);
-  const glowRef = useRef<THREE.Mesh>(null);
   const elapsedRef = useRef(0);
 
   const { width, height } = useThree((state) => state.viewport);
+  const invalidate = useThree((state) => state.invalidate);
   const [textures, setTextures] = useState<EarthTextures | null>(null);
   const [error, setError] = useState(false);
   const ready = useRef(false);
@@ -47,23 +47,25 @@ const EarthModel = memo(function EarthModel() {
 
   useEffect(() => {
     let active = true;
-    const ctrl = new AbortController();
-
     (async () => {
       try {
-        const tex = await loadEarthTextures(quality, ctrl.signal);
+        const tex = await loadEarthTextures(quality);
         if (!active) return;
         setTextures(tex);
         ready.current = true;
+        invalidate();
       } catch (err: unknown) {
-        if (err instanceof Error && err.name === "AbortError") return;
         console.error("Earth textures failed:", err);
-        if (active) { setError(true); ready.current = true; }
+        if (active) {
+          setError(true);
+          ready.current = true;
+          invalidate();
+        }
       }
     })();
 
-    return () => { active = false; ctrl.abort(); };
-  }, [quality]);
+    return () => { active = false; };
+  }, [quality, invalidate]);
 
   useFrame((_, delta) => {
     const d = Math.min(delta, 0.1);
@@ -78,7 +80,6 @@ const EarthModel = memo(function EarthModel() {
 
     if (earthRef.current) earthRef.current.rotation.y += d * 0.025;
     if (cloudsRef.current) cloudsRef.current.rotation.y += d * 0.032;
-    if (glowRef.current) glowRef.current.rotation.y += d * 0.015;
   });
 
   return (
@@ -114,7 +115,7 @@ const EarthModel = memo(function EarthModel() {
         </mesh>
       )}
 
-      <mesh ref={glowRef} scale={[1.02, 1.02, 1.02]}>
+      <mesh scale={[1.02, 1.02, 1.02]}>
         <sphereGeometry args={[radius, gSegs, gSegs]} />
         <meshBasicMaterial
           color="#ffffff"
@@ -130,4 +131,3 @@ const EarthModel = memo(function EarthModel() {
 });
 
 export default EarthModel;
-
