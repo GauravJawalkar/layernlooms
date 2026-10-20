@@ -87,6 +87,7 @@ export default function StarBackground() {
 
     const drawFrame = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const isDark = document.documentElement.classList.contains('dark');
 
       // 1. Draw smooth nebula/galaxy dust clouds
       nebulae.forEach(neb => {
@@ -99,7 +100,7 @@ export default function StarBackground() {
         if (neb.y > canvas.height + neb.radius) neb.y = -neb.radius;
 
         const gradient = ctx.createRadialGradient(neb.x, neb.y, 0, neb.x, neb.y, neb.radius);
-        gradient.addColorStop(0, neb.color);
+        gradient.addColorStop(0, isDark ? neb.color : 'rgba(63, 63, 70, 0.018)');
         gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
         ctx.fillStyle = gradient;
@@ -125,14 +126,16 @@ export default function StarBackground() {
 
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `${star.color} ${Math.max(0, star.alpha)})`;
+        const starColor = isDark ? star.color : 'rgba(82, 82, 91,';
+        const alpha = Math.max(0, star.alpha) * (isDark ? 1 : 0.35);
+        ctx.fillStyle = `${starColor} ${alpha})`;
         ctx.fill();
 
         // Add soft glow core for larger stars to make them look realistic
         if (star.radius > 1.2) {
           ctx.beginPath();
           ctx.arc(star.x, star.y, star.radius * 2, 0, Math.PI * 2);
-          ctx.fillStyle = `${star.color} ${Math.max(0, star.alpha * 0.2)})`;
+          ctx.fillStyle = `${starColor} ${alpha * 0.2})`;
           ctx.fill();
         }
       });
@@ -185,7 +188,7 @@ export default function StarBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none opacity-60 z-0 mix-blend-screen"
+      className="fixed inset-0 pointer-events-none opacity-30 dark:opacity-60 z-0 mix-blend-multiply dark:mix-blend-screen"
     />
   );
 }

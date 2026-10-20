@@ -108,7 +108,7 @@ export default function ContactForm() {
                         htmlFor="projectType"
                         className={`absolute left-4 transition-all duration-200 pointer-events-none z-10 ${focused === "projectType" || form.projectType
                                 ? "top-2 text-[10px] tracking-widest uppercase font-bold text-primary"
-                                : "top-1/2 -translate-y-1/2 text-sm text-muted-foreground/60 group-hover:text-muted-foreground"
+                                : "top-1/2 -translate-y-1/2 text-sm text-muted-foreground group-hover:text-foreground"
                             }`}
                     >
                         Project Specialty
@@ -172,7 +172,7 @@ export default function ContactForm() {
                     htmlFor="message"
                     className={`absolute left-4 transition-all duration-200 pointer-events-none z-10 ${focused === "message" || form.message
                             ? "top-2 text-[10px] tracking-widest uppercase font-bold text-primary"
-                            : "top-5 text-sm text-muted-foreground/60 group-hover:text-muted-foreground"
+                            : "top-5 text-sm text-muted-foreground group-hover:text-foreground"
                         }`}
                 >
                     Project Details

@@ -95,8 +95,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className="bg-background">
-      <body className={`${spaceGrotesk.className} ${spaceGrotesk.variable} antialiased bg-background text-foreground transition-colors duration-300`}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${spaceGrotesk.className} ${spaceGrotesk.variable} antialiased text-foreground transition-colors duration-300`}>
         <JsonLd data={[organizationSchema, websiteSchema]} />
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
         <script
@@ -127,4 +127,3 @@ export default function RootLayout({
     </html>
   );
 }
-

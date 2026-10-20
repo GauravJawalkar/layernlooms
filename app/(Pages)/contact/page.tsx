@@ -67,7 +67,7 @@ export default function ContactPage() {
                     >
                         <span className="text-reflect">
                             Let&apos;s build something{" "}
-                            <span className="text-muted-foreground/50">great</span>
+                            <span>great</span>
                         </span>
                     </motion.h1>
 

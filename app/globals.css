@@ -18,7 +18,7 @@
   --neutral-950: oklch(0.145 0 0);
 
   /* Light mode semantic tokens */
-  --background: var(--neutral-50);
+  --background: oklch(0.975 0.004 260);
   --foreground: var(--neutral-950);
   --card: var(--neutral-0);
   --card-foreground: var(--neutral-950);
@@ -233,7 +233,16 @@
 
   html,
   body {
-    @apply bg-background text-foreground transition-colors duration-300;
+    @apply text-foreground transition-colors duration-300;
+    background-color: transparent;
+  }
+
+  html {
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
   }
 
   /* Custom Scrollbar Styles */

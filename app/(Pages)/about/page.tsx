@@ -122,7 +122,7 @@ export default function AboutPage() {
                 Where vision meets{" "}
                 <span className="bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">execution</span>
                 <br />
-                <span className="text-muted-foreground/60">we build what matters</span>
+                <span className="text-muted-foreground">we build what matters</span>
               </motion.h1>
 
               <motion.p
@@ -335,7 +335,7 @@ export default function AboutPage() {
                     <div className="min-w-0">
                       <h4 className="text-sm sm:text-base font-bold text-foreground">{member.name}</h4>
                       <p className="text-xs text-muted-foreground font-medium mt-0.5">{member.role}</p>
-                      <p className="text-xs text-muted-foreground/70 mt-2 leading-relaxed">{member.bio}</p>
+                      <p className="text-xs text-muted-foreground mt-2 leading-relaxed">{member.bio}</p>
                     </div>
                   </div>
 
@@ -427,4 +427,3 @@ export default function AboutPage() {
     </div>
   );
 }
-

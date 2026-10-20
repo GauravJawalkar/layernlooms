@@ -192,7 +192,7 @@ setProjects(data.filter((p) => p.visible !== false));
                           {project.category}
                         </span>
                         <span className="w-1 h-1 bg-border rounded-full" />
-                        <span className="text-xs font-medium text-muted-foreground/60">
+                        <span className="text-xs font-medium text-muted-foreground">
                           {project.year}
                         </span>
                       </div>
@@ -268,4 +268,3 @@ setProjects(data.filter((p) => p.visible !== false));
     </div>
   );
 }
-
