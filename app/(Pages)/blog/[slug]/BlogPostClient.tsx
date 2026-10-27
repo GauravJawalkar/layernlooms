@@ -41,7 +41,7 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="w-6 h-6 animate-spin text-primary" />
       </div>
     );
@@ -49,7 +49,7 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
 
   if (notFound || !post) {
     return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4">
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4">
         <h1 className="text-2xl font-bold text-foreground">Post Not Found</h1>
         <Link href="/blog" className="text-primary hover:underline text-sm">
           Back to Blog
@@ -63,9 +63,9 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
     .slice(0, 3);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen ">
       {/* Hero Section */}
-      <section className="relative pt-10 pb-16 overflow-hidden bg-background">
+      <section className="relative pt-10 pb-16 overflow-hidden ">
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mb-8">
             <Link
@@ -111,7 +111,7 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
       </section>
 
       {/* Content */}
-      <section className="pb-20 px-6 lg:px-8 bg-background">
+      <section className="pb-20 px-6 lg:px-8 ">
         <div className="max-w-3xl mx-auto">
           <article className="max-w-none">
             <div className="markdown-content">
