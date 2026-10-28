@@ -119,7 +119,7 @@ export default function ThemeCustomizer() {
                     return (
                       <button
                         key={m.name}
-                        onClick={() => setTheme(m.name)}
+                        onClick={(e) => setTheme(m.name, e)}
                         className={`flex items-center justify-center gap-1.5 py-1.5 px-2.5 rounded-lg text-xs font-semibold cursor-pointer transition-all ${
                           active
                             ? 'bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-xs'

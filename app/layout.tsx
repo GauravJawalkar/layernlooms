@@ -96,9 +96,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${spaceGrotesk.className} ${spaceGrotesk.variable} antialiased text-foreground transition-colors duration-300`}>
-        <JsonLd data={[organizationSchema, websiteSchema]} />
-        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+      <head>
         <script
           suppressHydrationWarning
           dangerouslySetInnerHTML={{
@@ -106,19 +104,33 @@ export default function RootLayout({
               try {
                 const theme = localStorage.getItem('theme') || 'system';
                 const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                const root = document.documentElement;
                 if (isDark) {
-                  document.documentElement.classList.add('dark');
+                  root.classList.add('dark');
                 } else {
-                  document.documentElement.classList.remove('dark');
+                  root.classList.remove('dark');
+                }
+                const pt = localStorage.getItem('pointerTheme') || 'zinc';
+                root.style.setProperty('--accent-current', 'var(--accent-' + pt + ')');
+                root.style.setProperty('--accent-current-foreground', 'var(--accent-' + pt + '-foreground)');
+                root.style.setProperty('--accent-current-muted', 'var(--accent-' + pt + '-muted)');
+                root.style.setProperty('--accent-current-muted-foreground', 'var(--accent-' + pt + '-muted-foreground)');
+                const pe = localStorage.getItem('pointerEnabled');
+                if (pe !== 'false') {
+                  root.classList.add('custom-cursor-active');
                 }
                 const isBot = /Lighthouse|PageSpeed|HeadlessChrome|bot|crawler|spider|google/i.test(navigator.userAgent);
                 if (sessionStorage.getItem('lnl-preloaded') === '1' || isBot) {
-                  document.documentElement.classList.add('preloaded-skip');
+                  root.classList.add('preloaded-skip');
                 }
               } catch (_) {}
             `,
           }}
         />
+      </head>
+      <body className={`${spaceGrotesk.className} ${spaceGrotesk.variable} antialiased bg-background text-foreground min-h-screen`}>
+        <JsonLd data={[organizationSchema, websiteSchema]} />
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
         <ThemeProvider>
           <Preloader />
           <LayoutWrapper>{children}</LayoutWrapper>

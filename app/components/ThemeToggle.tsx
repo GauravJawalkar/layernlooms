@@ -40,7 +40,7 @@ export default function ThemeToggle({ className = '', variant = 'pill' }: ThemeT
         aria-label="Toggle theme mode"
       >
         {isDark ? (
-          <Sun className="w-4 h-4 text-amber-400" />
+          <Sun className="w-4 h-4 text-white" />
         ) : (
           <Moon className="w-4 h-4 text-neutral-800 dark:text-neutral-200" />
         )}

@@ -16,7 +16,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   if (isAdmin) return <>{children}</>;
 
   return (
-    <div className="min-h-screen bg-transparent text-foreground transition-colors duration-300">
+    <div className="min-h-screen bg-transparent text-foreground">
       <StarBackground />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-12 relative z-10">
         <Navbar />

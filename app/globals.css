@@ -231,18 +231,17 @@
     @apply border-border;
   }
 
-  html,
-  body {
-    @apply text-foreground transition-colors duration-300;
-    background-color: transparent;
-  }
-
   html {
+    @apply bg-background text-foreground;
     color-scheme: light;
   }
 
   html.dark {
     color-scheme: dark;
+  }
+
+  body {
+    @apply bg-background text-foreground min-h-screen;
   }
 
   /* Custom Scrollbar Styles */
