@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, CheckCircle2, ArrowRight, Loader2 } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ArrowRight, Loader2, User } from "lucide-react";
 import { getAllProjectsFromDb, AdminProject } from "../../../lib/admin/portfolio";
+import { projects as fallbackProjects } from "@/app/data/portfolio";
 
 interface PortfolioDetailClientProps {
   slug: string;
@@ -23,14 +24,25 @@ export default function PortfolioDetailClient({ slug, initialProject }: Portfoli
         const found = data.find((p) => p.slug === slug && p.visible !== false);
         if (found) {
           setProject(found);
+        } else {
+          const fallbackFound = fallbackProjects.find((p) => p.slug === slug);
+          if (fallbackFound) {
+            setProject({ id: fallbackFound.slug, ...fallbackFound, visible: true });
+          } else if (!initialProject) {
+            setNotFound(true);
+          }
+        }
+      } catch (err) {
+        console.warn("Falling back to static project data:", err);
+        const fallbackFound = fallbackProjects.find((p) => p.slug === slug);
+        if (fallbackFound) {
+          setProject({ id: fallbackFound.slug, ...fallbackFound, visible: true });
         } else if (!initialProject) {
           setNotFound(true);
         }
-      } catch (err) {
-        console.error("Failed to load project:", err);
-        if (!initialProject) setNotFound(true);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     })();
   }, [slug, initialProject]);
 
@@ -88,7 +100,7 @@ export default function PortfolioDetailClient({ slug, initialProject }: Portfoli
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <Link
                   href="/contact"
-                  className="rounded-full bg-primary px-6 py-3 text-base font-semibold text-background shadow-sm hover:opacity-90 transition-colors"
+                  className="rounded-full bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-sm hover:opacity-90 transition-opacity"
                 >
                   Start Similar Project
                 </Link>
@@ -107,7 +119,7 @@ export default function PortfolioDetailClient({ slug, initialProject }: Portfoli
             </div>
 
             {/* Right Image */}
-            <div className="relative">
+            <div className="relative group">
               <div className="relative aspect-[4/2.5] w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-border">
                 <Image
                   src={project.image}
@@ -130,7 +142,7 @@ export default function PortfolioDetailClient({ slug, initialProject }: Portfoli
             {/* Left Column - Main Content */}
             <div className="lg:col-span-2">
               <div className="prose prose-lg max-w-none ">
-                <h2 className="text-3xl font-bold text-foreground mb-6">About </h2>
+                <h2 className="text-3xl font-bold text-foreground mb-6">About the Project</h2>
                 <p className="text-muted-foreground leading-relaxed mb-12">
                   {project.longDescription}
                 </p>
@@ -152,7 +164,9 @@ export default function PortfolioDetailClient({ slug, initialProject }: Portfoli
                     &quot;{project.testimonial.text}&quot;
                   </p>
                   <div className="flex items-center gap-4">
-                    <div className="h-12 w-12 rounded-full bg-secondary" />
+                    <div className="h-12 w-12 rounded-full bg-secondary border border-border flex items-center justify-center font-bold text-sm text-foreground">
+                      {project.testimonial.author.slice(0, 2).toUpperCase() || <User className="w-5 h-5 text-muted-foreground" />}
+                    </div>
                     <div>
                       <p className="font-bold text-foreground">{project.testimonial.author}</p>
                       <p className="text-sm text-muted-foreground">{project.testimonial.role}</p>
@@ -205,7 +219,7 @@ export default function PortfolioDetailClient({ slug, initialProject }: Portfoli
                 </div>
 
                 {/* CTA Card */}
-                <div className="bg-primary rounded-2xl p-8 text-background shadow-2xl shadow-primary/20">
+                <div className="bg-primary rounded-2xl p-8 text-primary-foreground shadow-2xl shadow-primary/20">
                   <h3 className="text-xl font-bold mb-2">Want results like this?</h3>
                   <p className="opacity-80 text-sm mb-6">
                     Let&apos;s discuss how we can apply these strategies to your business.
@@ -235,7 +249,7 @@ export default function PortfolioDetailClient({ slug, initialProject }: Portfoli
           <div className="mt-8">
             <Link
               href="/portfolio"
-              className="inline-flex items-center rounded-full bg-primary px-8 py-3 text-base font-semibold text-background shadow-sm hover:opacity-90 transition-all duration-300"
+              className="inline-flex items-center rounded-full bg-primary px-8 py-3 text-base font-semibold text-primary-foreground shadow-sm hover:opacity-90 transition-all duration-300"
             >
               View All Projects
               <ArrowRight className="ml-2 h-5 w-5" />

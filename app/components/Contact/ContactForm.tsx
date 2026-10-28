@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import FloatInput from "./Floatinput";
-import { Send, CheckCircle2, Plus, X } from "lucide-react";
+import { Send, CheckCircle2, Plus, X, Loader2, AlertCircle } from "lucide-react";
 
 const defaultProjectTypes = [
     "Web Development",
@@ -15,6 +16,7 @@ const defaultProjectTypes = [
 ];
 
 export default function ContactForm() {
+    const searchParams = useSearchParams();
     const [form, setForm] = useState({
         name: "",
         email: "",
@@ -25,9 +27,28 @@ export default function ContactForm() {
     });
     const [focused, setFocused] = useState<string | null>(null);
     const [submitted, setSubmitted] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [submitError, setSubmitError] = useState("");
     const [showCustomInput, setShowCustomInput] = useState(false);
     const [customType, setCustomType] = useState("");
     const [projectTypes, setProjectTypes] = useState(defaultProjectTypes);
+
+    useEffect(() => {
+        const plan = searchParams?.get("plan");
+        const type = searchParams?.get("type");
+        if (plan) {
+            setForm((prev) => ({
+                ...prev,
+                budget: prev.budget || plan,
+                message: prev.message || `Inquiring about ${plan} engagement model.`,
+            }));
+        } else if (type === "consultation") {
+            setForm((prev) => ({
+                ...prev,
+                message: prev.message || "Requesting a free 30-minute discovery consultation.",
+            }));
+        }
+    }, [searchParams]);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -60,20 +81,43 @@ export default function ContactForm() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true);
+        setSubmitError("");
         try {
-            const { saveContact } = await import("../../lib/admin/contacts");
-            await saveContact(form);
-            fetch("/api/contact", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(form),
-            }).catch((err) => console.error("Failed to send email notification:", err));
+            let saved = false;
+            try {
+                const { saveContact } = await import("../../lib/admin/contacts");
+                await saveContact(form);
+                saved = true;
+            } catch (firestoreErr) {
+                console.warn("Firestore save fallback:", firestoreErr);
+            }
+
+            try {
+                const res = await fetch("/api/contact", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(form),
+                });
+                if (res.ok) saved = true;
+            } catch (emailErr) {
+                console.warn("Email API fallback:", emailErr);
+            }
+
+            if (!saved) {
+                throw new Error("Unable to deliver message right now. Please reach out directly to info@layernlooms.com or via WhatsApp.");
+            }
+
             setSubmitted(true);
             setForm({ name: "", email: "", company: "", projectType: "", budget: "", message: "" });
             setProjectTypes(defaultProjectTypes);
             setTimeout(() => setSubmitted(false), 5000);
-        } catch (err) {
-            console.error("Failed to save contact:", err);
+        } catch (err: unknown) {
+            const msg = err instanceof Error ? err.message : "Failed to send message. Please try again or contact us directly.";
+            setSubmitError(msg);
+            console.error("Contact submission error:", err);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -192,16 +236,33 @@ export default function ContactForm() {
 
             <div className="w-full h-px bg-border" />
 
-            {/* Submit */}
+            {/* Submit & Status Feedback */}
             <div className="flex flex-col gap-4">
+                <AnimatePresence>
+                    {submitError && (
+                        <motion.div
+                            initial={{ opacity: 0, y: -8 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -8 }}
+                            className="flex items-start gap-2.5 p-3.5 rounded-xl border border-destructive/30 bg-destructive/10 text-destructive text-xs leading-relaxed"
+                            role="alert"
+                        >
+                            <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                            <span>{submitError}</span>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
                 <motion.button
                     type="submit"
-                    whileHover={{ scale: 1.005 }}
-                    whileTap={{ scale: 0.995 }}
-                    disabled={submitted}
-                    className={`w-full py-4 rounded-lg font-bold text-xs tracking-[0.2em] uppercase transition-opacity duration-300 ${submitted
-                            ? "bg-emerald-600 text-white"
-                            : "bg-primary text-background hover:opacity-85"
+                    whileHover={{ scale: loading || submitted ? 1 : 1.005 }}
+                    whileTap={{ scale: loading || submitted ? 1 : 0.995 }}
+                    disabled={submitted || loading}
+                    className={`w-full py-4 rounded-lg font-bold text-xs tracking-[0.2em] uppercase transition-all duration-300 ${submitted
+                            ? "bg-emerald-600 text-white cursor-default"
+                            : loading
+                            ? "bg-primary/70 text-primary-foreground cursor-wait"
+                            : "bg-primary text-primary-foreground hover:opacity-90 cursor-pointer shadow-md"
                         }`}
                 >
                     <span className="flex items-center justify-center gap-2">
@@ -209,6 +270,11 @@ export default function ContactForm() {
                             <>
                                 <CheckCircle2 className="w-4 h-4" />
                                 Sent Successfully
+                            </>
+                        ) : loading ? (
+                            <>
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                                Sending Message...
                             </>
                         ) : (
                             <>

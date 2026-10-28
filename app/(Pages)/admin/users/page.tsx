@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import {
@@ -40,16 +40,7 @@ export default function AdminUsersPage() {
   const [confirmId, setConfirmId] = useState<string | null>(null);
   const [confirmAction, setConfirmAction] = useState<"suspend" | "unsuspend" | "delete" | null>(null);
 
-  useEffect(() => {
-    if (!authLoading && !isSuperAdmin) {
-      router.push("/admin");
-      return;
-    }
-    loadData();
-  }, [authLoading, isSuperAdmin]);
-
-  async function loadData() {
-    setLoading(true);
+  const loadData = useCallback(async () => {
     try {
       const [all, pend] = await Promise.all([
         getAllUsers(),
@@ -59,7 +50,33 @@ export default function AdminUsersPage() {
       setPending(pend);
     } catch {}
     setLoading(false);
-  }
+  }, []);
+
+  useEffect(() => {
+    if (!authLoading && !isSuperAdmin) {
+      router.push("/admin");
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      try {
+        const [all, pend] = await Promise.all([
+          getAllUsers(),
+          getPendingUsers(),
+        ]);
+        if (!cancelled) {
+          setUsers(all as (AdminUser & { id: string })[]);
+          setPending(pend);
+          setLoading(false);
+        }
+      } catch {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [authLoading, isSuperAdmin, router]);
 
   async function handleApprove(uid: string) {
     setActionLoading(uid);

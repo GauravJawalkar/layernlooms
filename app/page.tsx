@@ -10,7 +10,7 @@ const CTASection = dynamic(() => import("./components/Home/CTASection"));
 
 export default function Home() {
   return (
-    <div className="0">
+    <div className="space-y-0">
       <HeroSection />
       <div>
         <WhyChooseUs />

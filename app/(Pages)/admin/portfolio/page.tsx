@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import {
   Plus,
@@ -42,22 +42,26 @@ export default function AdminPortfolioPage() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [togglingId, setTogglingId] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!authLoading) loadProjects();
-  }, [authLoading]);
-
-  async function loadProjects() {
+  const loadProjects = useCallback(async () => {
     setLoading(true);
     setLoadError("");
     try {
       const data = await getAllProjectsFromDb();
       setProjects(data);
-    } catch (err: any) {
-      setLoadError(err?.message || "Failed to load projects. Check Firestore rules.");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to load projects. Check Firestore rules.";
+      setLoadError(message);
       error("Failed to load projects");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
-  }
+  }, [error]);
+
+  useEffect(() => {
+    if (!authLoading) {
+      loadProjects();
+    }
+  }, [authLoading, loadProjects]);
 
   function startNew() {
     setEditing({ ...defaultProject, id: "" });
@@ -80,7 +84,7 @@ export default function AdminPortfolioPage() {
 
     setSaving(true);
     try {
-      const { id: _, createdAt: _c, updatedAt: _u, ...clean } = editing as any;
+      const { id: _, createdAt: _c, updatedAt: _u, ...clean } = editing;
       if (isNew) {
         await createProject(clean);
         success("Project created");
@@ -90,8 +94,8 @@ export default function AdminPortfolioPage() {
       }
       await loadProjects();
       cancelEdit();
-    } catch (err: any) {
-      error(err?.message || "Failed to save");
+    } catch (err: unknown) {
+      error(err instanceof Error ? err.message : "Failed to save");
     }
     setSaving(false);
   }
@@ -101,7 +105,7 @@ export default function AdminPortfolioPage() {
       await deleteProject(id);
       setProjects((prev) => prev.filter((p) => p.id !== id));
       success("Project deleted");
-    } catch (err) {
+    } catch {
       error("Failed to delete");
     }
     setDeleteId(null);
@@ -117,7 +121,7 @@ export default function AdminPortfolioPage() {
     setTogglingId(null);
   }
 
-  function updateField(field: string, value: any) {
+  function updateField<K extends keyof AdminProject>(field: K, value: AdminProject[K]) {
     if (!editing) return;
     setEditing({ ...editing, [field]: value });
   }
@@ -356,9 +360,10 @@ export default function AdminPortfolioPage() {
               <div className="flex items-center justify-between p-4">
                 <div className="flex items-center gap-3 min-w-0 flex-1">
                   {p.image ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
                     <img
                       src={p.image}
-                      alt=""
+                      alt={p.title || "Project thumbnail"}
                       className="w-10 h-10 rounded-xl object-cover shrink-0"
                     />
                   ) : (

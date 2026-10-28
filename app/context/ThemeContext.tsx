@@ -70,46 +70,40 @@ function applyAccentVariables(root: HTMLElement, theme: PointerTheme) {
   root.style.setProperty('--accent-current-muted-foreground', `var(${mutedForeground})`);
 }
 
+function getInitialStorage<T>(key: string, fallback: T): T {
+  if (typeof window === 'undefined') return fallback;
+  try {
+    const val = localStorage.getItem(key);
+    return (val as T) || fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>('system');
+  const [theme, setThemeState] = useState<Theme>(() => getInitialStorage('theme', 'system'));
   const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('dark');
-  const [scrollbarTheme, setScrollbarThemeState] = useState<ScrollbarTheme>('zinc');
-  const [pointerTheme, setPointerThemeState] = useState<PointerTheme>('zinc');
-  const [pointerEnabled, setPointerEnabledState] = useState<boolean>(true);
-  const [pointerStyle, setPointerStyleState] = useState<PointerStyle>('classic');
-  const [pointerEffects, setPointerEffectsState] = useState<boolean>(false);
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') as Theme | null;
-    if (savedTheme) {
-      setThemeState(savedTheme);
+  const [scrollbarTheme, setScrollbarThemeState] = useState<ScrollbarTheme>(() => getInitialStorage('scrollbarTheme', 'zinc'));
+  const [pointerTheme, setPointerThemeState] = useState<PointerTheme>(() => getInitialStorage('pointerTheme', 'zinc'));
+  const [pointerEnabled, setPointerEnabledState] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return true;
+    try {
+      const val = localStorage.getItem('pointerEnabled');
+      return val !== null ? val === 'true' : true;
+    } catch {
+      return true;
     }
-
-    const savedScrollbar = localStorage.getItem('scrollbarTheme') as ScrollbarTheme | null;
-    if (savedScrollbar) {
-      setScrollbarThemeState(savedScrollbar);
+  });
+  const [pointerStyle, setPointerStyleState] = useState<PointerStyle>(() => getInitialStorage('pointerStyle', 'classic'));
+  const [pointerEffects, setPointerEffectsState] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    try {
+      const val = localStorage.getItem('pointerEffects');
+      return val !== null ? val === 'true' : false;
+    } catch {
+      return false;
     }
-
-    const savedPointerTheme = localStorage.getItem('pointerTheme') as PointerTheme | null;
-    if (savedPointerTheme) {
-      setPointerThemeState(savedPointerTheme);
-    }
-
-    const savedPointerEnabled = localStorage.getItem('pointerEnabled');
-    if (savedPointerEnabled !== null) {
-      setPointerEnabledState(savedPointerEnabled === 'true');
-    }
-
-    const savedPointerStyle = localStorage.getItem('pointerStyle') as PointerStyle | null;
-    if (savedPointerStyle) {
-      setPointerStyleState(savedPointerStyle);
-    }
-
-    const savedPointerEffects = localStorage.getItem('pointerEffects');
-    if (savedPointerEffects !== null) {
-      setPointerEffectsState(savedPointerEffects === 'true');
-    }
-  }, []);
+  });
 
   const setTheme = (newTheme: Theme, event?: ThemeTransitionEvent) => {
     if (typeof window === 'undefined') {

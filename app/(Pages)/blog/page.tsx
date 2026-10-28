@@ -2,9 +2,11 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Calendar, Clock, FileText, Loader2 } from "lucide-react";
 import { getAllBlogPostsFromDb, AdminBlogPost } from "../../lib/admin/blog";
+import { blogPosts as fallbackBlogPosts } from "@/app/data/blogs";
 import JsonLd, { getBreadcrumbSchema } from "@/app/components/JsonLd";
 
 export default function BlogPage() {
@@ -24,11 +26,18 @@ export default function BlogPage() {
     (async () => {
       try {
         const data = await getAllBlogPostsFromDb();
-        setPosts(data.filter((p) => p.visible === undefined || p.visible !== false));
+        const visible = data.filter((p) => p.visible === undefined || p.visible !== false);
+        if (visible.length > 0) {
+          setPosts(visible);
+        } else {
+          setPosts(fallbackBlogPosts.map((p, idx) => ({ id: `static-${idx}`, ...p, visible: true })));
+        }
       } catch (err) {
-        console.error("Failed to load posts:", err);
+        console.warn("Falling back to static blog posts dataset:", err);
+        setPosts(fallbackBlogPosts.map((p, idx) => ({ id: `static-${idx}`, ...p, visible: true })));
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     })();
   }, []);
 
@@ -143,14 +152,16 @@ export default function BlogPage() {
                 >
                   <Link href={`/blog/${post.slug}`}>
                     <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-secondary border border-border shadow-sm">
-                      <img
+                      <Image
                         src={post.image}
                         alt={post.title}
-                        className="w-full h-full object-cover grayscale-0 md:grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover grayscale-0 md:grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
                       />
                       <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      <div className="absolute top-4 left-4">
-                        <span className="bg-primary text-background text-xs font-bold px-3 py-1.5 rounded-full">
+                      <div className="absolute top-4 left-4 z-10">
+                        <span className="bg-primary text-primary-foreground text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">
                           {post.category}
                         </span>
                       </div>

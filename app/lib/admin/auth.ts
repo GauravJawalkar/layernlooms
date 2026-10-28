@@ -18,8 +18,16 @@ import {
   where,
   updateDoc,
   deleteDoc,
+  type Timestamp,
 } from "firebase/firestore";
 import { auth, db } from "../firebase";
+
+export interface FirestoreTimestamp {
+  toMillis?: () => number;
+  toDate?: () => Date;
+  seconds?: number;
+  nanoseconds?: number;
+}
 
 export interface AdminUser {
   uid: string;
@@ -27,7 +35,7 @@ export interface AdminUser {
   displayName?: string;
   role: "superadmin" | "admin";
   status: "active" | "pending" | "suspended" | "rejected";
-  createdAt?: any;
+  createdAt?: Timestamp | Date | FirestoreTimestamp;
 }
 
 export async function signIn(email: string, password: string) {

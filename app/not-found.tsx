@@ -23,7 +23,7 @@ export default function NotFound() {
         </div>
 
         <div className="space-y-4">
-          <h2 className="text-4xl md:text-5xl font-science font-bold text-foreground tracking-tight">
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground tracking-tight">
             Lost in Space?
           </h2>
           <p className="text-lg text-muted-foreground max-w-sm mx-auto">
@@ -34,7 +34,7 @@ export default function NotFound() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
           <Link
             href="/"
-            className="group flex items-center justify-center gap-2 bg-primary text-background px-8 py-4 rounded-2xl font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-primary/20 w-full sm:w-auto"
+            className="group flex items-center justify-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-2xl font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-primary/20 w-full sm:w-auto"
           >
             <FiHome className="w-5 h-5 group-hover:-translate-y-0.5 transition-transform" />
             Back to Home

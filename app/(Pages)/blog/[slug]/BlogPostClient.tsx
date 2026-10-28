@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Calendar, Clock, User, Tag, Loader2 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { getAllBlogPostsFromDb, AdminBlogPost } from "../../../lib/admin/blog";
+import { blogPosts as fallbackBlogPosts } from "@/app/data/blogs";
 
 interface BlogPostClientProps {
   slug: string;
@@ -26,16 +28,27 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
         if (found) {
           setPost(found);
           setAllPosts(data);
-        } else if (!initialPost) {
-          setNotFound(true);
         } else {
-          setAllPosts(data);
+          const fallbackFound = fallbackBlogPosts.find((p) => p.slug === slug);
+          if (fallbackFound) {
+            setPost({ id: fallbackFound.slug, ...fallbackFound, visible: true });
+          } else if (!initialPost) {
+            setNotFound(true);
+          }
+          setAllPosts(data.length > 0 ? data : fallbackBlogPosts.map((p) => ({ id: p.slug, ...p, visible: true })));
         }
       } catch (err) {
-        console.error("Failed to load post:", err);
-        if (!initialPost) setNotFound(true);
+        console.warn("Falling back to static blog posts dataset:", err);
+        const fallbackFound = fallbackBlogPosts.find((p) => p.slug === slug);
+        if (fallbackFound) {
+          setPost({ id: fallbackFound.slug, ...fallbackFound, visible: true });
+        } else if (!initialPost) {
+          setNotFound(true);
+        }
+        setAllPosts(fallbackBlogPosts.map((p) => ({ id: p.slug, ...p, visible: true })));
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     })();
   }, [slug, initialPost]);
 
@@ -78,10 +91,13 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
           </div>
 
           <div className="relative aspect-[16/9] sm:aspect-[21/9] w-full rounded-2xl overflow-hidden shadow-xl border border-border mb-10">
-            <img
+            <Image
               src={post.image}
               alt={post.title}
-              className="w-full h-full object-cover grayscale-0 md:grayscale hover:grayscale-0 transition-all duration-500"
+              fill
+              priority
+              sizes="(max-width: 1024px) 100vw, 1200px"
+              className="object-cover grayscale-0 md:grayscale hover:grayscale-0 transition-all duration-500"
             />
           </div>
 
@@ -169,6 +185,7 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
                   img: ({ src, alt }) => {
                     if (!src) return null;
                     return (
+                      // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={src}
                         alt={alt || ""}
@@ -281,10 +298,12 @@ export default function BlogPostClient({ slug, initialPost }: BlogPostClientProp
               {relatedPosts.map((rp) => (
                 <Link key={rp.slug} href={`/blog/${rp.slug}`} className="group">
                   <div className="relative aspect-[16/10] overflow-hidden rounded-xl bg-background border border-border shadow-sm mb-4">
-                    <img
+                    <Image
                       src={rp.image}
                       alt={rp.title}
-                      className="w-full h-full object-cover grayscale-0 md:grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover grayscale-0 md:grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
                     />
                   </div>
                   <div className="flex items-center gap-3 text-xs text-muted-foreground mb-2">

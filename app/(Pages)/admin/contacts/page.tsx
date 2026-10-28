@@ -15,9 +15,34 @@ import {
   ChevronUp,
   AlertCircle,
   Trash2,
+  type LucideIcon,
 } from "lucide-react";
 import { getAllContacts, markContactRead, deleteContact, ContactSubmission } from "../../../lib/admin/contacts";
 import { useAdminAuth } from "../../../context/AdminAuthContext";
+
+function formatDate(ts: ContactSubmission["createdAt"]): string {
+  if (!ts) return "—";
+  if (ts instanceof Date) return ts.toLocaleDateString();
+  if (typeof (ts as { toDate?: () => Date }).toDate === "function") {
+    return (ts as { toDate: () => Date }).toDate().toLocaleDateString();
+  }
+  if (typeof (ts as { toMillis?: () => number }).toMillis === "function") {
+    return new Date((ts as { toMillis: () => number }).toMillis()).toLocaleDateString();
+  }
+  return "—";
+}
+
+function formatDateTime(ts: ContactSubmission["createdAt"]): string {
+  if (!ts) return "—";
+  if (ts instanceof Date) return ts.toLocaleString();
+  if (typeof (ts as { toDate?: () => Date }).toDate === "function") {
+    return (ts as { toDate: () => Date }).toDate().toLocaleString();
+  }
+  if (typeof (ts as { toMillis?: () => number }).toMillis === "function") {
+    return new Date((ts as { toMillis: () => number }).toMillis()).toLocaleString();
+  }
+  return "—";
+}
 
 export default function AdminContactsPage() {
   const { isSuperAdmin } = useAdminAuth();
@@ -41,9 +66,10 @@ export default function AdminContactsPage() {
       const rs: Record<string, boolean> = {};
       data.forEach((c) => { rs[c.id] = c.read; });
       setReadState(rs);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Failed to load contacts:", err);
-      setError(err?.message || "Failed to load contacts. Check Firestore rules.");
+      const message = err instanceof Error ? err.message : "Failed to load contacts. Check Firestore rules.";
+      setError(message);
     }
     setLoading(false);
   }
@@ -156,7 +182,7 @@ export default function AdminContactsPage() {
                 </div>
                 <div className="flex items-center gap-3 shrink-0">
                   <span className="text-xs text-muted-foreground whitespace-nowrap hidden sm:block">
-                    {c.createdAt?.toDate?.()?.toLocaleDateString() ?? "—"}
+                    {formatDate(c.createdAt)}
                   </span>
                   {expanded === c.id ? (
                     <ChevronUp className="w-4 h-4 text-muted-foreground" />
@@ -179,7 +205,7 @@ export default function AdminContactsPage() {
                       <InfoRow icon={Building2} label="Company" value={c.company || "—"} />
                       <InfoRow icon={FolderKanban} label="Project Type" value={c.projectType || "—"} />
                       <InfoRow icon={Wallet} label="Budget" value={c.budget || "—"} />
-                      <InfoRow icon={Clock} label="Submitted" value={c.createdAt?.toDate?.()?.toLocaleString() ?? "—"} />
+                      <InfoRow icon={Clock} label="Submitted" value={formatDateTime(c.createdAt)} />
                     </div>
                     <div className="mt-4">
                       <p className="text-xs font-bold tracking-widest uppercase text-muted-foreground mb-2">Message</p>
@@ -234,7 +260,7 @@ export default function AdminContactsPage() {
   );
 }
 
-function InfoRow({ icon: Icon, label, value }: { icon: any; label: string; value: string }) {
+function InfoRow({ icon: Icon, label, value }: { icon: LucideIcon; label: string; value: string }) {
   return (
     <div className="flex items-center gap-3">
       <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center shrink-0">

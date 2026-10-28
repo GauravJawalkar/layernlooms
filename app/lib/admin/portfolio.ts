@@ -7,6 +7,7 @@ import {
   updateDoc,
   deleteDoc,
   serverTimestamp,
+  type Timestamp,
 } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -29,8 +30,8 @@ export interface AdminProject {
     role: string;
   };
   visible?: boolean;
-  createdAt?: any;
-  updatedAt?: any;
+  createdAt?: Timestamp | Date | { toMillis?: () => number };
+  updatedAt?: Timestamp | Date | { toMillis?: () => number };
 }
 
 export const defaultProject: Omit<AdminProject, "id"> = {

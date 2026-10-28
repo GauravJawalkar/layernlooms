@@ -11,7 +11,7 @@ import {
   FileText,
 } from "lucide-react";
 import { useAdminAuth } from "../../context/AdminAuthContext";
-import { getAllUsers, getPendingUsers, AdminUser } from "../../lib/admin/auth";
+import { getAllUsers, getPendingUsers } from "../../lib/admin/auth";
 import { getAllBlogPostsFromDb } from "../../lib/admin/blog";
 import { getAllProjectsFromDb } from "../../lib/admin/portfolio";
 

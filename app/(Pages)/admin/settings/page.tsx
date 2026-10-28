@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   User,
@@ -9,10 +9,8 @@ import {
   Lock,
   Save,
   Loader2,
-  CheckCircle2,
   Eye,
   EyeOff,
-  AlertCircle,
 } from "lucide-react";
 import { useToast } from "../../../components/admin/Toast";
 import { useAdminAuth } from "../../../context/AdminAuthContext";
@@ -26,7 +24,13 @@ export default function AdminSettingsPage() {
   const { success, error } = useToast();
   const { user } = useAdminAuth();
   const [displayName, setDisplayName] = useState(user?.displayName || "");
+  const [prevUserDisplayName, setPrevUserDisplayName] = useState(user?.displayName);
   const [saving, setSaving] = useState(false);
+
+  if (user?.displayName && prevUserDisplayName !== user.displayName) {
+    setPrevUserDisplayName(user.displayName);
+    setDisplayName(user.displayName);
+  }
 
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -34,18 +38,14 @@ export default function AdminSettingsPage() {
   const [showPw, setShowPw] = useState(false);
   const [changingPw, setChangingPw] = useState(false);
 
-  useEffect(() => {
-    if (user?.displayName) setDisplayName(user.displayName);
-  }, [user?.displayName]);
-
   async function handleSaveProfile() {
     if (!user) return;
     setSaving(true);
     try {
       await updateUserProfile(user.uid, { displayName: displayName || "" });
       success("Profile updated");
-    } catch (err: any) {
-      error(err?.message || "Failed to update profile");
+    } catch (err: unknown) {
+      error(err instanceof Error ? err.message : "Failed to update profile");
     }
     setSaving(false);
   }
@@ -67,8 +67,8 @@ export default function AdminSettingsPage() {
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
-    } catch (err: any) {
-      error(err?.message || "Failed to change password");
+    } catch (err: unknown) {
+      error(err instanceof Error ? err.message : "Failed to change password");
     }
     setChangingPw(false);
   }
@@ -121,7 +121,7 @@ export default function AdminSettingsPage() {
             <button
               onClick={handleSaveProfile}
               disabled={saving}
-              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-primary text-background text-sm font-medium hover:opacity-90 transition-all disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-all disabled:opacity-50"
             >
               {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
               Save Changes
@@ -189,7 +189,7 @@ export default function AdminSettingsPage() {
             <button
               onClick={handleChangePassword}
               disabled={changingPw || !currentPassword || !newPassword || !confirmPassword}
-              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-primary text-background text-sm font-medium hover:opacity-90 transition-all disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-all disabled:opacity-50"
             >
               {changingPw ? <Loader2 className="w-4 h-4 animate-spin" /> : <Lock className="w-4 h-4" />}
               Update Password

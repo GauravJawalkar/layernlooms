@@ -39,8 +39,8 @@ export default function AdminLoginPage() {
         await sendPasswordResetEmail(auth, email);
         setResetSent(true);
       }
-    } catch (err: any) {
-      const msg = err?.message || "";
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "";
       if (msg.includes("permission-denied") || msg.includes("Missing or insufficient")) {
         setError(
           "Firestore rules are blocking access. Go to Firebase Console → " +

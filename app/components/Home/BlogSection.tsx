@@ -3,18 +3,18 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Calendar, Clock, Loader2 } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
 import { getAllBlogPostsFromDb, AdminBlogPost } from "../../lib/admin/blog";
+import { blogPosts as staticBlogPosts } from "@/app/data/blogs";
 
-const themeColors: Record<string, string> = {
-  zinc: "oklch(0.708 0 0)",
-  purple: "oklch(0.7 0.22 270)",
-  green: "oklch(0.65 0.15 150)",
-  cyan: "oklch(0.75 0.15 200)",
-  amber: "oklch(0.8 0.18 80)",
-  pink: "oklch(0.75 0.22 340)",
-};
+function getPostTimestamp(p: AdminBlogPost): number {
+  if (p.createdAt && typeof (p.createdAt as { toMillis?: () => number }).toMillis === "function") {
+    return (p.createdAt as { toMillis: () => number }).toMillis();
+  }
+  return new Date(p.date).getTime() || 0;
+}
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -38,15 +38,15 @@ export default function BlogSection() {
   useEffect(() => {
     (async () => {
       try {
-const data = await getAllBlogPostsFromDb();
-setPosts(
-  data.filter((p) => p.visible !== false).sort((a, b) => {
-            const da = a.createdAt?.toMillis?.() ?? new Date(a.date).getTime();
-            const db = b.createdAt?.toMillis?.() ?? new Date(b.date).getTime();
-            return db - da;
-          })
+        const data = await getAllBlogPostsFromDb();
+        const valid = data.filter((p) => p.visible !== false);
+        const resolved = valid.length > 0 ? valid : (staticBlogPosts as unknown as AdminBlogPost[]);
+        setPosts(
+          resolved.sort((a, b) => getPostTimestamp(b) - getPostTimestamp(a))
         );
-      } catch {}
+      } catch {
+        setPosts(staticBlogPosts as unknown as AdminBlogPost[]);
+      }
       setLoading(false);
     })();
   }, []);
@@ -104,13 +104,15 @@ setPosts(
               >
                 <Link href={`/blog/${post.slug}`}>
                   <div className="relative aspect-[16/10] overflow-hidden">
-                    <img
+                    <Image
                       src={post.image}
                       alt={post.title}
-                      className="w-full h-full object-cover grayscale-0 md:grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      className="object-cover grayscale-0 md:grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
                     />
-                    <div className="absolute top-3 left-3">
-                      <span className="bg-primary text-background text-[10px] font-bold px-2.5 py-1 rounded-full">
+                    <div className="absolute top-3 left-3 z-10">
+                      <span className="bg-primary text-primary-foreground text-[10px] font-bold px-2.5 py-1 rounded-full shadow-sm">
                         {post.category}
                       </span>
                     </div>

@@ -6,15 +6,6 @@ import { ArrowRight } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
 import { getAllServices } from "@/app/data/services";
 
-const themeColors: Record<string, string> = {
-  zinc: "oklch(0.708 0 0)",
-  purple: "oklch(0.7 0.22 270)",
-  green: "oklch(0.65 0.15 150)",
-  cyan: "oklch(0.75 0.15 200)",
-  amber: "oklch(0.8 0.18 80)",
-  pink: "oklch(0.75 0.22 340)",
-};
-
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {

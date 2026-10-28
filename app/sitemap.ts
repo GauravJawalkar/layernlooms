@@ -31,6 +31,7 @@ const staticRoutes: MetadataRoute.Sitemap = [
   { url: `${site.url}/portfolio`, lastModified: STATIC_CONTENT_DATE, changeFrequency: "weekly", priority: 0.8 },
   { url: `${site.url}/blog`, lastModified: STATIC_CONTENT_DATE, changeFrequency: "weekly", priority: 0.8 },
   { url: `${site.url}/pricing`, lastModified: STATIC_CONTENT_DATE, changeFrequency: "monthly", priority: 0.7 },
+  { url: `${site.url}/careers`, lastModified: STATIC_CONTENT_DATE, changeFrequency: "monthly", priority: 0.7 },
   { url: `${site.url}/contact`, lastModified: STATIC_CONTENT_DATE, changeFrequency: "monthly", priority: 0.7 },
   { url: `${site.url}/terms`, lastModified: STATIC_CONTENT_DATE, changeFrequency: "yearly", priority: 0.3 },
   { url: `${site.url}/privacy`, lastModified: STATIC_CONTENT_DATE, changeFrequency: "yearly", priority: 0.3 },

@@ -1,8 +1,10 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
 import { Loader2 } from "lucide-react";
+
+const emptySubscribe = () => () => {};
 
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
@@ -13,11 +15,10 @@ interface Props {
 }
 
 export default function MarkdownEditor({ value, onChange, height = 400 }: Props) {
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
   const [colorMode, setColorMode] = useState<"light" | "dark">("light");
 
   useEffect(() => {
-    setMounted(true);
     function update() {
       setColorMode(document.documentElement.classList.contains("dark") ? "dark" : "light");
     }
@@ -44,9 +45,10 @@ export default function MarkdownEditor({ value, onChange, height = 400 }: Props)
         preview="live"
         previewOptions={{
           components: {
-            img: (props: any) => {
+            img: ({ alt, ...props }: React.ImgHTMLAttributes<HTMLImageElement>) => {
               if (!props.src) return null;
-              return <img {...props} />;
+              // eslint-disable-next-line @next/next/no-img-element
+              return <img alt={alt || ""} {...props} />;
             },
           },
         }}

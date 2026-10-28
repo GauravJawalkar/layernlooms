@@ -4,8 +4,9 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ExternalLink, Filter, Loader2 } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { getAllProjectsFromDb, AdminProject } from "../../lib/admin/portfolio";
+import { projects as fallbackProjects } from "@/app/data/portfolio";
 import JsonLd, { getBreadcrumbSchema } from "@/app/components/JsonLd";
 
 export default function PortfolioPage() {
@@ -26,11 +27,20 @@ export default function PortfolioPage() {
     setLoading(true);
     setLoadError("");
     try {
-const data = await getAllProjectsFromDb();
-setProjects(data.filter((p) => p.visible !== false));
-    } catch (err: any) {
-      console.error("Failed to load projects:", err);
-      setLoadError("Failed to load portfolio items. Please try again.");
+      const data = await getAllProjectsFromDb();
+      const visible = data.filter((p) => p.visible !== false);
+      if (visible.length > 0) {
+        setProjects(visible);
+      } else {
+        setProjects(fallbackProjects.map((p, idx) => ({ id: `static-${idx}`, ...p, visible: true })));
+      }
+    } catch (err: unknown) {
+      console.warn("Falling back to static projects dataset:", err);
+      if (fallbackProjects.length > 0) {
+        setProjects(fallbackProjects.map((p, idx) => ({ id: `static-${idx}`, ...p, visible: true })));
+      } else {
+        setLoadError("Failed to load portfolio items. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -145,7 +155,7 @@ setProjects(data.filter((p) => p.visible !== false));
               }}
             >
               <AnimatePresence mode="popLayout">
-                {filteredProjects.map((project, index) => (
+                {filteredProjects.map((project) => (
                   <motion.div
                     key={project.slug}
                     layout

@@ -45,9 +45,11 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
     }
   }, [loading, user, pathname, router]);
 
-  useEffect(() => {
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
     setSidebarOpen(false);
-  }, [pathname]);
+  }
 
   if (pathname === "/admin/login") return <>{children}</>;
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import {
   Plus,
@@ -39,27 +39,30 @@ export default function AdminBlogPage() {
   const [editing, setEditing] = useState<AdminBlogPost | null>(null);
   const [isNew, setIsNew] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [saveError, setSaveError] = useState("");
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [togglingId, setTogglingId] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!authLoading) loadPosts();
-  }, [authLoading]);
-
-  async function loadPosts() {
+  const loadPosts = useCallback(async () => {
     setLoading(true);
     setLoadError("");
     try {
       const data = await getAllBlogPostsFromDb();
       setPosts(data);
-    } catch (err: any) {
-      setLoadError(err?.message || "Failed to load posts. Check Firestore rules.");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to load posts. Check Firestore rules.";
+      setLoadError(message);
       console.error("Load error:", err);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
-  }
+  }, []);
+
+  useEffect(() => {
+    if (!authLoading) {
+      loadPosts();
+    }
+  }, [authLoading, loadPosts]);
 
   function startNew() {
     setEditing({ ...defaultBlogPost, id: "" });
@@ -82,7 +85,7 @@ export default function AdminBlogPage() {
 
     setSaving(true);
     try {
-      const { id: _, createdAt: _c, updatedAt: _u, ...clean } = editing as any;
+      const { id: _, createdAt: _c, updatedAt: _u, ...clean } = editing;
       if (isNew) {
         await createBlogPost(clean);
         success("Post created");
@@ -92,8 +95,8 @@ export default function AdminBlogPage() {
       }
       await loadPosts();
       cancelEdit();
-    } catch (err: any) {
-      error(err?.message || "Failed to save");
+    } catch (err: unknown) {
+      error(err instanceof Error ? err.message : "Failed to save");
     }
     setSaving(false);
   }
@@ -103,7 +106,7 @@ export default function AdminBlogPage() {
       await deleteBlogPost(id);
       setPosts((prev) => prev.filter((p) => p.id !== id));
       success("Post deleted");
-    } catch (err) {
+    } catch {
       error("Failed to delete");
     }
     setDeleteId(null);
@@ -119,7 +122,7 @@ export default function AdminBlogPage() {
     setTogglingId(null);
   }
 
-  function updateField(field: string, value: any) {
+  function updateField<K extends keyof AdminBlogPost>(field: K, value: AdminBlogPost[K]) {
     if (!editing) return;
     setEditing({ ...editing, [field]: value });
   }
@@ -343,9 +346,10 @@ export default function AdminBlogPage() {
               <div className="flex items-center justify-between p-4">
                 <div className="flex items-center gap-3 min-w-0 flex-1">
                   {p.image ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
                     <img
                       src={p.image}
-                      alt=""
+                      alt={p.title || "Blog post thumbnail"}
                       className="w-10 h-10 rounded-xl object-cover shrink-0"
                     />
                   ) : (

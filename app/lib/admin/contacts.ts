@@ -8,6 +8,7 @@ import {
   updateDoc,
   doc,
   deleteDoc,
+  type Timestamp,
 } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -19,7 +20,7 @@ export interface ContactSubmission {
   projectType: string;
   budget: string;
   message: string;
-  createdAt?: any;
+  createdAt?: Timestamp | Date | { toMillis?: () => number; toDate?: () => Date };
   read: boolean;
 }
 

@@ -37,7 +37,7 @@ export default function CTASection() {
           transition={{ delay: 0.1 }}
           className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-12 sm:mb-20 leading-[1.2] sm:leading-[1.1]"
         >
-          Have Any Projects On Minds!<br className="hidden sm:block" /> Feel Free to Contact Us
+          Have a Project in Mind?<br className="hidden sm:block" /> Let&apos;s Build Something Remarkable
         </motion.h3>
 
         {/* Circular Button */}
@@ -53,7 +53,7 @@ export default function CTASection() {
           >
             <ArrowUp className="w-5 h-5 sm:w-7 sm:h-7 mb-2 sm:mb-3 group-hover:-translate-y-2 transition-transform duration-500" />
             <span className="text-sm sm:text-base font-bold text-center leading-tight tracking-tight">
-              Let&apos;s Talk<br/>With Us
+              Let&apos;s Talk
             </span>
           </Link>
         </motion.div>

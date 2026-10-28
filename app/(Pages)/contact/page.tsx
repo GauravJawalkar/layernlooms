@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { motion } from "framer-motion";
 import ContactForm from "../../components/Contact/ContactForm";
 import { StepsCard } from "../../components/Contact/ContactCard";
@@ -91,7 +92,9 @@ export default function ContactPage() {
                         variants={fadeUp}
                         className="lg:col-span-7 order-2 lg:order-1"
                     >
-                        <ContactForm />
+                        <Suspense fallback={<div className="w-full rounded-2xl border border-border bg-card p-8 animate-pulse h-96" />}>
+                            <ContactForm />
+                        </Suspense>
                     </motion.div>
 
                     {/* ── Right Column: Info ── */}

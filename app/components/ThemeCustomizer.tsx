@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Paintbrush, Check, X, MousePointer, Settings, Eye, EyeOff } from 'lucide-react';
-import { useTheme, ScrollbarTheme, PointerTheme, PointerStyle, Theme } from '../context/ThemeContext';
+import { useTheme, ScrollbarTheme, PointerStyle, Theme } from '../context/ThemeContext';
 import { Monitor, Moon, Sun, type LucideIcon } from 'lucide-react';
 
 export default function ThemeCustomizer() {

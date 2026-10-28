@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Upload, Image as ImageIcon, X, Loader2, FolderOpen } from "lucide-react";
+import { Upload, X, Loader2, FolderOpen } from "lucide-react";
 import { uploadToCloudinary } from "../../lib/admin/cloudinary";
 
 interface Props {
@@ -28,8 +28,8 @@ export default function CloudinaryUpload({ value, onChange, folder = "layernloom
     try {
       const url = await uploadToCloudinary(file, folder);
       onChange(url);
-    } catch (err: any) {
-      setError(err?.message || "Upload failed");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Upload failed");
     }
     setUploading(false);
     if (inputRef.current) inputRef.current.value = "";
@@ -84,6 +84,7 @@ export default function CloudinaryUpload({ value, onChange, folder = "layernloom
 
       {value && (
         <div className="relative inline-block group">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={value}
             alt="Preview"

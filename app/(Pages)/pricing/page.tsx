@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
+import Link from "next/link";
 import JsonLd, { getBreadcrumbSchema, getFAQPageSchema } from "@/app/components/JsonLd";
 
 
@@ -168,16 +169,21 @@ export default function PricingPage() {
                                 ))}
                             </ul>
 
-                            <motion.button
-                                className={`w-full py-3 rounded-xl text-sm font-bold tracking-wide transition-all duration-200 cursor-pointer ${plan.featured
-                                    ? "bg-white text-black hover:bg-neutral-200 dark:bg-black dark:text-white dark:hover:bg-neutral-800 shadow-md"
-                                    : "bg-primary text-primary-foreground hover:opacity-90 shadow-sm"
-                                    }`}
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
+                            <Link
+                                href={`/contact?plan=${encodeURIComponent(plan.title)}`}
+                                className="w-full"
                             >
-                                {plan.cta}
-                            </motion.button>
+                                <motion.div
+                                    className={`w-full py-3 rounded-xl text-sm font-bold tracking-wide transition-all duration-200 cursor-pointer text-center ${plan.featured
+                                        ? "bg-white text-black hover:bg-neutral-200 dark:bg-black dark:text-white dark:hover:bg-neutral-800 shadow-md"
+                                        : "bg-primary text-primary-foreground hover:opacity-90 shadow-sm"
+                                        }`}
+                                    whileHover={{ scale: 1.02 }}
+                                    whileTap={{ scale: 0.98 }}
+                                >
+                                    {plan.cta}
+                                </motion.div>
+                            </Link>
                         </motion.div>
                     ))}
                 </div>
@@ -245,13 +251,15 @@ export default function PricingPage() {
                     <p className="text-base mb-8 opacity-60 text-background">
                         Book a free 30-minute consultation and we&apos;ll find the right fit together.
                     </p>
-                    <motion.button
-                        className="px-8 py-3 rounded-xl font-bold text-sm transition-colors duration-200 bg-background text-foreground hover:opacity-90"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                    >
-                        Book a Free Call
-                    </motion.button>
+                    <Link href="/contact?type=consultation" className="inline-block">
+                        <motion.div
+                            className="px-8 py-3 rounded-xl font-bold text-sm transition-colors duration-200 bg-background text-foreground hover:opacity-90 cursor-pointer"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                        >
+                            Book a Free Call
+                        </motion.div>
+                    </Link>
                 </motion.div>
             </section>
         </main>

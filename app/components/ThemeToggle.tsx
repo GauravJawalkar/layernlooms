@@ -1,11 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useSyncExternalStore } from 'react';
 import { motion } from 'framer-motion';
 import { Monitor, Moon, Sun, type LucideIcon } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
 type Theme = 'light' | 'dark' | 'system';
+
+const emptySubscribe = () => () => {};
 
 interface ThemeToggleProps {
   className?: string;
@@ -14,12 +16,7 @@ interface ThemeToggleProps {
 
 export default function ThemeToggle({ className = '', variant = 'pill' }: ThemeToggleProps) {
   const { theme, setTheme, toggleTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  // Prevent hydration layout shift / mismatch warnings
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
 
   if (!mounted) {
     return variant === 'toggle' ? (

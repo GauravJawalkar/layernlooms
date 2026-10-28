@@ -1,16 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { useTheme } from "../../context/ThemeContext";
-
-const themeColors = {
-  zinc: "#a1a1aa",
-  purple: "#a78bfa",
-  green: "#34d399",
-  cyan: "#22d3ee",
-  amber: "#fb923c",
-  pink: "#f472b6",
-};
 
 const partners = [
   { name: "Imgira Tools", initials: "IT", logo: "https://www.google.com/s2/favicons?domain=imgira.site&sz=64&dc=1", description: "AI-Powered Development Tools" },
@@ -45,11 +37,13 @@ function PartnerLogo({ initials, logo, color }: { initials: string; logo?: strin
           border: `1px solid ${color}25`,
         }}
       >
-        <img
+        <Image
           src={logo}
-          alt={initials}
+          alt={`${initials} logo`}
+          width={32}
+          height={32}
           className="w-8 h-8 object-contain"
-          draggable={false}
+          unoptimized
         />
       </div>
     );

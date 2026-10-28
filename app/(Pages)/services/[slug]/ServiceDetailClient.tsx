@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { CheckCircle2, ArrowRight, Check, Sparkles, Code2, ChevronRight, ListChecks, Route, Users2 } from "lucide-react";
+import { CheckCircle2, ArrowRight, Check, Sparkles, Code2, ChevronRight, ListChecks, Users2 } from "lucide-react";
 import { getAllServices, Service } from "@/app/data/services";
 import { getServiceContent } from "@/app/data/service-content";
 import ServiceHero from "../../../components/services/ServiceHero";

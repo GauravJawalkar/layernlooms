@@ -141,7 +141,6 @@ export default function CustomCursor() {
   // Handle position snapping calculations on scroll, resize, or intervals
   useEffect(() => {
     if (!hoveredElement || !pointerEffects) {
-      setElementRect(null);
       return;
     }
 
@@ -164,6 +163,7 @@ export default function CustomCursor() {
     return () => {
       window.removeEventListener('scroll', updateRect);
       window.removeEventListener('resize', updateRect);
+      setElementRect(null);
     };
   }, [hoveredElement, pointerEffects]);
 

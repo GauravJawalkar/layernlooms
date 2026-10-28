@@ -26,7 +26,7 @@ export const site = {
     linkedin: "https://linkedin.com/company/layernlooms",
     instagram: "https://instagram.com/layernlooms",
     googleBusiness: "https://share.google/S46H7wVpxAKJO4Eom",
-    whatsapp: "https://wa.me/919730516224",
+    whatsapp: "https://wa.me/9511864578",
   },
   socialHandles: {
     twitter: "@layernlooms",
@@ -36,7 +36,7 @@ export const site = {
     "https://linkedin.com/company/layernlooms",
     "https://instagram.com/layernlooms",
     "https://share.google/S46H7wVpxAKJO4Eom",
-    "https://wa.me/919730516224",
+    "https://wa.me/9511864578",
   ],
 } as const;
 
@@ -82,10 +82,21 @@ export const team: TeamMember[] = [
   {
     slug: "shubham-tawale",
     name: "Shubham Tawale",
-    jobTitle: "Engineering Lead",
+    jobTitle: "Co-Founder & COO",
     description:
-      "Leads LayerNLooms' delivery practice across web, mobile, and AI engagements, with a focus on code quality and on-time shipping.",
+      "Operations leader overseeing project execution, team coordination, and business processes. Ensures efficient delivery while maintaining operational excellence.",
     url: `${site.url}/about#shubham-tawale`,
-    knowsAbout: ["Software Delivery", "Code Review", "Mobile Development"],
+    sameAs: ["https://www.linkedin.com/in/shubham-tawale-b6a9b8200"],
+    knowsAbout: ["Software Delivery", "Operations Management", "Mobile Development"],
+  },
+  {
+    slug: "jay-jawalkar",
+    name: "Jay Jawalkar",
+    jobTitle: "Managing Director (MD)",
+    description:
+      "Responsible for business management, strategic partnerships, and organizational growth at LayerNLooms.",
+    url: `${site.url}/about#jay-jawalkar`,
+    sameAs: ["https://www.linkedin.com/in/jay-jawalkar/"],
+    knowsAbout: ["Business Management", "Strategic Partnerships", "Organizational Growth"],
   },
 ];
