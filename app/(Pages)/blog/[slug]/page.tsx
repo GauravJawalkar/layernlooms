@@ -7,6 +7,7 @@ import { site } from "@/app/lib/site";
 import {
   getPublishedPostBySlug,
   getPublishedPosts,
+  parseDisplayDate,
   resolveLastModified,
 } from "@/app/lib/firestore-content";
 
@@ -58,7 +59,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       url,
       title,
       description,
-      publishedTime: post.date,
+      publishedTime: (parseDisplayDate(post.date) ?? new Date()).toISOString(),
       ...(modified ? { modifiedTime: modified.toISOString() } : {}),
       authors: [post.author || "LayerNLooms Team"],
       images: [{ url: image, alt: post.title }],

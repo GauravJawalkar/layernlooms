@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import HeroSection from "./components/Home/HeroSection";
+
+export const metadata: Metadata = {
+  title: "LayerNLooms | Custom Software & AI Development",
+  description:
+    "Custom software development agency building web applications, mobile apps, AI systems, and cloud infrastructure for startups and enterprises worldwide.",
+  alternates: { canonical: "https://layernlooms.com" },
+};
 
 const WhyChooseUs = dynamic(() => import("./components/Home/WhyChooseUs"));
 const OurServices = dynamic(() => import("./components/Home/OurServices"));

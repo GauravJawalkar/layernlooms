@@ -68,7 +68,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       canonical: url,
     },
     openGraph: {
-      type: "article",
+      type: "website",
       url,
       title: `${service.title} | LayerNLooms`,
       description,

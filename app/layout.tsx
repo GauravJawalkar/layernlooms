@@ -69,6 +69,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
+    site: site.socialHandles.twitter,
     title: "Custom Software Development & AI Solutions | LayerNLooms",
     description:
       "Web • Mobile • AI • Custom Software — Built exclusively for brands that want excellence.",
@@ -119,8 +120,7 @@ export default function RootLayout({
                 if (pe !== 'false') {
                   root.classList.add('custom-cursor-active');
                 }
-                const isBot = /Lighthouse|PageSpeed|HeadlessChrome|bot|crawler|spider|google/i.test(navigator.userAgent);
-                if (sessionStorage.getItem('lnl-preloaded') === '1' || isBot) {
+                if (sessionStorage.getItem('lnl-preloaded') === '1') {
                   root.classList.add('preloaded-skip');
                 }
               } catch (_) {}

@@ -39,7 +39,7 @@ export const organizationSchema = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": ["Organization", "ProfessionalService"],
+      "@type": ["Organization", "ProfessionalService", "LocalBusiness"],
       "@id": organizationId,
       name: site.name,
       alternateName: site.alternateName,
