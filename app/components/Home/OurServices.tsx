@@ -26,11 +26,7 @@ export default function OurServices() {
 
   return (
     <section className="relative py-20  overflow-hidden">
-      {/* Ambient glassmorphic glows */}
-      <div className="absolute inset-0 pointer-events-none -z-10">
-        <div className="absolute top-1/3 -left-40 h-[450px] w-[450px] rounded-full bg-secondary/20 blur-3xl opacity-75" />
-        <div className="absolute bottom-1/3 -right-40 h-[450px] w-[450px] rounded-full bg-secondary/20 blur-3xl opacity-75" />
-      </div>
+     
 
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <motion.div
