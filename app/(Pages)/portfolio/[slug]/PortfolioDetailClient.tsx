@@ -66,9 +66,9 @@ export default function PortfolioDetailClient({ slug, initialProject }: Portfoli
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen ">
       {/* Hero Section */}
-      <section className="relative pt-10 pb-20 overflow-hidden bg-background">
+      <section className="relative pt-10 pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-grid-slate-900/[0.04] [mask-image:linear-gradient(0deg,transparent,white)]" />
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
           {/* Back Button */}
