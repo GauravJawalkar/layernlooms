@@ -22,15 +22,8 @@ export default function ServiceHero({ service }: ServiceHeroProps) {
     const router = useRouter();
 
     return (
-        <section className="relative overflow-hidden bg-background text-foreground border-b border-border pt-4 pb-12 sm:pt-6 sm:pb-16 lg:pt-10 lg:pb-24">
-            {/* Ambient Background Elements */}
-            <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-foreground/[0.03] rounded-full blur-[120px] translate-x-1/3 -translate-y-1/3" />
-                <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-foreground/[0.02] rounded-full blur-[100px] -translate-x-1/3 translate-y-1/3" />
-                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.04] mix-blend-overlay" />
-                <div className="absolute inset-0 bg-grid-foreground/[0.02] bg-[length:32px_32px]" />
-                <div className="absolute inset-0 bg-gradient-to-b from-background/20 to-background" />
-            </div>
+        <section className="relative overflow-hidden  text-foreground border-b border-border pt-4 pb-12 sm:pt-6 sm:pb-16 lg:pt-10 lg:pb-24">
+         
 
             <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 {/* Back Button */}

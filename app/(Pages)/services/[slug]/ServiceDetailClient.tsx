@@ -53,7 +53,7 @@ export default function ServiceDetailClient({ slug, initialService }: ServiceDet
   ];
 
   return (
-    <div className="bg-background text-foreground min-h-screen selection:bg-primary selection:text-primary-foreground">
+    <div className="">
       <ServiceHero service={service} />
 
       {/* Main Content */}
