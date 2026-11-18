@@ -161,8 +161,8 @@ export default function BuildWhatsNext() {
       </div>
 
       {/* ── 3. Four Stats Columns (Transparent, Clean, Responsive) ── */}
-      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 items-center text-center">
+      <div className="mx-auto max-w-5xl px-1 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-8 items-center text-center">
           {STATS.map((stat, index) => (
             <motion.div
               key={stat.label}
@@ -174,15 +174,15 @@ export default function BuildWhatsNext() {
                 delay: index * 0.08,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="group flex flex-col items-center justify-center p-3 transition-transform duration-300 hover:-translate-y-1 cursor-default select-none"
+              className="group flex flex-col items-center justify-center px-1.5 py-2.5 sm:p-3 transition-transform duration-300 hover:-translate-y-1 cursor-default select-none"
             >
               {/* Number with Animated Spring Counter */}
-              <div className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.2rem] font-extrabold tracking-tight text-neutral-950 dark:text-white leading-none transition-colors duration-300">
+              <div className="text-[1.75rem] sm:text-4xl md:text-5xl lg:text-[3.2rem] font-extrabold tracking-tight text-neutral-950 dark:text-white leading-none transition-colors duration-300">
                 <AnimatedCounter value={stat.value} suffix={stat.suffix} />
               </div>
 
               {/* All-Caps Label */}
-              <span className="mt-2.5 sm:mt-3.5 text-[10px] sm:text-[11px] md:text-xs font-bold tracking-[0.12em] sm:tracking-[0.2em] md:tracking-[0.25em] text-neutral-500 dark:text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white uppercase transition-colors duration-200">
+              <span className="mt-2 sm:mt-3.5 text-[clamp(0.53rem,2.4vw,0.72rem)] sm:text-[11px] md:text-xs font-bold tracking-[0.06em] sm:tracking-[0.18em] md:tracking-[0.25em] text-neutral-500 dark:text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white uppercase whitespace-nowrap transition-colors duration-200">
                 {stat.label}
               </span>
             </motion.div>

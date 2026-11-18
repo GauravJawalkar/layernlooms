@@ -247,8 +247,8 @@ export default function PricingPage() {
                 </div>
             </section>
 
-            <section className="px-4 py-6 sm:px-8 lg:px-12">
-                <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 border-y border-border/70 py-8 text-center md:grid-cols-4 md:py-10">
+            <section className="px-2 py-6 sm:px-8 lg:px-12">
+                <div className="mx-auto grid max-w-7xl grid-cols-2 gap-4 sm:gap-6 border-y border-border/70 py-7 text-center md:grid-cols-4 md:py-10">
                     {[
                         { stat: "10+", label: "Projects delivered" },
                         { stat: "2+", label: "Years in business" },
@@ -261,10 +261,10 @@ export default function PricingPage() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.4, delay: reduceMotion ? 0 : index * 0.06 }}
-                            className="group"
+                            className="group px-1"
                         >
-                            <p className="text-3xl font-semibold tracking-tight text-foreground transition-colors group-hover:text-accent-current sm:text-4xl">{stat}</p>
-                            <p className="mt-2 text-[9px] font-bold uppercase tracking-[0.16em] text-muted-foreground sm:text-[10px]">{label}</p>
+                            <p className="text-2xl font-semibold tracking-tight text-foreground transition-colors group-hover:text-accent-current sm:text-4xl">{stat}</p>
+                            <p className="mt-1.5 sm:mt-2 text-[clamp(0.54rem,2.4vw,0.68rem)] font-bold uppercase tracking-[0.07em] text-muted-foreground whitespace-nowrap sm:text-[10px] sm:tracking-[0.16em]">{label}</p>
                         </motion.div>
                     ))}
                 </div>

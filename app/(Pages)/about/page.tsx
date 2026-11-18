@@ -349,7 +349,7 @@ export default function AboutPage() {
                 <p className="text-2xl font-black tracking-[-0.06em] sm:text-4xl">
                   {stat.value}
                 </p>
-                <p className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground sm:mt-2 sm:tracking-[0.17em] sm:text-xs">
+                <p className="mt-1.5 text-[clamp(0.54rem,2.4vw,0.72rem)] font-bold uppercase tracking-[0.07em] text-muted-foreground whitespace-nowrap sm:mt-2 sm:tracking-[0.17em] sm:text-xs">
                   {stat.label}
                 </p>
               </motion.div>
