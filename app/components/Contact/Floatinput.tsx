@@ -36,12 +36,12 @@ export default function FloatInput({
             {/* Label */}
             <label
                 htmlFor={name}
-                className={`absolute left-4 max-w-[calc(100%-2rem)] truncate transition-all duration-200 pointer-events-none z-10 ${
+                className={`absolute left-3.5 sm:left-4 max-w-[calc(100%-2rem)] truncate transition-all duration-200 pointer-events-none z-10 ${
                     active
                         ? `top-2 text-[10px] tracking-widest uppercase font-bold ${
                             focused === name ? "text-accent-current" : "text-muted-foreground"
                         }`
-                        : `top-1/2 -translate-y-1/2 text-sm ${
+                        : `top-1/2 -translate-y-1/2 text-[13.5px] sm:text-sm ${
                             focused === name ? "text-accent-current" : "text-muted-foreground group-hover:text-foreground"
                         }`
                 }`}
@@ -54,7 +54,7 @@ export default function FloatInput({
 
             {/* Icon (Optional) */}
             {icon && (
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none z-10">
+                <div className="absolute left-3.5 sm:left-4 top-1/2 -translate-y-1/2 pointer-events-none z-10">
                     {icon}
                 </div>
             )}
@@ -71,8 +71,8 @@ export default function FloatInput({
                 autoComplete="off"
                 placeholder={active ? placeholder : ""}
                 required={required}
-                className={`w-full rounded-xl border bg-secondary/30 text-base sm:text-sm text-foreground outline-none transition-all duration-200 placeholder:text-sm placeholder:text-muted-foreground
-                    ${active ? "pt-7 pb-3 px-4" : "p-4"}
+                className={`h-[56px] sm:h-[58px] w-full rounded-xl border bg-secondary/30 text-base sm:text-sm text-foreground outline-none transition-all duration-200 placeholder:text-xs sm:placeholder:text-sm placeholder:text-muted-foreground/70
+                    ${active ? "pt-6 pb-2 px-3.5 sm:px-4" : "px-3.5 sm:px-4 py-3.5"}
                     ${icon ? "pl-10" : ""}
                     ${suffix ? "pr-16" : ""}
                     ${
@@ -86,7 +86,7 @@ export default function FloatInput({
 
             {/* Suffix (Optional) */}
             {suffix && (
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted-foreground pointer-events-none">
+                <div className="absolute right-3.5 sm:right-4 top-1/2 -translate-y-1/2 text-sm text-muted-foreground pointer-events-none">
                     {suffix}
                 </div>
             )}

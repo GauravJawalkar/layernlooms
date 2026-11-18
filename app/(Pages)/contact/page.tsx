@@ -49,7 +49,7 @@ export default function ContactPage() {
                 <div className="absolute -bottom-48 -left-40 size-[min(55vw,34rem)] rounded-full bg-accent-current/5 blur-[110px]" />
             </div>
 
-            <div className="relative mx-auto max-w-7xl px-4 pb-12 pt-8 sm:px-8 sm:pb-20 sm:pt-14 lg:px-12 lg:pb-24 lg:pt-10">
+            <div className="relative mx-auto max-w-7xl px-1.5 pb-10 pt-5 sm:px-8 sm:pb-20 sm:pt-14 lg:px-12 lg:pb-24 lg:pt-10">
                 <motion.div
                     initial={reduceMotion ? false : "hidden"}
                     animate="visible"
@@ -121,7 +121,7 @@ export default function ContactPage() {
                                                         className="flex items-center gap-1.5 break-words text-sm font-semibold text-foreground transition-colors hover:text-accent-current"
                                                     >
                                                         {info.value}
-                                                        <ArrowUpRight className="size-3.5 shrink-0 text-accent-current opacity-0 transition-opacity group-hover:opacity-100" />
+                                                        <ArrowUpRight className="size-3.5 shrink-0 text-accent-current opacity-60 transition-opacity sm:opacity-0 sm:group-hover:opacity-100" />
                                                     </Link>
                                                 ) : (
                                                     <p className="text-sm font-semibold text-foreground">{info.value}</p>
