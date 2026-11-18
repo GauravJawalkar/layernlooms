@@ -50,7 +50,7 @@ const teamMembers = [
   },
   {
     name: "Jay Jawalkar",
-    role: "Managing Director",
+    role: "Co-Founder",
     bio: "Focuses on business management, strategic partnerships, and building lasting client relationships.",
     linkedin: "https://www.linkedin.com/in/jay-jawalkar/",
   },
