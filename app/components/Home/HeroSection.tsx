@@ -1,76 +1,140 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import dynamic from "next/dynamic";
+import { useRef } from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 
-const Scene = dynamic(() => import("./Scene"), {
-  ssr: false,
-  loading: () => null,
-});
+/* ── Top and bottom vertical animated letter component ── */
+function AnimatedLetter({
+  char,
+  delay = 0,
+}: {
+  char: string;
+  delay?: number;
+}) {
+  return (
+    <motion.span
+      className="inline-block relative"
+      animate={{
+        y: [-8, 8, -8],
+      }}
+      transition={{
+        repeat: Infinity,
+        duration: 2.6,
+        delay,
+        ease: "easeInOut",
+      }}
+    >
+      {char}
+    </motion.span>
+  );
+}
 
 export default function HeroSection() {
-  const [mountScene, setMountScene] = useState(false);
+  // Ref-based CSS variable update avoids 60-120fps React re-renders on mousemove
+  const glowRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    // Defer 3D Scene to idle time so it never blocks LCP, FCP, or initial hydration
-    if (typeof window !== "undefined") {
-      if ("requestIdleCallback" in window) {
-        const handle = (window as unknown as { requestIdleCallback: (cb: () => void, opts: { timeout: number }) => number }).requestIdleCallback(
-          () => setMountScene(true),
-          { timeout: 1200 }
-        );
-        return () => {
-          if ("cancelIdleCallback" in window) {
-            (window as unknown as { cancelIdleCallback: (id: number) => void }).cancelIdleCallback(handle);
-          }
-        };
-      } else {
-        const timer = setTimeout(() => setMountScene(true), 600);
-        return () => clearTimeout(timer);
-      }
-    }
-  }, []);
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const el = glowRef.current;
+    if (!el) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    el.style.setProperty("--mx", `${x}%`);
+    el.style.setProperty("--my", `${y}%`);
+  };
 
   return (
-    <section className="relative h-[50vh] min-h-[600px] max-h-[800px] w-full overflow-hidden bg-black/90 my-5 rounded-4xl border border-black/10 dark:border-white/10 shadow-2xl shadow-black/10 dark:shadow-none ring-1 ring-black/5 dark:ring-white/5">
-      <div className={`absolute inset-0 z-[2] transition-opacity duration-1000 ${mountScene ? "opacity-100" : "opacity-0"}`}>
-        {mountScene && <Scene />}
+    <section
+      onMouseMove={handleMouseMove}
+      className="relative min-h-[440px] sm:min-h-[540px] lg:h-[600px] w-full overflow-hidden bg-black text-white flex items-center select-none rounded-2xl sm:rounded-3xl my-2 shadow-2xl"
+    >
+      {/* ── 1. Diagonal Luminous Beam (Matching Reference Image Exact -18° Angle) ── */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden select-none">
+        {/* Core focused diagonal light ray */}
+        <motion.div
+          className="absolute -left-[20%] top-[40%] w-[150%] h-[110px] sm:h-[130px] -rotate-[18deg] bg-gradient-to-r from-transparent via-white/[0.08] to-transparent blur-2xl will-change-transform"
+          animate={{
+            opacity: [0.8, 1, 0.8],
+            scaleY: [0.95, 1.05, 0.95],
+          }}
+          transition={{
+            repeat: Infinity,
+            duration: 8,
+            ease: "easeInOut",
+          }}
+        />
+
+        {/* Wider soft ambient diffused glow streak */}
+        <div className="absolute -left-[30%] top-[32%] w-[170%] h-[260px] sm:h-[300px] -rotate-[18deg] bg-gradient-to-r from-transparent via-white/[0.04] to-transparent blur-3xl" />
+
+        {/* Interactive specular cursor reflection */}
+        <div
+          ref={glowRef}
+          className="absolute inset-0 transition-opacity duration-700 opacity-80"
+          style={{
+            background:
+              "radial-gradient(800px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.045), transparent 65%)",
+          }}
+        />
       </div>
 
-      <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-black/20 via-transparent to-black" />
-      <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-black/60 via-transparent to-black/40" />
+      {/* ── Main Hero Content Grid (Matching Reference Composition) ── */}
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12 py-12 sm:py-20 lg:py-24">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-8 items-end">
+          {/* ── Left Column: Prominent Bold Display Typography "Build Digital Think Beyond" ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-7 xl:col-span-7"
+          >
+            <h1 className="text-[2.35rem] sm:text-7xl md:text-8xl lg:text-[5.6rem] xl:text-[6.8rem] 2xl:text-[7.6rem] font-bold tracking-[-0.045em] leading-[0.94] sm:leading-[0.89] text-white">
+              {/* Line 1: Build Digital */}
+              <span className="block">
+                Build Digital
+              </span>
 
-      <div className="relative z-10 mx-auto flex h-full max-w-7xl items-center justify-center px-6 lg:px-8">
-        <div className="max-w-2xl transform-gpu">
-          <h1 className="text-center text-3xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-tight tracking-tighter text-white">
-            Weaving Digital
-            <span className="mt-2 block bg-gradient-to-r from-zinc-300 to-zinc-500 bg-clip-text text-transparent">
-              Excellence
-            </span>
-          </h1>
+              {/* Line 2: Think Beyond (with vertical bouncing 'i' in Think) */}
+              <span className="block">
+                Th
+                <AnimatedLetter char="i" />
+                nk Beyond
+              </span>
+            </h1>
+          </motion.div>
 
-          <p className="mt-6 mx-auto max-w-xl text-center text-base leading-relaxed text-zinc-400 sm:text-lg">
-            Enterprise-grade digital solutions — from web and mobile apps to
-            AI-powered systems — with precision and innovation.
-          </p>
+          {/* ── Right Column: Lower-Right Content Block Matching Reference Design ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-5 xl:col-span-5 lg:pl-8 xl:pl-12 lg:pb-4 flex flex-col justify-end"
+          >
+            {/* Small horizontal white dash indicator */}
+            <div className="w-7 sm:w-8 h-[2.5px] rounded-full bg-white mb-5 sm:mb-6" />
 
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link
-              href="/contact"
-              className="group inline-flex items-center justify-center gap-2 rounded-xl bg-white px-8 py-3.5 text-sm font-semibold text-black transition-all duration-300 hover:bg-zinc-200 hover:shadow-2xl hover:shadow-white/20"
-            >
-              Get Started
-              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
-            <Link
-              href="/services"
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-zinc-700 bg-zinc-950/50 backdrop-blur-xs px-8 py-3.5 text-sm font-semibold text-zinc-300 transition-all duration-300 hover:border-zinc-500 hover:text-white hover:bg-zinc-900/75"
-            >
-              Our Services
-            </Link>
-          </div>
+            {/* Subtitle Headline */}
+            <h2 className="text-xl sm:text-2xl lg:text-[1.7rem] font-bold tracking-tight text-white leading-[1.22] mb-3.5 sm:mb-4">
+              Digital experiences <br className="hidden sm:inline" />
+              for what comes next.
+            </h2>
+
+            {/* Description Paragraph */}
+            <p className="text-xs sm:text-sm lg:text-[14px] leading-relaxed text-neutral-400 font-normal mb-6 sm:mb-7 max-w-sm">
+              We design and build digital experiences, intelligent systems, and scalable technology that help ambitious businesses move forward.
+            </p>
+
+            {/* Action: Clean Underlined 'Start a Project' Link (matching exact reference screenshot) */}
+            <div>
+              <Link
+                href="/contact"
+                className="inline-block text-xs sm:text-sm lg:text-[14.5px] font-semibold text-white border-b border-white pb-0.5 hover:opacity-75 transition-opacity duration-200"
+              >
+                Start a Project
+              </Link>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>

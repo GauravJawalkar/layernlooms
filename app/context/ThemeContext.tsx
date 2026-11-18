@@ -1,17 +1,48 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { flushSync } from 'react-dom';
+import React, { createContext, useContext, useEffect, useMemo, useSyncExternalStore } from 'react';
 
 export type Theme = 'light' | 'dark' | 'system';
 export type ScrollbarTheme = 'zinc' | 'purple' | 'green' | 'cyan' | 'amber' | 'pink';
 export type PointerTheme = 'zinc' | 'purple' | 'green' | 'cyan' | 'amber' | 'pink';
-export type PointerStyle = 'classic' | 'glowing' | 'crosshair' | 'bracket' | 'orbital' | 'sonar';
+export type PointerStyle =
+  | 'classic'
+  | 'glowing'
+  | 'crosshair'
+  | 'bracket'
+  | 'orbital'
+  | 'sonar'
+  | 'minimal'
+  | 'trail'
+  | 'spotlight'
+  | 'comet'
+  | 'pulse'
+  | 'diamond';
 export type ThemeTransitionEvent =
   | React.MouseEvent<unknown>
   | { clientX?: number; clientY?: number; currentTarget?: HTMLElement | null };
 
-const scrollbarThemes = {
+const VALID_THEMES = new Set<Theme>(['light', 'dark', 'system']);
+const VALID_PALETTES = new Set<ScrollbarTheme>(['zinc', 'purple', 'green', 'cyan', 'amber', 'pink']);
+const VALID_POINTER_STYLES = new Set<PointerStyle>([
+  'classic',
+  'glowing',
+  'crosshair',
+  'bracket',
+  'orbital',
+  'sonar',
+  'minimal',
+  'trail',
+  'spotlight',
+  'comet',
+  'pulse',
+  'diamond',
+]);
+
+const scrollbarThemes: Record<
+  ScrollbarTheme,
+  { light: string; dark: string; hoverLight: string; hoverDark: string }
+> = {
   zinc: { light: '#52525b', dark: '#a1a1aa', hoverLight: '#27272a', hoverDark: '#f4f4f5' },
   purple: { light: '#8b5cf6', dark: '#a78bfa', hoverLight: '#7c3aed', hoverDark: '#c084fc' },
   green: { light: '#059669', dark: '#34d399', hoverLight: '#047857', hoverDark: '#6ee7b7' },
@@ -20,7 +51,10 @@ const scrollbarThemes = {
   pink: { light: '#db2777', dark: '#f472b6', hoverLight: '#be185d', hoverDark: '#f9a8d4' },
 };
 
-const pointerThemes = {
+const pointerThemes: Record<
+  PointerTheme,
+  { light: string; dark: string; glowLight: string; glowDark: string }
+> = {
   zinc: { light: '#171717', dark: '#fafafa', glowLight: 'rgba(23,23,23,0.15)', glowDark: 'rgba(250,250,250,0.15)' },
   purple: { light: '#8b5cf6', dark: '#a78bfa', glowLight: 'rgba(139,92,246,0.2)', glowDark: 'rgba(167,139,250,0.2)' },
   green: { light: '#059669', dark: '#34d399', glowLight: 'rgba(5,150,105,0.2)', glowDark: 'rgba(52,211,153,0.2)' },
@@ -38,337 +72,321 @@ export const themeAccentColors: Record<PointerTheme, { light: string; dark: stri
   pink: { light: '#db2777', dark: '#f472b6' },
 };
 
-interface ThemeContextType {
+interface ThemeSnapshot {
   theme: Theme;
   resolvedTheme: 'light' | 'dark';
+  scrollbarTheme: ScrollbarTheme;
+  pointerTheme: PointerTheme;
+  pointerEnabled: boolean;
+  pointerStyle: PointerStyle;
+  pointerEffects: boolean;
+}
+
+const SERVER_SNAPSHOT: ThemeSnapshot = {
+  theme: 'system',
+  resolvedTheme: 'light',
+  scrollbarTheme: 'zinc',
+  pointerTheme: 'zinc',
+  pointerEnabled: false,
+  pointerStyle: 'classic',
+  pointerEffects: false,
+};
+
+interface ThemeContextType extends ThemeSnapshot {
   accentColor: string;
   setTheme: (theme: Theme, event?: ThemeTransitionEvent) => void;
   toggleTheme: (event?: ThemeTransitionEvent) => void;
-  scrollbarTheme: ScrollbarTheme;
   setScrollbarTheme: (theme: ScrollbarTheme) => void;
-  pointerTheme: PointerTheme;
   setPointerTheme: (theme: PointerTheme) => void;
-  pointerEnabled: boolean;
   setPointerEnabled: (enabled: boolean) => void;
-  pointerStyle: PointerStyle;
   setPointerStyle: (style: PointerStyle) => void;
-  pointerEffects: boolean;
   setPointerEffects: (enabled: boolean) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-function applyAccentVariables(root: HTMLElement, theme: PointerTheme) {
-  const prefix = `--accent-${theme}`;
-  const foreground = `${prefix}-foreground`;
-  const muted = `${prefix}-muted`;
-  const mutedForeground = `${prefix}-muted-foreground`;
-
-  root.style.setProperty('--accent-current', `var(${prefix})`);
-  root.style.setProperty('--accent-current-foreground', `var(${foreground})`);
-  root.style.setProperty('--accent-current-muted', `var(${muted})`);
-  root.style.setProperty('--accent-current-muted-foreground', `var(${mutedForeground})`);
+function safeStorageGet(key: string): string | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    return window.localStorage.getItem(key);
+  } catch {
+    return null;
+  }
 }
 
-function disableTransitions(): () => void {
-  if (typeof document === 'undefined') return () => {};
-  const css = document.createElement('style');
-  css.setAttribute('type', 'text/css');
-  css.setAttribute('id', 'disable-theme-transitions');
-  css.appendChild(
-    document.createTextNode(
-      `*, *::before, *::after {
-        -webkit-transition: none !important;
-        -moz-transition: none !important;
-        -o-transition: none !important;
-        -ms-transition: none !important;
-        transition: none !important;
-      }`
-    )
-  );
-  document.head.appendChild(css);
+function safeStorageSet(key: string, value: string) {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(key, value);
+  } catch {
+    // Ignore storage quota or private-browsing errors
+  }
+}
 
-  return () => {
-    // Force style recalculation so DOM is in new state before re-enabling transitions
-    (() => window.getComputedStyle(document.body).opacity)();
-    const styleEl = document.getElementById('disable-theme-transitions');
-    if (styleEl && styleEl.parentNode) {
-      styleEl.parentNode.removeChild(styleEl);
-    }
+function getSystemIsDark(): boolean {
+  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return false;
+  return window.matchMedia('(prefers-color-scheme: dark)').matches;
+}
+
+function resolveThemeMode(theme: Theme): 'light' | 'dark' {
+  if (theme === 'dark') return 'dark';
+  if (theme === 'light') return 'light';
+  return getSystemIsDark() ? 'dark' : 'light';
+}
+
+function readClientSnapshot(): ThemeSnapshot {
+  const rawTheme = safeStorageGet('theme') as Theme | null;
+  const theme: Theme = rawTheme && VALID_THEMES.has(rawTheme) ? rawTheme : 'system';
+
+  const rawScrollbar = safeStorageGet('scrollbarTheme') as ScrollbarTheme | null;
+  const scrollbarTheme: ScrollbarTheme =
+    rawScrollbar && VALID_PALETTES.has(rawScrollbar) ? rawScrollbar : 'zinc';
+
+  const rawPointer = safeStorageGet('pointerTheme') as PointerTheme | null;
+  const pointerTheme: PointerTheme =
+    rawPointer && VALID_PALETTES.has(rawPointer) ? rawPointer : 'zinc';
+
+  const pointerEnabled = safeStorageGet('pointerEnabled') === 'true';
+
+  const rawStyle = safeStorageGet('pointerStyle') as PointerStyle | null;
+  const pointerStyle: PointerStyle =
+    rawStyle && VALID_POINTER_STYLES.has(rawStyle) ? rawStyle : 'classic';
+
+  const pointerEffects = safeStorageGet('pointerEffects') === 'true';
+
+  return {
+    theme,
+    resolvedTheme: resolveThemeMode(theme),
+    scrollbarTheme,
+    pointerTheme,
+    pointerEnabled,
+    pointerStyle,
+    pointerEffects,
   };
 }
 
-function applyThemeToDocument(
-  isDark: boolean,
-  scrollbarTheme: ScrollbarTheme,
-  pointerTheme: PointerTheme
-) {
+let raf1: number | null = null;
+let raf2: number | null = null;
+
+function applyThemeToDocument(snapshot: ThemeSnapshot, atomicSwitch: boolean) {
+  if (typeof document === 'undefined') return;
   const root = document.documentElement;
-  if (isDark) {
-    root.classList.add('dark');
-  } else {
-    root.classList.remove('dark');
+  const isDark = snapshot.resolvedTheme === 'dark';
+
+  if (atomicSwitch) {
+    if (raf1 !== null) cancelAnimationFrame(raf1);
+    if (raf2 !== null) cancelAnimationFrame(raf2);
+    root.classList.add('theme-switching');
   }
+
+  root.classList.toggle('dark', isDark);
+  root.style.colorScheme = isDark ? 'dark' : 'light';
 
   const mode = isDark ? 'dark' : 'light';
-  const scrollbarColors = scrollbarThemes[scrollbarTheme] || scrollbarThemes.zinc;
+  const scrollbarColors = scrollbarThemes[snapshot.scrollbarTheme] || scrollbarThemes.zinc;
   root.style.setProperty('--scrollbar-thumb-color', scrollbarColors[mode]);
-  root.style.setProperty('--scrollbar-thumb-hover', scrollbarColors[isDark ? 'hoverDark' : 'hoverLight']);
+  root.style.setProperty(
+    '--scrollbar-thumb-hover',
+    scrollbarColors[isDark ? 'hoverDark' : 'hoverLight']
+  );
   root.style.setProperty('--scrollbar-track-border', isDark ? '#1f1f22' : '#f3f4f6');
 
-  const pointerColors = pointerThemes[pointerTheme] || pointerThemes.zinc;
+  const pointerColors = pointerThemes[snapshot.pointerTheme] || pointerThemes.zinc;
   root.style.setProperty('--cursor-color', pointerColors[mode]);
-  root.style.setProperty('--cursor-glow-color', pointerColors[isDark ? 'glowDark' : 'glowLight']);
+  root.style.setProperty(
+    '--cursor-glow-color',
+    pointerColors[isDark ? 'glowDark' : 'glowLight']
+  );
 
-  applyAccentVariables(root, pointerTheme);
+  const prefix = `--accent-${snapshot.pointerTheme}`;
+  root.style.setProperty('--accent-current', `var(${prefix})`);
+  root.style.setProperty('--accent-current-foreground', `var(${prefix}-foreground)`);
+  root.style.setProperty('--accent-current-muted', `var(${prefix}-muted)`);
+  root.style.setProperty('--accent-current-muted-foreground', `var(${prefix}-muted-foreground)`);
+
+  root.classList.toggle('custom-cursor-active', snapshot.pointerEnabled);
+
+  if (atomicSwitch) {
+    // Force synchronous style recalculation so the entire DOM paints the new theme in one frame
+    void root.offsetHeight;
+    raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => {
+        root.classList.remove('theme-switching');
+        raf1 = null;
+        raf2 = null;
+      });
+    });
+  }
 }
 
-function getInitialStorage<T>(key: string, fallback: T): T {
-  if (typeof window === 'undefined') return fallback;
-  try {
-    const val = localStorage.getItem(key);
-    return (val as T) || fallback;
-  } catch {
-    return fallback;
+// External store so SSR + client hydration always agree and updates are synchronous
+let currentSnapshot: ThemeSnapshot | null = null;
+const listeners = new Set<() => void>();
+
+function ensureClientSnapshot(): ThemeSnapshot {
+  if (typeof window === 'undefined') return SERVER_SNAPSHOT;
+  if (!currentSnapshot) {
+    currentSnapshot = readClientSnapshot();
   }
+  return currentSnapshot;
+}
+
+function emitChange(next: ThemeSnapshot, atomicSwitch: boolean) {
+  const prev = currentSnapshot;
+  const changed =
+    !prev ||
+    prev.theme !== next.theme ||
+    prev.resolvedTheme !== next.resolvedTheme ||
+    prev.scrollbarTheme !== next.scrollbarTheme ||
+    prev.pointerTheme !== next.pointerTheme ||
+    prev.pointerEnabled !== next.pointerEnabled ||
+    prev.pointerStyle !== next.pointerStyle ||
+    prev.pointerEffects !== next.pointerEffects;
+
+  currentSnapshot = next;
+  applyThemeToDocument(next, atomicSwitch);
+
+  if (changed) {
+    listeners.forEach((listener) => listener());
+  }
+}
+
+function subscribe(listener: () => void) {
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+  };
+}
+
+function getClientSnapshot(): ThemeSnapshot {
+  return ensureClientSnapshot();
+}
+
+function getServerSnapshot(): ThemeSnapshot {
+  return SERVER_SNAPSHOT;
+}
+
+function updateTheme(newTheme: Theme) {
+  const safeTheme: Theme = VALID_THEMES.has(newTheme) ? newTheme : 'system';
+  const prev = ensureClientSnapshot();
+  const nextResolved = resolveThemeMode(safeTheme);
+  const modeChanged = prev.resolvedTheme !== nextResolved;
+
+  safeStorageSet('theme', safeTheme);
+  emitChange(
+    {
+      ...prev,
+      theme: safeTheme,
+      resolvedTheme: nextResolved,
+    },
+    modeChanged
+  );
+}
+
+function toggleThemeMode() {
+  const prev = ensureClientSnapshot();
+  const nextTheme: Theme = prev.resolvedTheme === 'dark' ? 'light' : 'dark';
+  updateTheme(nextTheme);
+}
+
+function updateScrollbarTheme(newScrollbar: ScrollbarTheme) {
+  if (!VALID_PALETTES.has(newScrollbar)) return;
+  const prev = ensureClientSnapshot();
+  safeStorageSet('scrollbarTheme', newScrollbar);
+  emitChange({ ...prev, scrollbarTheme: newScrollbar }, false);
+}
+
+function updatePointerTheme(newPointer: PointerTheme) {
+  if (!VALID_PALETTES.has(newPointer)) return;
+  const prev = ensureClientSnapshot();
+  safeStorageSet('pointerTheme', newPointer);
+  emitChange({ ...prev, pointerTheme: newPointer }, false);
+}
+
+function updatePointerEnabled(enabled: boolean) {
+  const prev = ensureClientSnapshot();
+  safeStorageSet('pointerEnabled', String(enabled));
+  emitChange({ ...prev, pointerEnabled: enabled }, false);
+}
+
+function updatePointerStyle(style: PointerStyle) {
+  if (!VALID_POINTER_STYLES.has(style)) return;
+  const prev = ensureClientSnapshot();
+  safeStorageSet('pointerStyle', style);
+  emitChange({ ...prev, pointerStyle: style }, false);
+}
+
+function updatePointerEffects(enabled: boolean) {
+  const prev = ensureClientSnapshot();
+  safeStorageSet('pointerEffects', String(enabled));
+  emitChange({ ...prev, pointerEffects: enabled }, false);
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>(() => getInitialStorage('theme', 'system'));
-  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>(() => {
-    if (typeof window === 'undefined') return 'dark';
-    const saved = localStorage.getItem('theme') || 'system';
-    if (saved === 'dark') return 'dark';
-    if (saved === 'light') return 'light';
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  });
-  const [scrollbarTheme, setScrollbarThemeState] = useState<ScrollbarTheme>(() => getInitialStorage('scrollbarTheme', 'zinc'));
-  const [pointerTheme, setPointerThemeState] = useState<PointerTheme>(() => getInitialStorage('pointerTheme', 'zinc'));
-  const [pointerEnabled, setPointerEnabledState] = useState<boolean>(() => {
-    if (typeof window === 'undefined') return true;
-    try {
-      const val = localStorage.getItem('pointerEnabled');
-      return val !== null ? val === 'true' : true;
-    } catch {
-      return true;
-    }
-  });
-  const [pointerStyle, setPointerStyleState] = useState<PointerStyle>(() => getInitialStorage('pointerStyle', 'classic'));
-  const [pointerEffects, setPointerEffectsState] = useState<boolean>(() => {
-    if (typeof window === 'undefined') return false;
-    try {
-      const val = localStorage.getItem('pointerEffects');
-      return val !== null ? val === 'true' : false;
-    } catch {
-      return false;
-    }
-  });
-
-  const setTheme = (newTheme: Theme, event?: ThemeTransitionEvent) => {
-    if (typeof window === 'undefined') {
-      setThemeState(newTheme);
-      return;
-    }
-
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const willBeDark =
-      newTheme === 'dark' || (newTheme === 'system' && mediaQuery.matches);
-    const currentlyDark = document.documentElement.classList.contains('dark');
-
-    // If visually identical (e.g. system is dark, user clicks 'dark'):
-    if (willBeDark === currentlyDark) {
-      setThemeState(newTheme);
-      setResolvedTheme(willBeDark ? 'dark' : 'light');
-      localStorage.setItem('theme', newTheme);
-      return;
-    }
-
-    const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const canViewTransition =
-      typeof document !== 'undefined' &&
-      'startViewTransition' in document &&
-      !isReducedMotion &&
-      Boolean(event);
-
-    if (!canViewTransition) {
-      // Instant switch with transition suppression to eliminate flickering
-      const cleanup = disableTransitions();
-      applyThemeToDocument(willBeDark, scrollbarTheme, pointerTheme);
-      setThemeState(newTheme);
-      setResolvedTheme(willBeDark ? 'dark' : 'light');
-      localStorage.setItem('theme', newTheme);
-      requestAnimationFrame(() => {
-        cleanup();
-      });
-      return;
-    }
-
-    // Circular View Transition
-    let x = window.innerWidth / 2;
-    let y = window.innerHeight / 2;
-
-    if (event && 'currentTarget' in event && event.currentTarget instanceof HTMLElement) {
-      const rect = event.currentTarget.getBoundingClientRect();
-      if (
-        typeof event.clientX === 'number' &&
-        typeof event.clientY === 'number' &&
-        (event.clientX !== 0 || event.clientY !== 0)
-      ) {
-        x = event.clientX;
-        y = event.clientY;
-      } else {
-        x = rect.left + rect.width / 2;
-        y = rect.top + rect.height / 2;
-      }
-    } else if (
-      event &&
-      typeof event.clientX === 'number' &&
-      typeof event.clientY === 'number'
-    ) {
-      x = event.clientX;
-      y = event.clientY;
-    }
-
-    const endRadius = Math.hypot(
-      Math.max(x, window.innerWidth - x),
-      Math.max(y, window.innerHeight - y)
-    );
-
-    const cleanup = disableTransitions();
-
-    try {
-      const transition = (
-        document as unknown as {
-          startViewTransition: (cb: () => void) => { ready: Promise<void>; finished: Promise<void> };
-        }
-      ).startViewTransition(() => {
-        applyThemeToDocument(willBeDark, scrollbarTheme, pointerTheme);
-        try {
-          flushSync(() => {
-            setThemeState(newTheme);
-            setResolvedTheme(willBeDark ? 'dark' : 'light');
-          });
-        } catch {
-          setThemeState(newTheme);
-          setResolvedTheme(willBeDark ? 'dark' : 'light');
-        }
-        localStorage.setItem('theme', newTheme);
-      });
-
-      transition.ready
-        .then(() => {
-          cleanup();
-          document.documentElement.animate(
-            {
-              clipPath: [
-                `circle(0px at ${x}px ${y}px)`,
-                `circle(${endRadius}px at ${x}px ${y}px)`,
-              ],
-            },
-            {
-              duration: 450,
-              easing: 'ease-in-out',
-              pseudoElement: '::view-transition-new(root)',
-            }
-          );
-        })
-        .catch(() => {
-          cleanup();
-        });
-    } catch {
-      cleanup();
-      applyThemeToDocument(willBeDark, scrollbarTheme, pointerTheme);
-      setThemeState(newTheme);
-      setResolvedTheme(willBeDark ? 'dark' : 'light');
-      localStorage.setItem('theme', newTheme);
-    }
-  };
-
-  const toggleTheme = (event?: ThemeTransitionEvent) => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const isDark = theme === 'dark' || (theme === 'system' && mediaQuery.matches);
-    setTheme(isDark ? 'light' : 'dark', event);
-  };
-
-  const setScrollbarTheme = (newScrollbar: ScrollbarTheme) => {
-    setScrollbarThemeState(newScrollbar);
-    localStorage.setItem('scrollbarTheme', newScrollbar);
-  };
-
-  const setPointerTheme = (newPointer: PointerTheme) => {
-    setPointerThemeState(newPointer);
-    localStorage.setItem('pointerTheme', newPointer);
-  };
-
-  const setPointerEnabled = (enabled: boolean) => {
-    setPointerEnabledState(enabled);
-    localStorage.setItem('pointerEnabled', String(enabled));
-  };
-
-  const setPointerStyle = (style: PointerStyle) => {
-    setPointerStyleState(style);
-    localStorage.setItem('pointerStyle', style);
-  };
-
-  const setPointerEffects = (enabled: boolean) => {
-    setPointerEffectsState(enabled);
-    localStorage.setItem('pointerEffects', String(enabled));
-  };
+  const snapshot = useSyncExternalStore(subscribe, getClientSnapshot, getServerSnapshot);
 
   useEffect(() => {
+    // Sync DOM attributes with stored preferences without overwriting or flashing
+    applyThemeToDocument(ensureClientSnapshot(), false);
+
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
-    const applyColors = () => {
-      const isDark = theme === 'dark' || (theme === 'system' && mediaQuery.matches);
-      setResolvedTheme(isDark ? 'dark' : 'light');
-      applyThemeToDocument(isDark, scrollbarTheme, pointerTheme);
-
-      const root = document.documentElement;
-      if (pointerEnabled) {
-        root.classList.add('custom-cursor-active');
-      } else {
-        root.classList.remove('custom-cursor-active');
+    const handleSystemChange = () => {
+      const prev = ensureClientSnapshot();
+      if (prev.theme !== 'system') return;
+      const nextResolved = resolveThemeMode('system');
+      if (nextResolved !== prev.resolvedTheme) {
+        emitChange({ ...prev, resolvedTheme: nextResolved }, true);
       }
     };
 
-    applyColors();
-
-    const handleChange = () => {
-      if (theme === 'system') {
-        applyColors();
+    const handleStorage = (e: StorageEvent) => {
+      if (
+        !e.key ||
+        [
+          'theme',
+          'scrollbarTheme',
+          'pointerTheme',
+          'pointerEnabled',
+          'pointerStyle',
+          'pointerEffects',
+        ].includes(e.key)
+      ) {
+        const prev = ensureClientSnapshot();
+        const next = readClientSnapshot();
+        emitChange(next, prev.resolvedTheme !== next.resolvedTheme);
       }
     };
 
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, [theme, scrollbarTheme, pointerTheme, pointerEnabled]);
+    mediaQuery.addEventListener('change', handleSystemChange);
+    window.addEventListener('storage', handleStorage);
 
-  const accentColor =
-    (themeAccentColors[pointerTheme] || themeAccentColors.zinc)[resolvedTheme];
+    return () => {
+      mediaQuery.removeEventListener('change', handleSystemChange);
+      window.removeEventListener('storage', handleStorage);
+    };
+  }, []);
 
-  return (
-    <ThemeContext.Provider
-      value={{
-        theme,
-        resolvedTheme,
-        accentColor,
-        setTheme,
-        toggleTheme,
-        scrollbarTheme,
-        setScrollbarTheme,
-        pointerTheme,
-        setPointerTheme,
-        pointerEnabled,
-        setPointerEnabled,
-        pointerStyle,
-        setPointerStyle,
-        pointerEffects,
-        setPointerEffects,
-      }}
-    >
-      {children}
-    </ThemeContext.Provider>
-  );
+  const value = useMemo<ThemeContextType>(() => {
+    const accentColor =
+      (themeAccentColors[snapshot.pointerTheme] || themeAccentColors.zinc)[
+        snapshot.resolvedTheme
+      ];
+
+    return {
+      ...snapshot,
+      accentColor,
+      setTheme: (newTheme: Theme) => updateTheme(newTheme),
+      toggleTheme: () => toggleThemeMode(),
+      setScrollbarTheme: updateScrollbarTheme,
+      setPointerTheme: updatePointerTheme,
+      setPointerEnabled: updatePointerEnabled,
+      setPointerStyle: updatePointerStyle,
+      setPointerEffects: updatePointerEffects,
+    };
+  }, [snapshot]);
+
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }
 
 export function useTheme() {

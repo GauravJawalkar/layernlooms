@@ -8,6 +8,7 @@ import { ArrowRight, Calendar, Clock, Loader2 } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
 import { getAllBlogPostsFromDb, AdminBlogPost } from "../../lib/admin/blog";
 import { blogPosts as staticBlogPosts } from "@/app/data/blogs";
+import { getBlogCoverImage, hasBrandedBlogCover } from "@/app/lib/blog-covers";
 
 function getPostTimestamp(p: AdminBlogPost): number {
   if (p.createdAt && typeof (p.createdAt as { toMillis?: () => number }).toMillis === "function") {
@@ -105,11 +106,15 @@ export default function BlogSection() {
                 <Link href={`/blog/${post.slug}`}>
                   <div className="relative aspect-[16/10] overflow-hidden">
                     <Image
-                      src={post.image}
+                      src={getBlogCoverImage(post.slug, post.image)}
                       alt={post.title}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                      className="object-cover grayscale-0 md:grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
+                      className={`object-cover ${
+                        hasBrandedBlogCover(post.slug)
+                          ? "grayscale contrast-110 invert dark:invert-0"
+                          : "grayscale-0 md:grayscale group-hover:grayscale-0"
+                      } transition-all duration-500 group-hover:scale-105`}
                     />
                     <div className="absolute top-3 left-3 z-10">
                       <span className="bg-primary text-primary-foreground text-[10px] font-bold px-2.5 py-1 rounded-full shadow-sm">

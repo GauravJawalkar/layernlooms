@@ -94,19 +94,19 @@ export default function AdminDashboardPage() {
         </div>
       </motion.div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {cards.map((card, i) => (
           <motion.div
             key={card.label}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="rounded-2xl border border-border bg-card p-5"
+            className="rounded-2xl border border-border bg-card p-4 sm:p-5"
           >
-            <div className={`inline-flex w-10 h-10 rounded-xl items-center justify-center ${card.color} mb-3`}>
-              <card.icon className="w-5 h-5" />
+            <div className={`inline-flex w-9 h-9 sm:w-10 sm:h-10 rounded-xl items-center justify-center ${card.color} mb-2.5 sm:mb-3`}>
+              <card.icon className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
-            <p className="text-2xl font-bold text-foreground">{card.value}</p>
+            <p className="text-xl sm:text-2xl font-bold text-foreground truncate">{card.value}</p>
             <p className="text-xs text-muted-foreground mt-0.5">{card.label}</p>
           </motion.div>
         ))}

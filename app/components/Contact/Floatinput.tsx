@@ -39,10 +39,10 @@ export default function FloatInput({
                 className={`absolute left-4 max-w-[calc(100%-2rem)] truncate transition-all duration-200 pointer-events-none z-10 ${
                     active
                         ? `top-2 text-[10px] tracking-widest uppercase font-bold ${
-                            focused === name ? "text-primary" : "text-muted-foreground"
+                            focused === name ? "text-accent-current" : "text-muted-foreground"
                         }`
                         : `top-1/2 -translate-y-1/2 text-sm ${
-                            focused === name ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
+                            focused === name ? "text-accent-current" : "text-muted-foreground group-hover:text-foreground"
                         }`
                 }`}
             >
@@ -71,14 +71,14 @@ export default function FloatInput({
                 autoComplete="off"
                 placeholder={active ? placeholder : ""}
                 required={required}
-                className={`w-full border rounded-lg text-sm outline-none transition-all duration-200 bg-secondary/40 text-foreground placeholder:text-muted-foreground placeholder:text-sm
+                className={`w-full rounded-xl border bg-secondary/30 text-base sm:text-sm text-foreground outline-none transition-all duration-200 placeholder:text-sm placeholder:text-muted-foreground
                     ${active ? "pt-7 pb-3 px-4" : "p-4"}
                     ${icon ? "pl-10" : ""}
                     ${suffix ? "pr-16" : ""}
                     ${
                         focused === name
-                            ? "border-primary ring-1 ring-primary bg-background"
-                            : "border-border hover:border-muted-foreground/40"
+                            ? "border-accent-current ring-2 ring-accent-current/15 bg-background"
+                            : "border-border/80 hover:border-accent-current/30"
                     }
                     disabled:bg-secondary disabled:cursor-not-allowed disabled:opacity-60
                 `}

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" fill="none">
+  <defs><radialGradient id="cloud-glow" cx="0" cy="0" r="1" gradientTransform="matrix(570 430 -590 796 602 372)" gradientUnits="userSpaceOnUse"><stop stop-color="#36363D"/><stop offset="1" stop-color="#080809"/></radialGradient></defs>
+  <rect width="1200" height="750" fill="url(#cloud-glow)"/>
+  <path d="M0 75H1200M0 150H1200M0 225H1200M0 300H1200M0 375H1200M0 450H1200M0 525H1200M0 600H1200M0 675H1200M100 0V750M200 0V750M300 0V750M400 0V750M500 0V750M600 0V750M700 0V750M800 0V750M900 0V750M1000 0V750M1100 0V750" stroke="#FFFFFF" stroke-opacity=".045"/>
+  <path d="M92 235L212 162L307 190M931 180L1022 126L1116 156M119 594L219 535L292 557M919 610L1002 557L1104 584" stroke="#F4F4F5" stroke-opacity=".23"/>
+  <rect x="164" y="315" width="230" height="230" rx="22" fill="#19191C" stroke="#E4E4E7" stroke-opacity=".56" stroke-width="2"/>
+  <path d="M212 363H346M212 407H346M212 451H346M212 495H346" stroke="#F4F4F5" stroke-opacity=".56" stroke-linecap="round" stroke-width="8"/>
+  <path d="M232 351V510M272 351V510M312 351V510M232 375H326M232 419H326M232 463H326" stroke="#E4E4E7" stroke-opacity=".17"/>
+  <path d="M235 360V498M275 360V498M315 360V498" stroke="#E4E4E7" stroke-opacity=".16" stroke-width="2"/>
+  <path d="M437 385C437 342 471 308 514 308C534 248 589 206 654 206C734 206 799 271 799 351C842 358 875 395 875 439C875 489 835 529 785 529H514C471 529 437 494 437 451V385Z" fill="#25252A" stroke="#F4F4F5" stroke-opacity=".82" stroke-width="2"/>
+  <path d="M472 391C472 358 498 332 531 332C548 281 594 246 650 246C719 246 775 302 775 371" stroke="#E4E4E7" stroke-opacity=".22" stroke-width="2"/>
+  <path d="M554 404H756M710 359L756 404L710 449" stroke="#F4F4F5" stroke-opacity=".72" stroke-linecap="round" stroke-linejoin="round" stroke-width="8"/>
+  <path d="M540 382H667M540 427H667" stroke="#F4F4F5" stroke-opacity=".14"/>
+  <rect x="861" y="315" width="175" height="230" rx="22" fill="#19191C" stroke="#E4E4E7" stroke-opacity=".38" stroke-width="2"/>
+  <path d="M897 367H1000M897 407H1000M897 447H1000M897 487H1000" stroke="#F4F4F5" stroke-opacity=".56" stroke-linecap="round" stroke-width="8"/>
+  <path d="M920 350V510M955 350V510M990 350V510" stroke="#E4E4E7" stroke-opacity=".17"/>
+  <circle cx="868" cy="292" r="7" fill="#F4F4F5"/>
+  <g fill="#F4F4F5"><circle cx="212" cy="162" r="4"/><circle cx="1022" cy="126" r="5"/><circle cx="292" cy="557" r="4"/><circle cx="1002" cy="557" r="4"/></g>
+</svg>

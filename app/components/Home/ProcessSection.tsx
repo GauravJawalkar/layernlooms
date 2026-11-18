@@ -1,269 +1,209 @@
 "use client";
 
+import { useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
-import { useState, useRef, useEffect } from "react";
-import { Search, PenTool, Code2, Rocket, RefreshCw, Settings } from "lucide-react";
-import { useTheme } from "../../context/ThemeContext";
+import {
+  ArrowRight,
+  Lightbulb,
+  PenTool,
+  Code2,
+  ShieldCheck,
+  CloudUpload,
+  Settings,
+  type LucideIcon,
+} from "lucide-react";
+import {
+  processSectionData,
+  type ProcessStep,
+} from "@/app/data/processSectionData";
 
-const steps = [
-  {
-    icon: Search,
-    title: "Discovery",
-    description: "We analyze your requirements, goals, and target audience to define the project scope.",
-  },
-  {
-    icon: PenTool,
-    title: "Design",
-    description: "Our team creates intuitive UI/UX designs and architecture blueprints.",
-  },
-  {
-    icon: Code2,
-    title: "Development",
-    description: "Agile development with regular sprints and transparent progress tracking.",
-  },
-  {
-    icon: RefreshCw,
-    title: "Testing",
-    description: "Comprehensive quality assurance including automated and manual testing.",
-  },
-  {
-    icon: Rocket,
-    title: "Deployment",
-    description: "Smooth deployment with CI/CD pipelines and zero-downtime strategies.",
-  },
-  {
-    icon: Settings,
-    title: "Maintenance",
-    description: "Ongoing support, monitoring, and continuous improvement post-launch.",
-  },
-];
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1 },
-  },
+const ICON_MAP: Record<ProcessStep["iconName"], LucideIcon> = {
+  lightbulb: Lightbulb,
+  "pen-tool": PenTool,
+  code: Code2,
+  "shield-check": ShieldCheck,
+  "cloud-upload": CloudUpload,
+  settings: Settings,
 };
 
+const easing = [0.16, 1, 0.3, 1] as const;
+
 export default function ProcessSection() {
-  const { accentColor } = useTheme();
-  const activeColor = accentColor;
-  const [activeStep, setActiveStep] = useState<number>(-1);
-  const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            const idx = Number(entry.target.getAttribute("data-step"));
-            if (!isNaN(idx)) {
-              setActiveStep((prev) => Math.max(prev, idx));
-            }
-          }
-        }
-      },
-      { threshold: 0.4 }
-    );
-
-    stepRefs.current.forEach((ref) => {
-      if (ref) observer.observe(ref);
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-
-    const topObserver = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting && entry.boundingClientRect.top > 0) {
-          setActiveStep(-1);
-        }
-      },
-      { threshold: 0 }
-    );
-
-    topObserver.observe(el);
-    return () => topObserver.disconnect();
-  }, []);
-
   return (
-    <section ref={sectionRef} className="relative py-24 overflow-hidden transition-colors duration-300">
-     
-
+    <section
+      id="process"
+      className="relative w-full overflow-hidden py-12 transition-colors duration-300 sm:py-16 lg:py-20"
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Title */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center"
-        >
-          <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl">
-            Our{" "}
-            <span
-              className="transition-all duration-500 font-extrabold"
-              style={{
-                color: activeColor,
-              }}
-            >
-              Process
-            </span>
-          </h2>
-          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-            A structured, transparent approach that takes your project from concept to launch.
-          </p>
-        </motion.div>
+        {/* ── Header ── */}
+        <div className="mb-9 flex flex-col gap-4 sm:mb-12 sm:gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.55, ease: easing }}
+            className="max-w-2xl"
+          >
+            <h2 className="text-3xl font-extrabold leading-[1.08] tracking-tight text-neutral-950 transition-colors duration-300 dark:text-white sm:text-4xl md:text-5xl lg:text-[3.4rem]">
+              Our Process
+            </h2>
+            <p className="mt-3 max-w-lg text-sm leading-relaxed text-neutral-600 transition-colors duration-300 dark:text-neutral-400 sm:mt-4 sm:text-[15px]">
+              A structured, transparent approach that takes your project from
+              concept to launch and beyond.
+            </p>
+          </motion.div>
 
-        {/* Timeline Container */}
-        <div className="mt-20 relative min-h-[400px] max-w-5xl mx-auto">
-          {/* Vertical Timeline Guide Line */}
-          <div className="absolute left-5 lg:left-1/2 lg:-translate-x-[0.5px] top-4 bottom-4 w-[1px] lg:w-[2px] bg-border pointer-events-none overflow-hidden">
+          <motion.div
+            initial={{ opacity: 0, x: 12 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.45, delay: 0.12, ease: easing }}
+            className="inline-flex w-fit items-center gap-2 rounded-full border border-neutral-200 bg-white/70 px-3 py-2 text-[10px] font-medium text-neutral-600 transition-colors duration-300 dark:border-white/10 dark:bg-neutral-950/70 dark:text-neutral-300 sm:gap-3 sm:px-4 sm:py-2.5 sm:text-xs"
+          >
+            <span className="font-mono font-semibold text-accent-current">01</span>
+            <span className="h-px w-5 bg-neutral-300 dark:bg-neutral-700 sm:w-7" />
+            <span className="font-mono font-semibold text-accent-current">06</span>
+            <ArrowRight
+              className="h-3 w-3 text-neutral-400 sm:h-3.5 sm:w-3.5"
+              aria-hidden="true"
+            />
+            <span className="uppercase tracking-[0.12em]">End-to-end delivery</span>
+          </motion.div>
+        </div>
+
+        {/* ── Timeline & Cards ── */}
+        <div className="relative">
+          {/* Vertical timeline line — mobile (< sm) */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-y-0 left-5 w-px bg-neutral-200 dark:bg-white/10 sm:hidden"
+          >
             <motion.div
-              className="absolute left-0 w-full h-32 bg-gradient-to-b from-transparent via-neutral-400 dark:via-white/40 to-transparent"
-              animate={{ top: ["-128px", "100%"] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+              initial={{ scaleY: 0 }}
+              whileInView={{ scaleY: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, ease: easing }}
+              className="h-full w-full origin-top bg-accent-current"
             />
           </div>
 
-          {/* Stepped Timeline Grid */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="space-y-12 lg:space-y-16"
+          {/* Horizontal timeline line — xl+ */}
+          <div
+            aria-hidden="true"
+            className="absolute left-[8.333%] right-[8.333%] top-5 hidden h-px bg-neutral-200 dark:bg-white/10 xl:block"
           >
-            {steps.map((step, index) => {
-              const isEven = index % 2 === 0;
-              const stepNumber = `0${index + 1}`;
-              const IconComponent = step.icon;
+            <motion.div
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, ease: easing }}
+              className="h-full w-full origin-left bg-accent-current"
+            />
+          </div>
+
+          {/*
+            Grid breakpoints:
+            - mobile  (< 640px):  1 col  — vertical stack, cards are vertical
+            - sm      (640px+):   1 col  — vertical stack, cards are horizontal
+            - md      (768px+):   2 cols — compact grid
+            - lg      (1024px+):  3 cols — mid-size grid
+            - xl      (1280px+):  6 cols — full horizontal timeline
+          */}
+          <ol
+            aria-label="Our six-step project process"
+            className="relative grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 xl:gap-0"
+          >
+            {processSectionData.map((step, index) => {
+              const Icon = ICON_MAP[step.iconName];
 
               return (
-                <div
-                  key={step.title}
-                  ref={(el) => { stepRefs.current[index] = el; }}
-                  data-step={index}
-                  className="relative flex flex-col lg:grid lg:grid-cols-2 lg:gap-16 items-center pl-12 lg:pl-0"
+                <motion.li
+                  key={step.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-30px" }}
+                  transition={{
+                    duration: 0.45,
+                    delay: index * 0.06,
+                    ease: easing,
+                  }}
+                  className="relative min-w-0 pl-14 sm:pl-0 md:pl-0 xl:flex xl:flex-col xl:px-2 xl:pb-1 xl:pt-14"
                 >
-                  {/* Step Indicator Node (Circle with Icon) */}
+                  {/* Step number circle */}
                   <div
-                    className={`absolute left-0 lg:left-1/2 lg:-translate-x-1/2 top-4 lg:top-1/2 lg:-translate-y-1/2 z-10 w-10 h-10 lg:w-12 lg:h-12 rounded-full border-2 flex items-center justify-center transition-all duration-500 ${
-                      activeStep >= index
-                        ? "border-primary/60 bg-primary/10 shadow-[0_0_25px_rgba(var(--primary),0.25)] scale-110"
-                        : "border-border bg-background"
-                    }`}
+                    className="absolute left-0 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border-2 border-accent-current bg-white font-mono text-[11px] font-bold text-accent-current shadow-sm dark:bg-neutral-950 sm:relative sm:left-auto sm:top-auto sm:mx-auto sm:mb-3 sm:translate-y-0 md:mb-3 xl:absolute xl:left-1/2 xl:top-0 xl:mx-0 xl:mb-0 xl:-translate-x-1/2 xl:translate-y-0"
+                    aria-hidden="true"
                   >
-                    {/* Ripple Halo animation */}
-                    {activeStep >= index && (
-                      <motion.div
-                        className="absolute inset-[-6px] rounded-full border border-primary/30 dark:border-primary/20 pointer-events-none"
-                        initial={{ scale: 0.8, opacity: 0.8 }}
-                        animate={{ scale: 1.4, opacity: 0 }}
-                        transition={{ duration: 1.5, repeat: Infinity, ease: "easeOut" }}
-                      />
-                    )}
-
-                    <IconComponent
-                      className={`h-5 w-5 transition-colors duration-500 ${
-                        activeStep >= index ? "text-primary" : "text-muted-foreground"
-                      }`}
-                    />
+                    {step.number}
                   </div>
 
-                  {/* Left Column (Desktop: visible if Even, Mobile: always visible) */}
-                  <div className={`w-full relative ${isEven ? "lg:text-right block" : "hidden lg:block lg:opacity-0 pointer-events-none"}`}>
-                    {/* Horizontal Connector Line (desktop only) */}
-                    <div className={`hidden lg:block absolute right-[-32px] top-1/2 -translate-y-1/2 w-8 h-[1.5px] transition-colors duration-300 pointer-events-none ${
-                      activeStep === index ? "bg-muted-foreground" : "bg-border"
-                    }`} />
-
-                    <motion.div
-                      initial={{ opacity: 0, y: 30 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                      className={`relative rounded-2xl border p-6 lg:p-8 transition-all duration-500 flex flex-col justify-start cursor-default overflow-hidden no-snap w-full ${
-                        activeStep >= index
-                          ? "border-primary/40 bg-gradient-to-br from-background to-primary/5 shadow-[0_0_30px_rgba(var(--primary),0.15)] -translate-y-1"
-                          : "border-border bg-card/90 backdrop-blur-md shadow-sm"
-                      } hover:-translate-y-1.5 hover:border-accent-current/30 hover:shadow-xl`}
-                    >
-                      {/* Outline Watermark Number */}
-                      <span className={`absolute top-6 font-black text-4xl lg:text-5xl select-none transition-colors duration-300 ${
-                        activeStep >= index
-                          ? "text-primary/10"
-                          : "text-muted-foreground/20"
-                      } ${isEven ? "right-6 lg:left-6 lg:right-auto" : "right-6"}`}>
-                        {stepNumber}
-                      </span>
-
-                      <div className="relative z-10">
-                      
-                        <h3 className="mt-1 text-xl font-bold tracking-tight text-foreground transition-colors duration-300">
-                          {step.title}
-                        </h3>
-                        <p className="mt-3 text-sm text-muted-foreground leading-relaxed transition-colors duration-300">
-                          {step.description}
-                        </p>
-                      </div>
-                    </motion.div>
-                  </div>
-
-                  {/* Right Column (Desktop: visible if Odd, Mobile: always hidden) */}
-                  <div className={`w-full relative ${!isEven ? "block lg:text-left" : "hidden lg:block lg:opacity-0 pointer-events-none"}`}>
-                    {/* Horizontal Connector Line (desktop only) */}
-                    <div className={`hidden lg:block absolute left-[-32px] top-1/2 -translate-y-1/2 w-8 h-[1.5px] transition-colors duration-300 pointer-events-none ${
-                      activeStep === index ? "bg-neutral-400 dark:bg-white/30" : "bg-neutral-200 dark:bg-neutral-900"
-                    }`} />
-
-                    <motion.div
-                      initial={{ opacity: 0, y: 30 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                      className={`relative rounded-2xl border p-6 lg:p-8 transition-all duration-500 flex flex-col justify-start cursor-default overflow-hidden no-snap w-full ${
-                        activeStep >= index
-                          ? "border-primary/40 bg-gradient-to-br from-background to-primary/5 shadow-[0_0_30px_rgba(var(--primary),0.15)] -translate-y-1"
-                          : "border-border bg-card/90 backdrop-blur-md shadow-sm"
-                      } hover:-translate-y-1.5 hover:border-accent-current/30 hover:shadow-xl`}
-                    >
-                      {/* Outline Watermark Number */}
-                      <span className={`absolute top-6 right-6 font-black text-4xl lg:text-5xl select-none transition-colors duration-300 ${
-                        activeStep >= index
-                          ? "text-primary/10"
-                          : "text-muted-foreground/20"
-                      }`}>
-                        {stepNumber}
-                      </span>
-
-                      <div className="relative z-10">
-                        
-                        <h3 className="mt-1 text-xl font-bold tracking-tight text-foreground transition-colors duration-300">
-                          {step.title}
-                        </h3>
-                        <p className="mt-3 text-sm text-muted-foreground leading-relaxed transition-colors duration-300">
-                          {step.description}
-                        </p>
-                      </div>
-                    </motion.div>
-                  </div>
-                </div>
+                  <ProcessCard step={step} Icon={Icon} />
+                </motion.li>
               );
             })}
-          </motion.div>
+          </ol>
         </div>
       </div>
     </section>
   );
 }
 
+function ProcessCard({
+  step,
+  Icon,
+}: {
+  step: ProcessStep;
+  Icon: LucideIcon;
+}) {
+  const [imgError, setImgError] = useState(false);
+
+  return (
+    <motion.article
+      whileHover={{
+        y: -4,
+        boxShadow: "0 16px 36px -24px var(--accent-current)",
+      }}
+      className="group overflow-hidden rounded-2xl border border-neutral-200 bg-white transition-colors duration-300 hover:border-accent-current dark:border-white/10 dark:bg-neutral-950 flex flex-col sm:flex-row sm:min-h-[140px] md:flex-col md:min-h-0 xl:flex-1 xl:flex-col xl:min-h-0"
+    >
+      {/* Image area */}
+      <div
+        className="relative shrink-0 overflow-hidden bg-white dark:bg-neutral-950 h-[140px] w-full sm:h-auto sm:min-h-[140px] sm:w-[34%] md:h-[120px] md:min-h-0 md:w-full lg:h-[132px] xl:h-[132px]"
+      >
+        {!imgError ? (
+          <Image
+            src={step.image}
+            alt={`${step.title} process illustration`}
+            fill
+            sizes="(max-width: 639px) 100vw, (max-width: 767px) 34vw, (max-width: 1023px) 50vw, (max-width: 1279px) 33vw, 190px"
+            className="object-contain p-2 rounded-2xl grayscale invert transition-transform duration-500 ease-out group-hover:scale-105 dark:invert-0"
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-3xl font-bold text-neutral-500">
+            {step.number}
+          </div>
+        )}
+      </div>
+
+      {/* Text area */}
+      <div className="flex min-w-0 flex-1 flex-col justify-center p-3.5 sm:p-4">
+        <div className="mb-2 flex items-center gap-2 sm:mb-2.5">
+          <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-accent-current-muted text-accent-current-muted-foreground">
+            <Icon className="h-3.5 w-3.5" aria-hidden="true" />
+          </span>
+          <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-neutral-500 dark:text-neutral-400">
+            Step {step.number}
+          </span>
+        </div>
+
+        <h3 className="text-sm font-bold leading-snug tracking-tight text-neutral-950 dark:text-white sm:text-base md:text-[15px] xl:text-[15px]">
+          {step.title}
+        </h3>
+        <p className="mt-1 text-xs leading-relaxed text-neutral-600 dark:text-neutral-400 sm:mt-1.5 md:text-[12px] xl:text-[11px]">
+          {step.description}
+        </p>
+      </div>
+    </motion.article>
+  );
+}

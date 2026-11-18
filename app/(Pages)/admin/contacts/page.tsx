@@ -124,7 +124,7 @@ export default function AdminContactsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-1">
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-1">
         <h1 className="text-2xl font-bold text-foreground">Contact Inquiries</h1>
         {unreadCount > 0 && (
           <span className="text-xs font-medium bg-primary/10 text-primary px-2.5 py-1 rounded-full">
@@ -158,7 +158,7 @@ export default function AdminContactsPage() {
                   setExpanded(expanded === c.id ? null : c.id);
                   if (!readState[c.id]) handleMarkRead(c.id);
                 }}
-                className="w-full flex items-center justify-between p-5 text-left"
+                className="w-full flex items-center justify-between gap-3 p-4 sm:p-5 text-left"
               >
                 <div className="flex items-center gap-3 min-w-0 flex-1">
                   <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
@@ -198,7 +198,7 @@ export default function AdminContactsPage() {
                   animate={{ height: "auto", opacity: 1 }}
                   className="overflow-hidden"
                 >
-                  <div className="px-5 pb-5 pt-0 border-t border-border mt-0">
+                  <div className="px-4 pb-4 sm:px-5 sm:pb-5 pt-0 border-t border-border mt-0">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
                       <InfoRow icon={User} label="Name" value={c.name} />
                       <InfoRow icon={Mail} label="Email" value={c.email} />

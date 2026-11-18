@@ -155,7 +155,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
       </aside>
 
       {/* Main area */}
-      <div className="flex-1 flex flex-col min-h-screen">
+      <div className="flex-1 flex flex-col min-h-screen min-w-0">
         {/* Desktop top navbar */}
         <header className="hidden md:flex items-center justify-between px-6 py-3 border-b border-border bg-card shrink-0">
           <div className="flex items-center gap-2">
@@ -221,8 +221,8 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
         </main>
 
         {/* Footer */}
-        <footer className="border-t border-border bg-card px-6 py-4 shrink-0">
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
+        <footer className="border-t border-border bg-card px-4 sm:px-6 py-4 shrink-0">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left text-xs text-muted-foreground">
             <p>&copy; {new Date().getFullYear()} LayerNLooms. All rights reserved.</p>
             <div className="flex items-center gap-4">
               <Link href="/" className="hover:text-foreground transition-colors">Visit Site</Link>

@@ -5,14 +5,14 @@ interface LogoProps {
   priority?: boolean;
 }
 
-const Logo = ({ className = "w-auto h-12", priority = false }: LogoProps) => {
+const Logo = ({ className = "w-auto h-12 lg:h-14", priority = false }: LogoProps) => {
   return (
     <div className="flex items-center">
       <Image
         src="/logo.png"
         alt="LayerNLooms Logo"
-        width={180}
-        height={109}
+        width={360}
+        height={218}
         className={`${className} object-contain dark:invert`}
         priority={priority}
       />
@@ -21,4 +21,3 @@ const Logo = ({ className = "w-auto h-12", priority = false }: LogoProps) => {
 };
 
 export default Logo;
-

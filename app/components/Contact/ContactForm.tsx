@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import FloatInput from "./Floatinput";
-import { Send, CheckCircle2, Plus, X, Loader2, AlertCircle } from "lucide-react";
+import { Send, CheckCircle2, Plus, X, Loader2, AlertCircle, ClipboardList } from "lucide-react";
 
 const defaultProjectTypes = [
     "Web Development",
@@ -124,17 +124,20 @@ export default function ContactForm() {
     return (
         <form
             onSubmit={handleSubmit}
-            className="w-full rounded-xl sm:rounded-2xl border border-border bg-card p-5 sm:p-8 flex flex-col gap-5 sm:gap-6"
+            className="flex w-full flex-col gap-5 rounded-3xl border border-border/80 bg-card/85 p-5 shadow-xl shadow-foreground/[0.03] backdrop-blur-xl sm:gap-6 sm:p-8 lg:p-9"
         >
             {/* Form Header */}
-            <div className="flex items-baseline justify-between gap-4">
+            <div className="flex items-start justify-between gap-4">
                 <div>
-                    <h2 className="text-lg sm:text-xl font-bold tracking-tight text-foreground">Project Brief</h2>
-                    <p className="text-xs sm:text-sm text-muted-foreground mt-1">Tell us about your vision and we&apos;ll take it from there.</p>
+                    <h2 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl">Project Brief</h2>
+                    <p className="mt-1.5 text-xs leading-6 text-muted-foreground sm:text-sm">Tell us about your vision and we&apos;ll take it from there.</p>
                 </div>
+                <span className="grid size-11 shrink-0 place-items-center rounded-2xl border border-accent-current/20 bg-accent-current/10 text-accent-current">
+                    <ClipboardList className="size-5" />
+                </span>
             </div>
 
-            <div className="w-full h-px bg-border" />
+            <div className="h-px w-full bg-gradient-to-r from-accent-current/30 via-border to-transparent" />
 
             {/* Name + Email */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -151,7 +154,7 @@ export default function ContactForm() {
                     <label
                         htmlFor="projectType"
                         className={`absolute left-4 transition-all duration-200 pointer-events-none z-10 ${focused === "projectType" || form.projectType
-                                ? "top-2 text-[10px] tracking-widest uppercase font-bold text-primary"
+                                ? "top-2 text-[10px] tracking-widest uppercase font-bold text-accent-current"
                                 : "top-1/2 -translate-y-1/2 text-sm text-muted-foreground group-hover:text-foreground"
                             }`}
                     >
@@ -164,7 +167,7 @@ export default function ContactForm() {
                         onChange={handleChange}
                         onFocus={() => setFocused("projectType")}
                         onBlur={() => setFocused(null)}
-                        className={`w-full border rounded-lg px-4 pt-7 pb-3 text-sm appearance-none cursor-pointer outline-none transition-all duration-200 bg-secondary/40 text-foreground ${focused === "projectType" ? "border-primary ring-1 ring-primary bg-background" : "border-border hover:border-muted-foreground/40"}`}
+                        className={`w-full rounded-xl border bg-secondary/30 px-4 pb-3 pt-7 text-base sm:text-sm text-foreground outline-none transition-all duration-200 ${focused === "projectType" ? "border-accent-current ring-2 ring-accent-current/15 bg-background" : "border-border/80 hover:border-accent-current/30"}`}
                     >
                         <option value="" disabled hidden />
                         {projectTypes.map((p) => (
@@ -174,8 +177,8 @@ export default function ContactForm() {
                         ))}
                         <option value="__add_new__" className="font-bold text-foreground">+ Other Specialty</option>
                     </select>
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground">
-                        <Plus className={`w-4 h-4 transition-transform duration-300 ${focused === "projectType" ? "rotate-45" : ""}`} />
+                    <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-accent-current">
+                        <Plus className={`size-4 transition-transform duration-300 ${focused === "projectType" ? "rotate-45" : ""}`} />
                     </div>
                 </div>
 
@@ -191,16 +194,16 @@ export default function ContactForm() {
                         exit={{ opacity: 0, height: 0 }}
                         className="overflow-hidden"
                     >
-                        <div className="p-4 rounded-lg bg-secondary border border-border">
+                        <div className="rounded-2xl border border-accent-current/20 bg-accent-current/[0.04] p-4">
                             <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
                                 <div className="w-full sm:flex-1">
                                     <FloatInput label="Describe Specialty" name="customType" type="text" value={customType} focused={focused} onChange={(e) => setCustomType(e.target.value)} onFocus={() => setFocused("customType")} onBlur={() => setFocused(null)} />
                                 </div>
                                 <div className="flex gap-2 justify-end sm:w-auto">
-                                    <button type="button" onClick={handleCancelCustom} aria-label="Cancel" className="flex items-center justify-center p-3 rounded-lg bg-card border border-border text-muted-foreground hover:text-foreground transition-colors">
-                                        <X className="w-4 h-4" />
+                                    <button type="button" onClick={handleCancelCustom} aria-label="Cancel" className="flex items-center justify-center rounded-xl border border-border bg-card p-3 text-muted-foreground transition-colors hover:text-foreground">
+                                        <X className="size-4" />
                                     </button>
-                                    <button type="button" onClick={handleAddCustomType} className="flex items-center justify-center px-6 py-3 rounded-lg bg-primary text-background font-bold text-xs uppercase tracking-widest hover:opacity-90 transition-opacity">
+                                    <button type="button" onClick={handleAddCustomType} className="flex items-center justify-center rounded-xl bg-accent-current px-6 py-3 text-xs font-bold uppercase tracking-widest text-accent-current-foreground transition-opacity hover:opacity-90">
                                         Add
                                     </button>
                                 </div>
@@ -215,7 +218,7 @@ export default function ContactForm() {
                 <label
                     htmlFor="message"
                     className={`absolute left-4 transition-all duration-200 pointer-events-none z-10 ${focused === "message" || form.message
-                            ? "top-2 text-[10px] tracking-widest uppercase font-bold text-primary"
+                            ? "top-2 text-[10px] tracking-widest uppercase font-bold text-accent-current"
                             : "top-5 text-sm text-muted-foreground group-hover:text-foreground"
                         }`}
                 >
@@ -229,12 +232,12 @@ export default function ContactForm() {
                     onChange={handleChange}
                     onFocus={() => setFocused("message")}
                     onBlur={() => setFocused(null)}
-                    className={`w-full border rounded-lg px-4 pt-10 pb-4 text-sm resize-none outline-none transition-all duration-200 bg-secondary/40 text-foreground ${focused === "message" ? "border-primary ring-1 ring-primary bg-background" : "border-border hover:border-muted-foreground/40"}`}
+                    className={`w-full resize-none rounded-xl border bg-secondary/30 px-4 pb-4 pt-10 text-base sm:text-sm text-foreground outline-none transition-all duration-200 ${focused === "message" ? "border-accent-current ring-2 ring-accent-current/15 bg-background" : "border-border/80 hover:border-accent-current/30"}`}
                     placeholder={focused === "message" || form.message ? "Tell us about your mission, goals and timelines..." : ""}
                 />
             </div>
 
-            <div className="w-full h-px bg-border" />
+            <div className="h-px w-full bg-gradient-to-r from-border via-border/70 to-transparent" />
 
             {/* Submit & Status Feedback */}
             <div className="flex flex-col gap-4">
@@ -244,7 +247,7 @@ export default function ContactForm() {
                             initial={{ opacity: 0, y: -8 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -8 }}
-                            className="flex items-start gap-2.5 p-3.5 rounded-xl border border-destructive/30 bg-destructive/10 text-destructive text-xs leading-relaxed"
+                            className="flex items-start gap-2.5 rounded-2xl border border-destructive/30 bg-destructive/10 p-4 text-xs leading-relaxed text-destructive"
                             role="alert"
                         >
                             <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
@@ -258,11 +261,11 @@ export default function ContactForm() {
                     whileHover={{ scale: loading || submitted ? 1 : 1.005 }}
                     whileTap={{ scale: loading || submitted ? 1 : 0.995 }}
                     disabled={submitted || loading}
-                    className={`w-full py-4 rounded-lg font-bold text-xs tracking-[0.2em] uppercase transition-all duration-300 ${submitted
-                            ? "bg-emerald-600 text-white cursor-default"
+                    className={`w-full rounded-full py-4 text-xs font-bold uppercase tracking-[0.18em] transition-all duration-300 ${submitted
+                            ? "cursor-default bg-emerald-600 text-white"
                             : loading
-                            ? "bg-primary/70 text-primary-foreground cursor-wait"
-                            : "bg-primary text-primary-foreground hover:opacity-90 cursor-pointer shadow-md"
+                            ? "cursor-wait bg-accent-current/70 text-accent-current-foreground"
+                            : "cursor-pointer bg-accent-current text-accent-current-foreground shadow-md shadow-accent-current/10 hover:-translate-y-0.5 hover:opacity-90"
                         }`}
                 >
                     <span className="flex items-center justify-center gap-2">

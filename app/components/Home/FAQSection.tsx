@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import JsonLd, { getFAQPageSchema } from "../JsonLd";
@@ -52,26 +52,24 @@ export default function FAQSection() {
   };
 
   return (
-    <section className="relative py-16 sm:py-20 overflow-hidden">
+    <section className="relative py-12 sm:py-16 overflow-hidden">
       <JsonLd data={getFAQPageSchema(faqs)} />  
-      
-     
 
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="text-center"
         >
-          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground">
             Frequently Asked{" "}
-            <span className="bg-gradient-to-r from-foreground to-neutral-500 dark:from-white dark:to-neutral-400 bg-clip-text text-transparent font-extrabold">
+            <span className="bg-gradient-to-r from-foreground to-neutral-500 dark:from-white dark:to-neutral-400 bg-clip-text text-transparent">
               Questions
             </span>
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="mt-4 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
             Everything you need to know about working with us.
           </p>
         </motion.div>
@@ -79,63 +77,92 @@ export default function FAQSection() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="mt-10 sm:mt-16 space-y-3"
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-10 sm:mt-14 space-y-3"
         >
-          {faqs.map((faq, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: index * 0.05 }}
-              className="rounded-2xl border border-border bg-card overflow-hidden transition-colors duration-300"
-            >
-              <button
-                id={`faq-btn-${index}`}
-                onClick={() => toggle(index)}
-                className="w-full flex items-center justify-between gap-4 px-5 sm:px-6 py-4 sm:py-5 text-left focus:outline-none"
-                aria-expanded={openIndex === index}
-                aria-controls={`faq-answer-${index}`}
-              >
-                <span className="text-sm sm:text-base font-semibold text-foreground tracking-tight pr-2">
-                  {faq.question}
-                </span>
-                <span className="shrink-0 w-6 h-6 flex items-center justify-center rounded-full bg-secondary transition-colors duration-300">
-                  <motion.span
-                    animate={{ rotate: openIndex === index ? 45 : 0 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                  >
-                    <Plus className="w-4 h-4 text-muted-foreground" />
-                  </motion.span>
-                </span>
-              </button>
-              <div
-                id={`faq-answer-${index}`}
-                role="region"
-                aria-labelledby={`faq-btn-${index}`}
-                className={`grid transition-all duration-300 ease-in-out ${
-                  openIndex === index ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+          {faqs.map((faq, index) => {
+            const isOpen = openIndex === index;
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-20px" }}
+                transition={{
+                  duration: 0.45,
+                  delay: index * 0.04,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                className={`rounded-2xl border transition-colors duration-300 overflow-hidden ${
+                  isOpen
+                    ? "border-neutral-400/80 dark:border-white/25 bg-card/90 dark:bg-neutral-900/80 shadow-md"
+                    : "border-border bg-card/60 dark:bg-neutral-950/60 hover:border-neutral-400/70 dark:hover:border-white/20 hover:bg-card dark:hover:bg-neutral-900/40"
                 }`}
               >
-                <div className="overflow-hidden">
-                  <div className="px-5 sm:px-6 pb-4 sm:pb-5">
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      {faq.answer}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+                <button
+                  id={`faq-btn-${index}`}
+                  onClick={() => toggle(index)}
+                  className="w-full flex items-center justify-between gap-3 sm:gap-4 px-4 sm:px-6 py-3.5 sm:py-5 text-left focus:outline-none cursor-pointer"
+                  aria-expanded={isOpen}
+                  aria-controls={`faq-answer-${index}`}
+                >
+                  <span className="text-sm sm:text-base font-semibold text-foreground tracking-tight pr-2">
+                    {faq.question}
+                  </span>
+                  <span className="shrink-0 w-7 h-7 flex items-center justify-center rounded-full bg-secondary/80 dark:bg-white/[0.08] transition-colors duration-300">
+                    <motion.span
+                      animate={{ rotate: isOpen ? 45 : 0 }}
+                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      <Plus className="w-4 h-4 text-foreground/80 dark:text-white" />
+                    </motion.span>
+                  </span>
+                </button>
+
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      id={`faq-answer-${index}`}
+                      role="region"
+                      aria-labelledby={`faq-btn-${index}`}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{
+                        height: "auto",
+                        opacity: 1,
+                        transition: {
+                          height: { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
+                          opacity: { duration: 0.28, delay: 0.08 },
+                        },
+                      }}
+                      exit={{
+                        height: 0,
+                        opacity: 0,
+                        transition: {
+                          height: { duration: 0.28, ease: [0.16, 1, 0.3, 1] },
+                          opacity: { duration: 0.18 },
+                        },
+                      }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-4 sm:px-6 pb-4 sm:pb-5 pt-1 border-t border-border/40">
+                        <p className="text-sm text-muted-foreground leading-relaxed">
+                          {faq.answer}
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            );
+          })}
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.6, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
           className="mt-12 sm:mt-16 text-center"
         >
           <h3 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">
@@ -144,12 +171,15 @@ export default function FAQSection() {
           <p className="mt-2 text-sm sm:text-base text-muted-foreground">
             Can&apos;t find what you&apos;re looking for? Our team is here to help with personalized answers.
           </p>
-          <a
+          <motion.a
             href="/contact"
-            className="inline-block mt-6 px-6 sm:px-8 py-3 rounded-xl bg-foreground text-background text-sm font-semibold hover:opacity-90 transition-all duration-300"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+            className="inline-block mt-6 px-6 sm:px-8 py-3 rounded-xl bg-foreground text-background text-sm font-semibold hover:opacity-90 shadow-md transition-all duration-300"
           >
             Contact Support
-          </a>
+          </motion.a>
         </motion.div>
       </div>
     </section>

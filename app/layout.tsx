@@ -8,6 +8,8 @@ import Preloader from "./components/Preloader";
 import JsonLd, { organizationSchema, websiteSchema } from "./components/JsonLd";
 import { site } from "@/app/lib/site";
 
+const THEME_INIT_SCRIPT = `(function(){try{var r=document.documentElement;var t=localStorage.getItem('theme')||'system';if(t!=='light'&&t!=='dark'&&t!=='system')t='system';var isDark=t==='dark'||(t==='system'&&window.matchMedia('(prefers-color-scheme: dark)').matches);if(isDark){r.classList.add('dark');}else{r.classList.remove('dark');}r.style.colorScheme=isDark?'dark':'light';var valid={zinc:1,purple:1,green:1,cyan:1,amber:1,pink:1};var pt=localStorage.getItem('pointerTheme')||'zinc';if(!valid[pt])pt='zinc';var st=localStorage.getItem('scrollbarTheme')||'zinc';if(!valid[st])st='zinc';r.style.setProperty('--accent-current','var(--accent-'+pt+')');r.style.setProperty('--accent-current-foreground','var(--accent-'+pt+'-foreground)');r.style.setProperty('--accent-current-muted','var(--accent-'+pt+'-muted)');r.style.setProperty('--accent-current-muted-foreground','var(--accent-'+pt+'-muted-foreground)');var sb={zinc:['#52525b','#a1a1aa','#27272a','#f4f4f5'],purple:['#8b5cf6','#a78bfa','#7c3aed','#c084fc'],green:['#059669','#34d399','#047857','#6ee7b7'],cyan:['#0891b2','#22d3ee','#0e7490','#67e8f9'],amber:['#ea580c','#fb923c','#c2410c','#fdba74'],pink:['#db2777','#f472b6','#be185d','#f9a8d4']}[st];r.style.setProperty('--scrollbar-thumb-color',isDark?sb[1]:sb[0]);r.style.setProperty('--scrollbar-thumb-hover',isDark?sb[3]:sb[2]);r.style.setProperty('--scrollbar-track-border',isDark?'#1f1f22':'#f3f4f6');var pc={zinc:['#171717','#fafafa','rgba(23,23,23,0.15)','rgba(250,250,250,0.15)'],purple:['#8b5cf6','#a78bfa','rgba(139,92,246,0.2)','rgba(167,139,250,0.2)'],green:['#059669','#34d399','rgba(5,150,105,0.2)','rgba(52,211,153,0.2)'],cyan:['#0891b2','#22d3ee','rgba(8,145,178,0.2)','rgba(34,211,238,0.2)'],amber:['#ea580c','#fb923c','rgba(234,88,12,0.2)','rgba(251,146,60,0.2)'],pink:['#db2777','#f472b6','rgba(219,39,119,0.2)','rgba(244,114,182,0.2)']}[pt];r.style.setProperty('--cursor-color',isDark?pc[1]:pc[0]);r.style.setProperty('--cursor-glow-color',isDark?pc[3]:pc[2]);if(localStorage.getItem('pointerEnabled')==='true'){r.classList.add('custom-cursor-active');}else{r.classList.remove('custom-cursor-active');}if(sessionStorage.getItem('lnl-preloaded')==='1'){r.classList.add('preloaded-skip');}}catch(e){}})();`;
+
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
   subsets: ["latin"],
@@ -98,35 +100,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <script
-          suppressHydrationWarning
-          dangerouslySetInnerHTML={{
-            __html: `
-              try {
-                const theme = localStorage.getItem('theme') || 'system';
-                const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-                const root = document.documentElement;
-                if (isDark) {
-                  root.classList.add('dark');
-                } else {
-                  root.classList.remove('dark');
-                }
-                const pt = localStorage.getItem('pointerTheme') || 'zinc';
-                root.style.setProperty('--accent-current', 'var(--accent-' + pt + ')');
-                root.style.setProperty('--accent-current-foreground', 'var(--accent-' + pt + '-foreground)');
-                root.style.setProperty('--accent-current-muted', 'var(--accent-' + pt + '-muted)');
-                root.style.setProperty('--accent-current-muted-foreground', 'var(--accent-' + pt + '-muted-foreground)');
-                const pe = localStorage.getItem('pointerEnabled');
-                if (pe !== 'false') {
-                  root.classList.add('custom-cursor-active');
-                }
-                if (sessionStorage.getItem('lnl-preloaded') === '1') {
-                  root.classList.add('preloaded-skip');
-                }
-              } catch (_) {}
-            `,
-          }}
-        />
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>
       <body className={`${spaceGrotesk.className} ${spaceGrotesk.variable} antialiased bg-background text-foreground min-h-screen`}>
         <JsonLd data={[organizationSchema, websiteSchema]} />

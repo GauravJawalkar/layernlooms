@@ -1,10 +1,115 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Paintbrush, Check, X, MousePointer, Settings, Eye, EyeOff } from 'lucide-react';
-import { useTheme, ScrollbarTheme, PointerStyle, Theme } from '../context/ThemeContext';
-import { Monitor, Moon, Sun, type LucideIcon } from 'lucide-react';
+import { useState, type ReactNode } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  Check,
+  Monitor,
+  Moon,
+  MousePointer2,
+  Palette,
+  Settings2,
+  SlidersHorizontal,
+  Sparkles,
+  Sun,
+  X,
+  type LucideIcon,
+} from "lucide-react";
+import {
+  useTheme,
+  type PointerStyle,
+  type ScrollbarTheme,
+  type Theme,
+} from "../context/ThemeContext";
+
+const themeModes: { id: Theme; label: string; icon: LucideIcon }[] = [
+  { id: "light", label: "Light", icon: Sun },
+  { id: "system", label: "System", icon: Monitor },
+  { id: "dark", label: "Dark", icon: Moon },
+];
+
+const colorOptions: {
+  id: ScrollbarTheme;
+  label: string;
+  color: string;
+}[] = [
+  { id: "zinc", label: "Graphite", color: "#71717a" },
+  { id: "purple", label: "Violet", color: "#8b5cf6" },
+  { id: "green", label: "Emerald", color: "#10b981" },
+  { id: "cyan", label: "Cyan", color: "#06b6d4" },
+  { id: "amber", label: "Amber", color: "#f59e0b" },
+  { id: "pink", label: "Rose", color: "#ec4899" },
+];
+
+const cursorStyles: {
+  id: PointerStyle;
+  label: string;
+  description: string;
+}[] = [
+  { id: "classic", label: "Classic", description: "Dot with trailing ring" },
+  { id: "glowing", label: "Glow", description: "Soft luminous aura" },
+  { id: "crosshair", label: "Crosshair", description: "Precision guide lines" },
+  { id: "bracket", label: "Brackets", description: "Focused targeting frame" },
+  { id: "orbital", label: "Orbital", description: "Satellite ring motion" },
+  { id: "sonar", label: "Sonar", description: "Expanding radar pulses" },
+  { id: "minimal", label: "Minimal", description: "A clean, precise pointer" },
+  { id: "trail", label: "Trail", description: "Soft dots follow your movement" },
+  { id: "spotlight", label: "Spotlight", description: "A calm, diffused glow" },
+  { id: "comet", label: "Comet", description: "A luminous trailing core" },
+  { id: "pulse", label: "Pulse", description: "Concentric animated waves" },
+  { id: "diamond", label: "Diamond", description: "A geometric shifting frame" },
+];
+
+function SectionLabel({
+  icon: Icon,
+  children,
+}: {
+  icon: LucideIcon;
+  children: ReactNode;
+}) {
+  return (
+    <div className="mb-3 flex items-center gap-2">
+      <Icon className="size-3.5 text-accent-current" aria-hidden="true" />
+      <h4 className="text-[11px] font-bold uppercase tracking-[0.16em] text-foreground">
+        {children}
+      </h4>
+    </div>
+  );
+}
+
+function ColorSwatches({
+  selected,
+  onSelect,
+  label,
+}: {
+  selected: ScrollbarTheme;
+  onSelect: (color: ScrollbarTheme) => void;
+  label: string;
+}) {
+  return (
+    <div className="flex flex-wrap gap-2.5">
+      {colorOptions.map((option) => {
+        const active = selected === option.id;
+        return (
+          <button
+            key={`${label}-${option.id}`}
+            type="button"
+            onClick={() => onSelect(option.id)}
+            aria-label={`${label}: ${option.label}`}
+            aria-pressed={active}
+            title={option.label}
+            className={`group relative grid size-8 place-items-center rounded-full transition-transform hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-current ${
+              active ? "ring-2 ring-accent-current ring-offset-2 ring-offset-card" : ""
+            }`}
+            style={{ backgroundColor: option.color }}
+          >
+            {active && <Check className="size-4 text-white drop-shadow" />}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
 
 export default function ThemeCustomizer() {
   const {
@@ -21,263 +126,254 @@ export default function ThemeCustomizer() {
     pointerEffects,
     setPointerEffects,
   } = useTheme();
-
   const [isOpen, setIsOpen] = useState(false);
 
-  const themeModes: { name: Theme; label: string; icon: LucideIcon }[] = [
-    { name: 'light', label: 'Light', icon: Sun },
-    { name: 'system', label: 'System', icon: Monitor },
-    { name: 'dark', label: 'Dark', icon: Moon },
-  ];
-
-  const colorOptions: { id: ScrollbarTheme; name: string; class: string }[] = [
-    { id: 'zinc', name: 'Default Zinc', class: 'bg-zinc-500' },
-    { id: 'purple', name: 'Royal Purple', class: 'bg-violet-500' },
-    { id: 'green', name: 'Emerald Mint', class: 'bg-emerald-500' },
-    { id: 'cyan', name: 'Electric Cyan', class: 'bg-cyan-500' },
-    { id: 'amber', name: 'Sunset Amber', class: 'bg-orange-500' },
-    { id: 'pink', name: 'Cyber Pink', class: 'bg-pink-500' },
-  ];
-
-  const cursorStyles: { id: PointerStyle; label: string; desc: string }[] = [
-    { id: 'classic', label: 'Classic', desc: 'Dot + trailing ring' },
-    { id: 'glowing', label: 'Glowing', desc: 'Dot + soft blur aura' },
-    { id: 'crosshair', label: 'Crosshair', desc: 'Tech crosshair lines' },
-    { id: 'bracket', label: 'Bracket', desc: 'Cyber HUD targeting' },
-    { id: 'orbital', label: 'Orbital', desc: 'Cosmic satellite orbit' },
-    { id: 'sonar', label: 'Sonar', desc: 'Radar pulse rings' },
-  ];
-
   return (
-    <div className="fixed bottom-20 md:bottom-24 lg:bottom-8 right-4 md:right-6 z-40 hidden md:flex flex-col items-end">
-      <motion.button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-center w-12 h-12 rounded-full shadow-lg border text-neutral-800 dark:text-neutral-200 bg-white/90 dark:bg-neutral-900/90 backdrop-blur-md border-neutral-200/80 dark:border-neutral-800/80 cursor-pointer hover:scale-105 transition-transform"
-        whileTap={{ scale: 0.95 }}
-        aria-label="Open design customizer"
-      >
-        <AnimatePresence mode="wait">
-          {isOpen ? (
-            <motion.div
-              key="close"
-              initial={{ rotate: -90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: 90, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              <X className="w-5 h-5" />
-            </motion.div>
-          ) : (
-            <motion.div
-              key="open"
-              initial={{ rotate: 90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: -90, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="relative"
-            >
-              <Paintbrush className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-violet-500"></span>
-              </span>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.button>
-
+    <div className="fixed bottom-20 right-4 z-40 hidden flex-col items-end md:flex md:bottom-24 md:right-6 lg:bottom-8">
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="mt-3 w-80 md:w-96 rounded-2xl shadow-2xl border bg-white/95 dark:bg-neutral-950/95 backdrop-blur-xl border-neutral-200/80 dark:border-neutral-800/60 p-5 overflow-hidden"
+          <motion.aside
+            id="appearance-controls"
+            aria-label="Appearance settings"
+            initial={{ opacity: 0, y: 12, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 12, scale: 0.97 }}
+            transition={{ duration: 0.2, ease: [0.2, 0.8, 0.2, 1] }}
+            className="mb-3 flex max-h-[min(82vh,48rem)] w-[min(24rem,92vw)] origin-bottom-right flex-col overflow-hidden rounded-[1.5rem] border border-border/70 bg-card/95 text-card-foreground shadow-2xl shadow-black/15 backdrop-blur-2xl"
           >
-            <div className="flex items-center justify-between pb-4 border-b border-neutral-100 dark:border-neutral-900">
-              <div className="flex items-center gap-2">
-                <Settings className="w-4 h-4 text-violet-500" />
-                <h3 className="font-bold text-sm text-neutral-800 dark:text-neutral-100">
-                  Aesthetic Customizer
-                </h3>
+            <header className="flex items-center justify-between border-b border-border/70 px-5 py-4">
+              <div className="flex items-center gap-3">
+                <div className="grid size-9 place-items-center rounded-xl bg-accent-current/10 text-accent-current">
+                  <Palette className="size-4" aria-hidden="true" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold tracking-tight">Appearance</h3>
+                  <p className="mt-0.5 text-[10px] text-muted-foreground">
+                    Make the interface yours
+                  </p>
+                </div>
               </div>
-              <span className="text-[10px] uppercase font-semibold tracking-wider text-neutral-400 dark:text-neutral-500">
-                Design System
-              </span>
-            </div>
+              <button
+                type="button"
+                onClick={() => setIsOpen(false)}
+                aria-label="Close appearance settings"
+                className="grid size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-current"
+              >
+                <X className="size-4" />
+              </button>
+            </header>
 
-            <div className="py-4 space-y-5 text-sm">
-              <div className="space-y-2">
-                <label className="text-xs font-semibold text-neutral-500 dark:text-neutral-400 block">
-                  Interface Theme
-                </label>
-                <div className="grid grid-cols-3 gap-1 bg-neutral-100/50 dark:bg-neutral-900/50 p-1 rounded-xl border border-neutral-200/20 dark:border-neutral-800/20">
-                  {themeModes.map((m) => {
-                    const Icon = m.icon;
-                    const active = theme === m.name;
+            <div className="overflow-y-auto px-5 py-4">
+              <section>
+                <SectionLabel icon={Sun}>Color mode</SectionLabel>
+                <div className="grid grid-cols-3 gap-2">
+                  {themeModes.map(({ id, label, icon: Icon }) => {
+                    const active = theme === id;
                     return (
                       <button
-                        key={m.name}
-                        onClick={(e) => setTheme(m.name, e)}
-                        className={`flex items-center justify-center gap-1.5 py-1.5 px-2.5 rounded-lg text-xs font-semibold cursor-pointer transition-all ${
+                        key={id}
+                        type="button"
+                        onClick={(event) => setTheme(id, event)}
+                        aria-pressed={active}
+                        className={`flex min-h-16 flex-col items-center justify-center gap-1.5 rounded-xl border text-[11px] font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-current ${
                           active
-                            ? 'bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-xs'
-                            : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
+                            ? "border-accent-current/40 bg-accent-current/10 text-accent-current"
+                            : "border-border/70 bg-background/50 text-muted-foreground hover:border-border hover:bg-secondary/70 hover:text-foreground"
                         }`}
                       >
-                        <Icon className="w-3.5 h-3.5" />
-                        {m.label}
+                        <Icon className="size-4" aria-hidden="true" />
+                        {label}
                       </button>
                     );
                   })}
                 </div>
-              </div>
+              </section>
 
-              <div className="space-y-2">
-                <label className="text-xs font-semibold text-neutral-500 dark:text-neutral-400 block">
-                  Scrollbar Color Theme
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  {colorOptions.map((opt) => {
-                    const active = scrollbarTheme === opt.id;
-                    return (
-                      <button
-                        key={`scroll-${opt.id}`}
-                        onClick={() => setScrollbarTheme(opt.id)}
-                        className={`relative w-8 h-8 rounded-full border cursor-pointer hover:scale-105 transition-all ${opt.class} ${
-                          active
-                            ? 'border-neutral-950 dark:border-white ring-2 ring-violet-500/20'
-                            : 'border-transparent'
-                        }`}
-                        title={opt.name}
-                      >
-                        {active && (
-                          <Check className="w-3.5 h-3.5 text-white absolute inset-0 m-auto" />
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
+              <section className="mt-5 border-t border-border/70 pt-4">
+                <SectionLabel icon={Sparkles}>Interface accent</SectionLabel>
+                <p className="mb-3 text-[10px] leading-relaxed text-muted-foreground">
+                  Choose the highlight color used across the site and cursor.
+                </p>
+                <ColorSwatches
+                  label="Accent color"
+                  selected={pointerTheme}
+                  onSelect={setPointerTheme}
+                />
+              </section>
 
-              <div className="space-y-3 pt-1 border-t border-neutral-100 dark:border-neutral-900">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <MousePointer className="w-4 h-4 text-neutral-400" />
-                    <span className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">
-                      Custom Mouse Cursor
-                    </span>
+              <section className="mt-5 border-t border-border/70 pt-4">
+                <SectionLabel icon={Settings2}>Scrollbar color</SectionLabel>
+                <ColorSwatches
+                  label="Scrollbar color"
+                  selected={scrollbarTheme}
+                  onSelect={setScrollbarTheme}
+                />
+              </section>
+
+              <section className="mt-5 border-t border-border/70 pt-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5">
+                    <MousePointer2
+                      className="size-4 text-accent-current"
+                      aria-hidden="true"
+                    />
+                    <div>
+                      <h4 className="text-[11px] font-bold">Custom cursor</h4>
+                      <p className="mt-0.5 text-[10px] text-muted-foreground">
+                        Personalize pointer effects
+                      </p>
+                    </div>
                   </div>
                   <button
+                    type="button"
+                    role="switch"
+                    aria-checked={pointerEnabled}
+                    aria-label="Custom cursor"
                     onClick={() => setPointerEnabled(!pointerEnabled)}
-                    className={`flex items-center justify-center gap-1 py-1 px-2.5 rounded-lg text-[10px] font-bold uppercase tracking-wider cursor-pointer border transition-colors ${
-                      pointerEnabled
-                        ? 'bg-emerald-50/10 dark:bg-emerald-500/10 border-emerald-200/50 dark:border-emerald-800/50 text-emerald-600 dark:text-emerald-400'
-                        : 'bg-neutral-100 dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 text-neutral-500'
+                    className={`relative h-6 w-11 shrink-0 rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-current ${
+                      pointerEnabled ? "bg-accent-current" : "bg-secondary"
                     }`}
                   >
-                    {pointerEnabled ? (
-                      <>
-                        <Eye className="w-3 h-3" />
-                        Enabled
-                      </>
-                    ) : (
-                      <>
-                        <EyeOff className="w-3 h-3" />
-                        Disabled
-                      </>
-                    )}
+                    <span
+                      className={`absolute top-1 size-4 rounded-full bg-white shadow-sm transition-transform ${
+                        pointerEnabled ? "left-1 translate-x-5" : "left-1"
+                      }`}
+                    />
                   </button>
                 </div>
 
-                {pointerEnabled && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="space-y-3 overflow-hidden"
-                  >
-                    <div className="space-y-1.5">
-                      <span className="text-[11px] text-neutral-400 dark:text-neutral-500 block">
-                        Cursor Color
-                      </span>
-                      <div className="flex flex-wrap gap-2">
-                        {colorOptions.map((opt) => {
-                          const active = pointerTheme === opt.id;
-                          return (
-                            <button
-                              key={`pointer-${opt.id}`}
-                              onClick={() => setPointerTheme(opt.id)}
-                              className={`relative w-7 h-7 rounded-full border cursor-pointer hover:scale-105 transition-all ${opt.class} ${
-                                active
-                                  ? 'border-neutral-950 dark:border-white ring-2 ring-violet-500/20'
-                                  : 'border-transparent'
-                              }`}
-                              title={opt.name}
-                            >
-                              {active && (
-                                <Check className="w-3 text-white absolute inset-0 m-auto" />
-                              )}
-                            </button>
-                          );
-                        })}
+                <AnimatePresence initial={false}>
+                  {pointerEnabled && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="mt-4">
+                        <p className="mb-2.5 text-[10px] font-medium text-muted-foreground">
+                          Cursor color
+                        </p>
+                        <ColorSwatches
+                          label="Cursor color"
+                          selected={pointerTheme}
+                          onSelect={setPointerTheme}
+                        />
                       </div>
-                    </div>
 
-                    <div className="space-y-1.5">
-                      <span className="text-[11px] text-neutral-400 dark:text-neutral-500 block">
-                        Cursor Visual Style
-                      </span>
-                      <div className="grid grid-cols-3 gap-1 bg-neutral-50 dark:bg-neutral-900/30 p-0.5 rounded-lg border border-neutral-200/10 dark:border-neutral-800/10">
-                        {cursorStyles.map((style) => {
-                          const active = pointerStyle === style.id;
-                          return (
-                            <button
-                              key={style.id}
-                              onClick={() => setPointerStyle(style.id)}
-                              className={`py-1 rounded-md text-[10px] font-semibold transition-all cursor-pointer ${
-                                active
-                                  ? 'bg-neutral-200 dark:bg-neutral-800 text-neutral-950 dark:text-white shadow-2xs'
-                                  : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
-                              }`}
-                              title={style.desc}
-                            >
-                              {style.label}
-                            </button>
-                          );
-                        })}
+                      <div className="mt-4">
+                        <p className="mb-2.5 text-[10px] font-medium text-muted-foreground">
+                          Cursor style
+                        </p>
+                        <div className="grid grid-cols-3 gap-1.5">
+                          {cursorStyles.map((style) => {
+                            const active = pointerStyle === style.id;
+                            return (
+                              <button
+                                key={style.id}
+                                type="button"
+                                onClick={() => setPointerStyle(style.id)}
+                                aria-pressed={active}
+                                title={style.description}
+                                className={`min-h-9 rounded-lg border px-1.5 text-[10px] font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-current ${
+                                  active
+                                    ? "border-accent-current/40 bg-accent-current/10 text-accent-current"
+                                    : "border-border/60 text-muted-foreground hover:bg-secondary/70 hover:text-foreground"
+                                }`}
+                              >
+                                {style.label}
+                              </button>
+                            );
+                          })}
+                        </div>
+                        <p className="mt-2 text-[10px] text-muted-foreground">
+                          {cursorStyles.find((style) => style.id === pointerStyle)
+                            ?.description}
+                        </p>
                       </div>
-                    </div>
 
-                    <div className="flex items-center justify-between pt-2.5 border-t border-neutral-100 dark:border-neutral-900/60 mt-1">
-                      <span className="text-[11px] text-neutral-400 dark:text-neutral-500 block">
-                        Snap & Ripple Effects
-                      </span>
-                      <button
-                        onClick={() => setPointerEffects(!pointerEffects)}
-                        className={`flex items-center justify-center gap-1 py-0.5 px-2 rounded-md text-[9px] font-bold uppercase tracking-wider cursor-pointer border transition-colors ${
-                          pointerEffects
-                            ? 'bg-violet-50/10 dark:bg-violet-500/10 border-violet-200/50 dark:border-violet-800/50 text-violet-600 dark:text-violet-400'
-                            : 'bg-neutral-100 dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 text-neutral-500'
-                        }`}
-                      >
-                        {pointerEffects ? 'Active' : 'Off'}
-                      </button>
-                    </div>
-                  </motion.div>
-                )}
-              </div>
+                      <div className="mt-4 flex items-center justify-between border-t border-border/60 pt-3">
+                        <div>
+                          <p className="text-[10px] font-semibold">Snap & ripple</p>
+                          <p className="mt-0.5 text-[10px] text-muted-foreground">
+                            Add click feedback
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          role="switch"
+                          aria-checked={pointerEffects}
+                          aria-label="Snap and ripple effects"
+                          onClick={() => setPointerEffects(!pointerEffects)}
+                          className={`relative h-5 w-9 rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-current ${
+                            pointerEffects ? "bg-accent-current" : "bg-secondary"
+                          }`}
+                        >
+                          <span
+                            className={`absolute top-0.5 size-4 rounded-full bg-white shadow-sm transition-transform ${
+                              pointerEffects ? "left-0.5 translate-x-4" : "left-0.5"
+                            }`}
+                          />
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </section>
             </div>
 
-            <div className="pt-3 border-t border-neutral-100 dark:border-neutral-900 text-center">
-              <span className="text-[10px] text-neutral-400 dark:text-neutral-500">
-                Hover over interactive elements to see cursors adapt.
+            <footer className="flex items-center justify-between border-t border-border/70 bg-background/50 px-5 py-3">
+              <span className="text-[9px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+                Live preview
               </span>
-            </div>
-          </motion.div>
+              <span className="flex items-center gap-1.5 text-[10px] font-semibold text-accent-current">
+                <span className="size-1.5 rounded-full bg-accent-current" />
+                Changes saved automatically
+              </span>
+            </footer>
+          </motion.aside>
         )}
       </AnimatePresence>
+
+      <motion.button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        whileTap={{ scale: 0.94 }}
+        aria-label={isOpen ? "Close appearance settings" : "Open appearance settings"}
+        aria-expanded={isOpen}
+        aria-controls="appearance-controls"
+        className={`grid size-12 place-items-center rounded-2xl border shadow-lg backdrop-blur-xl transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-current ${
+          isOpen
+            ? "border-accent-current/30 bg-accent-current text-accent-current-foreground"
+            : "border-border/70 bg-card/90 text-foreground hover:border-accent-current/40 hover:text-accent-current"
+        }`}
+      >
+        <AnimatePresence mode="wait" initial={false}>
+          {isOpen ? (
+            <motion.span
+              key="close"
+              initial={{ opacity: 0, rotate: -45 }}
+              animate={{ opacity: 1, rotate: 0 }}
+              exit={{ opacity: 0, rotate: 45 }}
+              transition={{ duration: 0.15 }}
+            >
+              <X className="size-5" aria-hidden="true" />
+            </motion.span>
+          ) : (
+            <motion.span
+              key="settings"
+              initial={{ opacity: 0, rotate: 45 }}
+              animate={{ opacity: 1, rotate: 0 }}
+              exit={{ opacity: 0, rotate: -45 }}
+              transition={{ duration: 0.15 }}
+            >
+              <SlidersHorizontal className="size-5" aria-hidden="true" />
+            </motion.span>
+          )}
+        </AnimatePresence>
+        <span className="sr-only">Appearance settings</span>
+      </motion.button>
     </div>
   );
 }

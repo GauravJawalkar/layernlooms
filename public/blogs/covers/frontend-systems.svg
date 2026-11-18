@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" fill="none">
+  <defs><radialGradient id="front-glow" cx="0" cy="0" r="1" gradientTransform="matrix(660 470 -620 850 602 360)" gradientUnits="userSpaceOnUse"><stop stop-color="#34343B"/><stop offset="1" stop-color="#080809"/></radialGradient></defs>
+  <rect width="1200" height="750" fill="url(#front-glow)"/>
+  <path d="M0 75H1200M0 150H1200M0 225H1200M0 300H1200M0 375H1200M0 450H1200M0 525H1200M0 600H1200M0 675H1200M100 0V750M200 0V750M300 0V750M400 0V750M500 0V750M600 0V750M700 0V750M800 0V750M900 0V750M1000 0V750M1100 0V750" stroke="#FFFFFF" stroke-opacity=".045"/>
+  <path d="M89 544L170 490L229 508M974 132L1041 87L1120 115M975 636L1052 582L1121 602M109 197L153 168" stroke="#F4F4F5" stroke-opacity=".2"/>
+  <rect x="176" y="156" width="848" height="438" rx="24" fill="#19191C" stroke="#E4E4E7" stroke-opacity=".68" stroke-width="2"/>
+  <path d="M176 215H1024" stroke="#E4E4E7" stroke-opacity=".28" stroke-width="2"/>
+  <circle cx="214" cy="185" r="6" fill="#E4E4E7" fill-opacity=".7"/>
+  <circle cx="237" cy="185" r="6" fill="#E4E4E7" fill-opacity=".35"/>
+  <circle cx="260" cy="185" r="6" fill="#E4E4E7" fill-opacity=".2"/>
+  <rect x="220" y="264" width="214" height="274" rx="14" fill="#222226" stroke="#E4E4E7" stroke-opacity=".3"/>
+  <rect x="464" y="264" width="248" height="126" rx="14" fill="#222226" stroke="#E4E4E7" stroke-opacity=".3"/>
+  <rect x="464" y="412" width="248" height="126" rx="14" fill="#222226" stroke="#E4E4E7" stroke-opacity=".3"/>
+  <rect x="742" y="264" width="234" height="274" rx="14" fill="#222226" stroke="#E4E4E7" stroke-opacity=".3"/>
+  <path d="M251 306H402M251 337H381M251 368H398M251 399H357M251 430H396M251 461H371M495 302H678M495 337H644M495 450H676M495 485H623" stroke="#F4F4F5" stroke-opacity=".66" stroke-linecap="round" stroke-width="7"/>
+  <path d="M251 491H390M495 365H682M495 508H630" stroke="#D4D4D8" stroke-opacity=".34" stroke-linecap="round" stroke-width="5"/>
+  <path d="M777 480L817 425L851 448L897 365L944 402" stroke="#F4F4F5" stroke-opacity=".78" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
+  <path d="M777 497L817 442L851 465L897 382L944 419" stroke="#E4E4E7" stroke-opacity=".2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+  <circle cx="817" cy="425" r="6" fill="#F4F4F5"/>
+  <circle cx="897" cy="365" r="6" fill="#F4F4F5"/>
+  <g fill="#F4F4F5"><circle cx="229" cy="508" r="4"/><circle cx="1041" cy="87" r="4"/><circle cx="1121" cy="602" r="5"/></g>
+</svg>

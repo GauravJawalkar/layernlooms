@@ -157,7 +157,7 @@ export default function AdminBlogPage() {
   if (editing) {
     return (
       <div>
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
           <h1 className="text-2xl font-bold text-foreground">
             {isNew ? "New Post" : "Edit Post"}
           </h1>
@@ -306,7 +306,7 @@ export default function AdminBlogPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Blog</h1>
           <p className="text-sm text-muted-foreground">Manage your blog posts</p>
@@ -343,7 +343,7 @@ export default function AdminBlogPage() {
               animate={{ opacity: 1, y: 0 }}
               className="rounded-2xl border border-border bg-card overflow-hidden"
             >
-              <div className="flex items-center justify-between p-4">
+              <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 p-3 sm:p-4">
                 <div className="flex items-center gap-3 min-w-0 flex-1">
                   {p.image ? (
                     /* eslint-disable-next-line @next/next/no-img-element */

@@ -2,9 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { useState } from "react";
-
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 
 interface ServiceCardProps {
@@ -20,66 +18,61 @@ interface ServiceCardProps {
 }
 
 export default function ServiceCard({ service, index }: ServiceCardProps) {
-    const [isHovered, setIsHovered] = useState(false);
-
     return (
-        <Link href={`/services/${service.slug}`} className="w-full h-full flex no-snap">
+        <Link
+            href={`/services/${service.slug}`}
+            className="group flex h-full w-full no-snap rounded-[2rem] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-current"
+        >
             <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.6, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-                className="group relative flex flex-1 flex-col overflow-hidden rounded-[2rem] border border-border bg-card backdrop-blur-xl transition-all duration-500 hover:-translate-y-2 hover:border-accent-current/10 hover:bg-card/10 hover:shadow-xl justify-between"
+                className="relative flex flex-1 flex-col justify-between overflow-hidden rounded-[2rem] border border-border/80 bg-card shadow-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-accent-current/35 hover:shadow-xl"
             >
                 {/* Image Section */}
-                <div className="relative aspect-video w-full overflow-hidden border-b border-border/20 bg-card">
-                    <Image 
-                        src={service.image || "/web-dev-bw.jpg"} 
+                <div className="relative aspect-video w-full overflow-hidden border-b border-border/70 bg-secondary/60">
+                    <Image
+                        src={service.image || "/services/01-custom-software.svg"}
                         alt={service.title}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                        className="object-cover object-center grayscale contrast-110 invert transition-transform duration-700 ease-out group-hover:scale-105 dark:invert-0"
                     />
-                    {/* Subtle dark overlay that lightens on hover */}
-                    <div className="absolute inset-0 bg-background/10 group-hover:bg-transparent transition-colors duration-500 pointer-events-none" />
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/20 via-transparent to-transparent" />
+                    <div className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/80 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.16em] text-muted-foreground shadow-sm backdrop-blur-md">
+                        <span className="text-accent-current">{String(index + 1).padStart(2, "0")}</span>
+                        Service
+                    </div>
+                    <span className="absolute right-4 top-4 grid size-9 place-items-center rounded-full border border-border/70 bg-background/80 text-foreground shadow-sm backdrop-blur-md transition-colors group-hover:border-accent-current/30 group-hover:bg-accent-current group-hover:text-accent-current-foreground">
+                        <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:rotate-45" />
+                    </span>
                 </div>
 
                 {/* Content */}
-                <div className="flex flex-col p-6 sm:p-8 grow relative z-10">
-                    <h3 className="text-xl sm:text-2xl font-black text-foreground group-hover:text-accent-current transition-colors duration-300">
+                <div className="flex flex-col p-5 sm:p-8 grow relative z-10">
+                    <h3 className="text-lg sm:text-2xl font-bold tracking-tight text-foreground transition-colors duration-300 group-hover:text-accent-current">
                         {service.title}
                     </h3>
 
-                    <p className="mt-2 text-xs sm:text-sm font-semibold text-muted-foreground">
+                    <p className="mt-2 text-xs font-semibold text-muted-foreground sm:text-sm">
                         {service.subtitle}
                     </p>
 
-                    <p className="mt-3 text-xs sm:text-sm line-clamp-3 text-muted-foreground leading-relaxed font-medium">
+                    <p className="mt-3 line-clamp-3 text-xs font-medium leading-relaxed text-muted-foreground sm:text-sm">
                         {service.description}
                     </p>
-
-
                 </div>
 
                 {/* Link */}
-                <div className="px-6 pb-6 sm:px-8 sm:pb-8 mt-auto relative z-10">
-                    <div className="h-px w-full bg-gradient-to-r from-transparent via-foreground/10 to-transparent mb-5" />
-                    <div
-                        className="inline-flex items-center text-sm font-bold transition-colors group/link text-muted-foreground group-hover:text-foreground"
-                    >
-                        Explore Capability
-                        <motion.span
-                            animate={{ x: isHovered ? 6 : 0 }}
-                            transition={{ duration: 0.3, ease: "easeOut" }}
-                        >
-                            <ArrowRight className="ml-2 h-4 w-4" />
-                        </motion.span>
+                <div className="relative z-10 mt-auto px-5 pb-5 sm:px-8 sm:pb-8">
+                    <div className="mb-5 h-px w-full bg-gradient-to-r from-transparent via-border to-transparent" />
+                    <div className="inline-flex items-center text-sm font-bold text-muted-foreground transition-colors group-hover:text-accent-current">
+                        Explore capability
+                        <ArrowRight className="ml-2 size-4 transition-transform duration-300 group-hover:translate-x-1 group-focus-visible:translate-x-1" />
                     </div>
                 </div>
             </motion.div>
         </Link>
     );
 }
-

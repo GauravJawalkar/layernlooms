@@ -21,7 +21,7 @@ export const blogPosts: BlogPost[] = [
     date: "January 15, 2026",
     category: "Web Development",
     tags: ["Web Development", "AI", "Edge Computing", "WebAssembly"],
-    image: "/blogs/web_dev_2026.png",
+    image: "/blogs/covers/web-platforms.svg",
     readTime: "5 min read",
   },
   {
@@ -33,7 +33,7 @@ export const blogPosts: BlogPost[] = [
     date: "February 2, 2026",
     category: "Backend",
     tags: ["Node.js", "Microservices", "Docker", "Kubernetes", "Architecture"],
-    image: "/blogs/microservices_nodejs.png",
+    image: "/blogs/covers/service-network.svg",
     readTime: "7 min read",
   },
   {
@@ -45,7 +45,7 @@ export const blogPosts: BlogPost[] = [
     date: "March 10, 2026",
     category: "AI & ML",
     tags: ["AI", "Machine Learning", "OpenAI", "APIs", "Development"],
-    image: "/blogs/ai_powered_apps.png",
+    image: "/blogs/covers/ai-systems.svg",
     readTime: "6 min read",
   },
   {
@@ -57,7 +57,7 @@ export const blogPosts: BlogPost[] = [
     date: "April 5, 2026",
     category: "Mobile",
     tags: ["PWA", "Mobile", "Web Development", "User Experience"],
-    image: "/blogs/progressive_web_apps.png",
+    image: "/blogs/covers/progressive-apps.svg",
     readTime: "5 min read",
   },
   {
@@ -69,7 +69,7 @@ export const blogPosts: BlogPost[] = [
     date: "May 18, 2026",
     category: "DevOps",
     tags: ["Cloud", "AWS", "Azure", "GCP", "Migration", "DevOps"],
-    image: "/blogs/cloud_migration.png",
+    image: "/blogs/covers/cloud-migration.svg",
     readTime: "8 min read",
   },
   {
@@ -81,7 +81,7 @@ export const blogPosts: BlogPost[] = [
     date: "June 8, 2026",
     category: "Frontend",
     tags: ["React", "Next.js", "Frontend", "JavaScript", "TypeScript"],
-    image: "/blogs/modern_frontend.png",
+    image: "/blogs/covers/frontend-systems.svg",
     readTime: "6 min read",
   },
   {
@@ -93,7 +93,7 @@ export const blogPosts: BlogPost[] = [
     date: "July 14, 2026",
     category: "Security",
     tags: ["Security", "Cybersecurity", "OWASP", "Best Practices", "Web Security"],
-    image: "/blogs/cybersecurity_practices.png",
+    image: "/blogs/covers/application-security.svg",
     readTime: "7 min read",
   },
   {
@@ -105,7 +105,7 @@ export const blogPosts: BlogPost[] = [
     date: "August 22, 2026",
     category: "Industry Trends",
     tags: ["Low-Code", "No-Code", "Productivity", "Development Tools"],
-    image: "/blogs/low_code_no_code.png",
+    image: "/blogs/covers/visual-building.svg",
     readTime: "5 min read",
   },
   {
@@ -117,7 +117,7 @@ export const blogPosts: BlogPost[] = [
     date: "September 5, 2026",
     category: "Performance",
     tags: ["Performance", "Core Web Vitals", "Optimization", "SEO", "UX"],
-    image: "/blogs/web_performance.png",
+    image: "/blogs/covers/web-performance.svg",
     readTime: "6 min read",
   },
   {
@@ -129,7 +129,7 @@ export const blogPosts: BlogPost[] = [
     date: "October 12, 2026",
     category: "Architecture",
     tags: ["Tech Stack", "Architecture", "Decision Making", "Best Practices"],
-    image: "/blogs/tech_stack.png",
+    image: "/blogs/covers/technology-stack.svg",
     readTime: "7 min read",
   },
 ];

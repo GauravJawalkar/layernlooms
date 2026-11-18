@@ -1,10 +1,25 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useState, useEffect, useSyncExternalStore } from "react";
+import { useSyncExternalStore } from "react";
 import { Loader2 } from "lucide-react";
 
 const emptySubscribe = () => () => {};
+const mobileQuery = "(max-width: 767px)";
+const subscribeMobile = (cb: () => void) => {
+  const mq = window.matchMedia(mobileQuery);
+  mq.addEventListener("change", cb);
+  return () => mq.removeEventListener("change", cb);
+};
+const getIsMobile = () => window.matchMedia(mobileQuery).matches;
+
+const subscribeColorMode = (cb: () => void) => {
+  const observer = new MutationObserver(cb);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+  return () => observer.disconnect();
+};
+const getColorMode = (): "light" | "dark" =>
+  document.documentElement.classList.contains("dark") ? "dark" : "light";
 
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
@@ -16,17 +31,8 @@ interface Props {
 
 export default function MarkdownEditor({ value, onChange, height = 400 }: Props) {
   const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
-  const [colorMode, setColorMode] = useState<"light" | "dark">("light");
-
-  useEffect(() => {
-    function update() {
-      setColorMode(document.documentElement.classList.contains("dark") ? "dark" : "light");
-    }
-    update();
-    const observer = new MutationObserver(update);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-    return () => observer.disconnect();
-  }, []);
+  const isMobile = useSyncExternalStore(subscribeMobile, getIsMobile, () => false);
+  const colorMode = useSyncExternalStore(subscribeColorMode, getColorMode, () => "light");
 
   if (!mounted) {
     return (
@@ -42,7 +48,7 @@ export default function MarkdownEditor({ value, onChange, height = 400 }: Props)
         value={value}
         onChange={(val) => onChange(val || "")}
         height={height}
-        preview="live"
+        preview={isMobile ? "edit" : "live"}
         previewOptions={{
           components: {
             img: ({ alt, ...props }: React.ImgHTMLAttributes<HTMLImageElement>) => {
@@ -56,4 +62,3 @@ export default function MarkdownEditor({ value, onChange, height = 400 }: Props)
     </div>
   );
 }
-

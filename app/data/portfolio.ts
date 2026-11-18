@@ -88,7 +88,7 @@ export const projects: Project[] = [
         description: "A high-performance design system and web development agency delivering cutting-edge digital experiences.",
         metaDescription: "Case study: a design system and agency platform blending Framer Motion, GSAP and Three.js into interactive, app-like web experiences.",
         longDescription: "Softivra is a web development agency and design system that fuses high-performance engineering with intuitive user experience (UX) to build websites that function more like software applications than traditional document repositories. It represents the evolution of websites beyond simple text and images into highly interactive digital platforms. Softivra specializes in creating digital properties — virtual spaces on the internet where content, information, services, and applications are hosted and made accessible globally. The platform covers the full spectrum of web development including informational sites, e-commerce solutions, portfolio/brand showcases, web applications, and community/social platforms. Every project is built on a foundation of robust domain management, reliable web hosting, and dynamic web pages that adapt to user interaction, time of day, and real-time data.",
-        image: "/portfolio/softivra.png",
+        image: "/og-image.png",
         client: "Softivra",
         year: "2025",
         url: "https://softivra.vercel.app",

@@ -762,6 +762,726 @@ export const serviceContent: Record<string, ServiceContent> = {
       },
     ],
   },
+  "custom-software": {
+    deliverables: [
+      "Production deployment on your own cloud provider with complete CI/CD automation",
+      "Clean, modular domain architecture with typed schemas and complete source code ownership",
+      "Role-based access control (RBAC) and security policy configuration",
+      "Interactive API documentation and comprehensive database migration files",
+      "Automated unit and integration test suites covering critical business paths",
+      "Handover sessions with technical documentation and architecture blueprints",
+    ],
+    process: [
+      {
+        title: "Domain modelling & workflow discovery",
+        description:
+          "We map out your business logic, system boundaries, and data dependencies before writing application code. Clear domain boundaries prevent costly architecture rewrites later.",
+      },
+      {
+        title: "Iterative sprint delivery & working prototypes",
+        description:
+          "We ship testable, clickable software increments every two weeks, giving you immediate visibility into progress and letting you refine requirements while changes are straightforward.",
+      },
+      {
+        title: "Rigorous automated testing & security audits",
+        description:
+          "Every PR undergoes automated linting, type validation, regression testing, and dependency scanning to ensure stability and zero vulnerabilities.",
+      },
+      {
+        title: "Cloud rollout & operational handover",
+        description:
+          "We deploy directly into your cloud accounts, wire up monitoring and automated alerts, and train your engineering or operations team on system maintenance.",
+      },
+    ],
+    idealFor: [
+      "Organizations with proprietary workflows that off-the-shelf software cannot accommodate",
+      "Companies paying steep per-user SaaS licenses seeking an owned software asset",
+      "Teams consolidating multiple fragmented internal tools into a unified portal",
+      "Fast-scaling businesses outgrowing manual spreadsheets and basic no-code tools",
+    ],
+    timeline: "Core business applications 8-16 weeks, complex enterprise platforms 16-24 weeks",
+    support: "60 days warranty post-launch with ongoing monthly SLA support options",
+    stackRationale: [
+      {
+        tech: "Next.js & TypeScript",
+        reason:
+          "End-to-end type safety between frontend interfaces and server actions prevents runtime crashes and ensures code maintainability.",
+      },
+      {
+        tech: "Node.js / Python / Go",
+        reason:
+          "Provides battle-tested performance and rich package ecosystems for business automation, microservices, and high-throughput data processing.",
+      },
+      {
+        tech: "PostgreSQL",
+        reason:
+          "ACID compliance and relational integrity guarantee zero data corruption for critical operational and financial transactions.",
+      },
+      {
+        tech: "Docker & AWS",
+        reason:
+          "Containerization guarantees consistency across local development, staging, and production environments with effortless cloud autoscaling.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Who owns the code and intellectual property?",
+        answer:
+          "You do. 100% of the code, repositories, infrastructure configurations, and credentials belong to your company from day one.",
+      },
+      {
+        question: "Can the software connect with our existing tools?",
+        answer:
+          "Yes. We engineer secure REST, GraphQL, or webhook integrations with your existing CRMs, accounting systems, ERPs, and cloud storage.",
+      },
+      {
+        question: "What happens if our requirements evolve midway?",
+        answer:
+          "We review backlogs at the start of each two-week sprint. You can reprioritize features freely within sprint boundaries, ensuring the final build fits current business realities.",
+      },
+    ],
+  },
+  "enterprise-software": {
+    deliverables: [
+      "Enterprise-grade distributed system deployed with multi-region redundancy and high availability",
+      "SOC2, HIPAA, or GDPR compliance audit documentation and encryption key management",
+      "Bidirectional integrations with SAP, Oracle, Salesforce, or existing legacy mainframes",
+      "Comprehensive automated test suites including end-to-end, regression, and load testing",
+      "Centralized logging, distributed tracing, and real-time observability telemetry",
+      "Full disaster recovery runbooks and technical training for enterprise sysadmins",
+    ],
+    process: [
+      {
+        title: "Enterprise compliance & architecture review",
+        description:
+          "We assess your security frameworks, data residency requirements, and legacy integration points to create a zero-downtime architecture plan.",
+      },
+      {
+        title: "Modular microservices & event streaming build",
+        description:
+          "We construct decoupled services communicating via message brokers (Kafka/RabbitMQ) to ensure isolated failures never cascade to core systems.",
+      },
+      {
+        title: "Stress testing & penetration audits",
+        description:
+          "We simulate massive transaction spikes with distributed load testing tools and perform penetration testing before production sign-off.",
+      },
+      {
+        title: "Blue-green deployment & SLA handover",
+        description:
+          "We execute zero-downtime blue-green deployments, verify real-time telemetry, and transition operational runbooks to your IT leadership.",
+      },
+    ],
+    idealFor: [
+      "Enterprises managing high-concurrency transactional volume with strict SLA tolerances",
+      "Regulated companies requiring verifiable SOC2, HIPAA, or ISO 27001 data compliance",
+      "Large organizations needing unified workflows across disparate ERP and CRM silos",
+      "Institutions modernizing legacy core business platforms without risking outages",
+    ],
+    timeline: "12-24 weeks depending on security, compliance, and legacy integration depth",
+    support: "90 days warranty with enterprise 24/7 on-call SLA options",
+    stackRationale: [
+      {
+        tech: "Java / Go",
+        reason:
+          "Offers exceptional throughput, predictable memory usage, and robust multi-threading for compute-heavy enterprise backends.",
+      },
+      {
+        tech: "Apache Kafka",
+        reason:
+          "Provides immutable, high-throughput distributed event streaming for reliable cross-service data propagation.",
+      },
+      {
+        tech: "Kubernetes",
+        reason:
+          "Standardizes container orchestration, automated self-healing, rolling updates, and elastic horizontal pod scaling.",
+      },
+      {
+        tech: "Terraform",
+        reason:
+          "Infrastructure as Code (IaC) ensures repeatable, auditable cloud provisioning across staging, DR, and production regions.",
+      },
+    ],
+    faqs: [
+      {
+        question: "How do you guarantee high availability and zero downtime?",
+        answer:
+          "We deploy multi-availability-zone architectures with automated health checks, blue-green deployment pipelines, and database read-replicas.",
+      },
+      {
+        question: "Can you sign NDAs and enterprise vendor agreements?",
+        answer:
+          "Yes. We routinely work under enterprise MSAs, mutual NDAs, and vendor compliance frameworks.",
+      },
+    ],
+  },
+  "api-backend": {
+    deliverables: [
+      "Production-ready REST and/or GraphQL API gateway with OpenAPI/Swagger specifications",
+      "Modular microservices architecture with asynchronous message queuing and caching",
+      "Granular authentication using JWT, OAuth2, and scoped API key management",
+      "Rate limiting, request throttling, and DDoS mitigation policies configured at edge",
+      "Automated contract testing and integration test suites wired into CI/CD",
+      "Distributed tracing, centralized log aggregation, and real-time uptime monitoring",
+    ],
+    process: [
+      {
+        title: "API contract & data modelling",
+        description:
+          "We design clear, typed API schemas and endpoint contracts before implementation, ensuring web and mobile clients can develop in parallel.",
+      },
+      {
+        title: "High-throughput service implementation",
+        description:
+          "We build stateless backend services with optimized database query execution, connection pooling, and multi-tier Redis caching.",
+      },
+      {
+        title: "Load testing & concurrency benchmarking",
+        description:
+          "We benchmark endpoints under simulated production concurrency with k6, tuning bottlenecks to achieve sub-50ms response times.",
+      },
+      {
+        title: "Production rollout & documentation delivery",
+        description:
+          "We launch the API behind a secure reverse proxy or cloud gateway, providing complete developer documentation and SDK examples.",
+      },
+    ],
+    idealFor: [
+      "Companies powering multiple frontend clients (web, iOS, Android, IoT) from a single core",
+      "SaaS businesses opening developer APIs or partner integration ecosystems",
+      "Applications experiencing database bottlenecks under heavy concurrent request volumes",
+      "Teams decoupling monolithic backends into agile, maintainable microservices",
+    ],
+    timeline: "4-8 weeks for focused microservices or API gateways, 8-14 weeks for complex backends",
+    support: "30 days warranty with optional 24/7 monitoring and response agreements",
+    stackRationale: [
+      {
+        tech: "Node.js & Go",
+        reason:
+          "Node provides incredible ecosystem speed for REST/GraphQL endpoints; Go provides raw concurrent throughput for performance-critical microservices.",
+      },
+      {
+        tech: "Redis",
+        reason:
+          "Sub-millisecond in-memory caching and distributed locking dramatically lower database load and accelerate response times.",
+      },
+      {
+        tech: "PostgreSQL & Prisma",
+        reason:
+          "Combines the robustness of relational databases with type-safe query generation and automated migration management.",
+      },
+      {
+        tech: "Docker & AWS ECS",
+        reason:
+          "Lightweight containerization allows instant horizontal scaling as request traffic surges.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Do you supply documentation for frontend or third-party developers?",
+        answer:
+          "Yes. Every API includes an interactive Swagger / OpenAPI portal and typed TypeScript client definitions for seamless consumption.",
+      },
+      {
+        question: "How do you secure endpoints against abuse?",
+        answer:
+          "We enforce rate limiting, IP throttling, strict CORS headers, JWT expiration validation, and input sanitization on all exposed endpoints.",
+      },
+    ],
+  },
+  "crm-erp-solutions": {
+    deliverables: [
+      "Custom web-based CRM/ERP platform tailored to your organization's exact workflows",
+      "Lead management, sales pipeline, and customer lifecycle tracking dashboards",
+      "Inventory management, order processing, and supplier tracking modules",
+      "Automated PDF invoicing, payment processing, and recurring subscription billing",
+      "Role-based permission hierarchy safeguarding confidential payroll and customer records",
+      "Data migration scripts and historical data import from spreadsheets and legacy tools",
+    ],
+    process: [
+      {
+        title: "Operational workflow audit",
+        description:
+          "We analyze how your sales, inventory, and operations teams currently communicate, identifying friction points, duplicates, and manual data-entry bottlenecks.",
+      },
+      {
+        title: "Unified database architecture",
+        description:
+          "We model an integrated schema that ties customers, deals, products, inventory, and invoices into a single synchronized relational core.",
+      },
+      {
+        title: "Module-by-module agile rollout",
+        description:
+          "We deploy core modules (e.g. Sales CRM first, followed by Inventory and Invoicing) allowing your staff to adapt smoothly without operational overwhelm.",
+      },
+      {
+        title: "Staff training & legacy decommissioning",
+        description:
+          "We import your historical data, train department leaders with recorded video sessions, and safely sunset legacy spreadsheets.",
+      },
+    ],
+    idealFor: [
+      "Companies constrained by inflexible off-the-shelf software or paying exorbitant per-seat fees",
+      "Growing businesses drowning in disconnected spreadsheets across multiple offices",
+      "Wholesale, manufacturing, and distribution businesses requiring bespoke inventory rules",
+      "Service firms needing combined customer tracking, project delivery, and billing",
+    ],
+    timeline: "8-16 weeks for targeted CRM or ERP modules, 16-24 weeks for full-suite platforms",
+    support: "60 days warranty with ongoing workflow enhancements and staff support",
+    stackRationale: [
+      {
+        tech: "Next.js & React",
+        reason:
+          "Delivers fast, responsive web dashboards that staff can access on desktop, tablet, or mobile in the field.",
+      },
+      {
+        tech: "PostgreSQL",
+        reason:
+          "Enforces strict relational constraints and audit logs essential for accounting, stock balance, and order histories.",
+      },
+      {
+        tech: "Tailwind CSS",
+        reason:
+          "Enables highly legible, dense data tables, interactive kanban boards, and status indicators without UI bloat.",
+      },
+      {
+        tech: "Stripe / Plaid",
+        reason:
+          "Automates client payments, ACH direct debits, and invoice reconciliation securely.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Can we migrate our historical data without downtime?",
+        answer:
+          "Yes. We run test migration dry runs against staging databases, validate record integrity with your team, and perform the final migration off-hours.",
+      },
+      {
+        question: "Can field staff access the CRM on mobile devices?",
+        answer:
+          "Yes. The interface is fully responsive, optimized for smartphones and tablets with touch-friendly controls.",
+      },
+    ],
+  },
+  "software-modernization": {
+    deliverables: [
+      "Modern, cloud-native codebase refactored from legacy frameworks into modern TypeScript/Next.js/Node",
+      "Zero-downtime strangler-fig migration architecture isolating legacy risk",
+      "Comprehensive automated regression test suite safeguarding core domain logic",
+      "Containerized deployment pipelines (Docker, Kubernetes) on modern cloud infrastructure",
+      "Modernized database schemas with automated migration tracking and clean indexes",
+      "Developer onboarding documentation and architectural transition guides",
+    ],
+    process: [
+      {
+        title: "Legacy codebase audit & risk mapping",
+        description:
+          "We inspect your existing repository, database schemas, and external dependencies to pinpoint technical debt, security gaps, and decoupleable modules.",
+      },
+      {
+        title: "Strangler-fig proxy implementation",
+        description:
+          "We place a modern API gateway in front of your legacy system, allowing new features to be built on modern stacks while legacy endpoints run undisturbed.",
+      },
+      {
+        title: "Incremental module extraction",
+        description:
+          "We peel off legacy modules one by one into clean, well-tested services, verifying output equivalence using shadow traffic before switching live routes.",
+      },
+      {
+        title: "Final cutover & legacy decommissioning",
+        description:
+          "Once all modules are modernized, we decommission legacy servers, eliminating outdated hosting expenses and licensing liabilities.",
+      },
+    ],
+    idealFor: [
+      "Businesses running critical software on deprecated frameworks (PHP 5/7, AngularJS, ASP.NET WebForms)",
+      "Teams where making small changes in a monolithic codebase causes frequent production regressions",
+      "Companies struggling to hire or retain developers willing to work on obsolete technology stacks",
+      "Organizations paying excessive hosting and maintenance costs on aging dedicated servers",
+    ],
+    timeline: "Incremental milestones every 4 weeks; full project duration 12-24 weeks",
+    support: "60 days warranty per milestone with ongoing post-migration optimization",
+    stackRationale: [
+      {
+        tech: "TypeScript & Next.js",
+        reason:
+          "Modernizes UI rendering, boosts performance, and equips your team with the industry's most popular, hireable stack.",
+      },
+      {
+        tech: "Docker & Kubernetes",
+        reason:
+          "Eliminates 'works on my machine' configuration bugs and enables instant rollbacks and painless cloud migrations.",
+      },
+      {
+        tech: "PostgreSQL",
+        reason:
+          "Modern relational features (JSONB, logical replication) provide a clean target for migrating off legacy databases.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Is a complete rewrite better than incremental modernization?",
+        answer:
+          "Complete rewrites fail over 70% of the time because business rules accumulated over years are forgotten. Incremental modernization proves value every 2-4 weeks with near-zero operational risk.",
+      },
+      {
+        question: "How do you ensure zero data loss during database migrations?",
+        answer:
+          "We use dual-write and logical replication techniques, allowing both legacy and modern databases to stay synchronized until the cutover is validated.",
+      },
+    ],
+  },
+  "database-design": {
+    deliverables: [
+      "Production-ready normalized relational schema (PostgreSQL/MySQL) or document model (MongoDB)",
+      "Optimized index architectures, foreign key constraints, and integrity triggers",
+      "Query performance tuning report with EXPLAIN analysis and benchmark metrics",
+      "Automated migration scripts using modern schema management tools (Prisma, Flyway)",
+      "Disaster recovery, automated point-in-time backup, and replication topology configuration",
+      "Comprehensive data dictionary and entity-relationship diagrams (ERDs)",
+    ],
+    process: [
+      {
+        title: "Data modelling & entity mapping",
+        description:
+          "We analyze your transactional use cases, access patterns, and query frequencies to design normalized, efficient schemas that prevent anomalies.",
+      },
+      {
+        title: "Index strategy & constraint hardening",
+        description:
+          "We configure composite indexes, partial indexes, and unique constraints to guarantee lightning-fast lookups without bloating write costs.",
+      },
+      {
+        title: "Benchmarking & stress testing",
+        description:
+          "We run synthetic load tests simulating millions of records and concurrent connections, fine-tuning memory buffers, connection pools, and query plans.",
+      },
+      {
+        title: "High-availability deployment & replication",
+        description:
+          "We deploy the database across multi-AZ configurations with automated read-replicas, failover automation, and encrypted backups.",
+      },
+    ],
+    idealFor: [
+      "Applications experiencing slow page loads, query timeouts, and database CPU spikes",
+      "New software ventures requiring an architecture built right from the ground up",
+      "Companies preparing for massive user growth, seasonal traffic surges, or enterprise clients",
+      "Teams needing to migrate safely from unstructured no-code databases to robust SQL",
+    ],
+    timeline: "2-4 weeks for new schema architecture; 4-8 weeks for complex database refactoring and tuning",
+    support: "30 days post-deployment performance monitoring and query review warranty",
+    stackRationale: [
+      {
+        tech: "PostgreSQL",
+        reason:
+          "The gold standard for transactional data integrity, rich indexing (GIN, GiST, BRIN), and native JSONB flexibility.",
+      },
+      {
+        tech: "Redis",
+        reason:
+          "In-memory caching layer that eliminates redundant database roundtrips for hot keys and session states.",
+      },
+      {
+        tech: "Prisma",
+        reason:
+          "Provides end-to-end type safety, automated migration histories, and eliminates SQL injection vulnerabilities.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Can you fix query bottlenecks without rewriting our entire application?",
+        answer:
+          "Yes. In most cases, adding strategic composite indexes, connection pooling, and caching resolves 80%+ of database latency without code changes.",
+      },
+      {
+        question: "How do you handle zero-downtime schema migrations?",
+        answer:
+          "We employ expand-and-contract migration patterns, adding nullable columns or views first so older code continues operating smoothly during deploys.",
+      },
+    ],
+  },
+  "third-party-api-integration": {
+    deliverables: [
+      "Robust API connectors with automated authentication, token refresh, and rate-limit governance",
+      "Resilient webhook ingestion pipeline with cryptographic signature verification",
+      "Idempotency controls, retry mechanisms, and dead-letter queues for failed events",
+      "Data transformation and normalization middleware bridging external and internal schemas",
+      "Interactive integration health dashboard with real-time delivery telemetry and error logs",
+      "Comprehensive developer documentation and integration testing suites",
+    ],
+    process: [
+      {
+        title: "Integration mapping & API discovery",
+        description:
+          "We review the third-party API specifications, rate limits, webhook guarantees, and error formats, designing reliable contract boundaries.",
+      },
+      {
+        title: "Queue-backed connector development",
+        description:
+          "We build asynchronous workers that buffer incoming events and outgoing requests through durable queues (BullMQ/SQS), preventing data loss.",
+      },
+      {
+        title: "Edge-case & failure simulation",
+        description:
+          "We rigorously test edge cases: third-party downtime, rate-limiting HTTP 429s, duplicate webhook payloads, and malformed responses.",
+      },
+      {
+        title: "Live cutover & monitoring setup",
+        description:
+          "We configure production webhook endpoints, verify cryptographic signatures, and set up automated alerting for any integration anomalies.",
+      },
+    ],
+    idealFor: [
+      "Products needing seamless payments, payouts, and subscriptions via Stripe or PayPal",
+      "Companies integrating customer activity directly into Salesforce, HubSpot, or Klaviyo",
+      "Logistics and e-commerce platforms connecting with carriers, ERPs, and inventory feeds",
+      "SaaS applications offering bi-directional syncing with third-party productivity tools",
+    ],
+    timeline: "2-4 weeks for standard SaaS APIs (Stripe, HubSpot), 4-8 weeks for custom enterprise feeds",
+    support: "30 days warranty with ongoing integration maintenance and API version update options",
+    stackRationale: [
+      {
+        tech: "Node.js & TypeScript",
+        reason:
+          "Non-blocking event-driven architecture handles high-volume webhook streams effortlessly with full type safety.",
+      },
+      {
+        tech: "Redis & BullMQ",
+        reason:
+          "Provides battle-tested persistent queuing, exponential backoff retries, and job deduplication.",
+      },
+      {
+        tech: "PostgreSQL",
+        reason:
+          "Stores idempotent transaction logs and webhook delivery receipts for auditable reconciliation.",
+      },
+    ],
+    faqs: [
+      {
+        question: "What happens if a third-party API is temporarily down?",
+        answer:
+          "Our queue automatically schedules retries using exponential backoff with jitter. If failures persist, jobs enter a dead-letter queue with alerts, ensuring zero lost data.",
+      },
+      {
+        question: "How do you prevent duplicate charges or double records?",
+        answer:
+          "We enforce idempotency keys on every transaction and store incoming event IDs, rejecting duplicate payloads before processing business logic.",
+      },
+    ],
+  },
+  "mvp-development": {
+    deliverables: [
+      "Full-stack, production-grade Minimum Viable Product deployed on scalable cloud infrastructure",
+      "Essential core feature set prioritized for high user engagement and problem validation",
+      "Secure user authentication (social logins, magic links, or passwordless) and profiles",
+      "Payment processing and subscription monetization integration (Stripe / LemonSqueezy)",
+      "Embedded product analytics (PostHog / Mixpanel) tracking conversion funnels and user actions",
+      "Clean, well-documented repository ready for handoff or rapid feature expansion",
+    ],
+    process: [
+      {
+        title: "Scope ruthless prioritization",
+        description:
+          "We trim unnecessary features to isolate the single core value proposition that solves your target customer's pain point.",
+      },
+      {
+        title: "Rapid wireframing & clickable prototype",
+        description:
+          "We create interactive Figma prototypes within days, ensuring UX clarity before writing any production code.",
+      },
+      {
+        title: "Full-stack agile build sprints",
+        description:
+          "We build the application in fast 1-week sprints using modern full-stack frameworks, delivering working demo builds weekly.",
+      },
+      {
+        title: "Production launch & analytics telemetry",
+        description:
+          "We launch your MVP on production domains, configure SSL, SEO, and analytics, and ensure you are ready to onboard real paying customers.",
+      },
+    ],
+    idealFor: [
+      "Startup founders validating an innovative concept before raising external funding",
+      "Established companies launching new digital business units or experimental products",
+      "Businesses needing a working production platform to pitch angel investors and VCs",
+      "Entrepreneurs looking to test market demand with minimal financial risk",
+    ],
+    timeline: "4-8 weeks from kickoff to live production launch",
+    support: "30 days post-launch warranty with immediate post-MVP scaling roadmap options",
+    stackRationale: [
+      {
+        tech: "Next.js & React",
+        reason:
+          "Allows building frontend and backend in one unified, ultra-fast framework, cutting development time nearly in half.",
+      },
+      {
+        tech: "Supabase / PostgreSQL",
+        reason:
+          "Provides instant auth, database, and storage out of the box without locking you into proprietary architectures.",
+      },
+      {
+        tech: "Tailwind CSS",
+        reason:
+          "Accelerates UI development and delivers clean, modern aesthetics without bloat.",
+      },
+      {
+        tech: "Stripe",
+        reason:
+          "Enables immediate payment collection and subscription billing from day one.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Is this MVP disposable or can we scale it?",
+        answer:
+          "We never build disposable prototypes. We use standard production architecture (Next.js, TypeScript, PostgreSQL) so you can seamlessly build on it for years.",
+      },
+      {
+        question: "What is required from me during the build?",
+        answer:
+          "A 45-minute sprint review call each week to test the latest build, give feedback, and confirm priorities for the next sprint.",
+      },
+    ],
+  },
+  "qa-testing": {
+    deliverables: [
+      "Automated end-to-end regression test suite (Playwright / Cypress) covering critical user journeys",
+      "CI/CD integration running automated test gates on every commit and pull request",
+      "Load and stress testing scripts (k6) with performance bottleneck diagnostics",
+      "Cross-browser and cross-device visual testing matrix report",
+      "API contract validation test suite with schema validation",
+      "Security audit report highlighting dependency vulnerabilities and OWASP checks",
+    ],
+    process: [
+      {
+        title: "Test strategy & critical path mapping",
+        description:
+          "We identify your highest-risk revenue flows (checkout, authentication, onboarding) to prioritize test automation for maximum ROI.",
+      },
+      {
+        title: "Automated test suite authoring",
+        description:
+          "We write clean, resilient Page Object Model tests using Playwright or Cypress that run fast and do not suffer from flakiness.",
+      },
+      {
+        title: "CI/CD pipeline integration",
+        description:
+          "We wire the test suite into GitHub Actions, GitLab CI, or your deployment pipeline, automatically blocking broken PRs from merging.",
+      },
+      {
+        title: "Load benchmarking & reporting",
+        description:
+          "We run simulated peak-traffic stress tests, document response degradation points, and deliver a clear remediation roadmap.",
+      },
+    ],
+    idealFor: [
+      "Fast-moving engineering teams tired of manual regression testing before each release",
+      "Applications experiencing frequent user-reported bugs and regressions in production",
+      "E-commerce or fintech platforms preparing for major promotional sales or traffic spikes",
+      "Companies undergoing compliance audits or client vendor security reviews",
+    ],
+    timeline: "2-4 weeks for core automated regression suite; 4-6 weeks for full end-to-end and load testing",
+    support: "30 days warranty with options for ongoing automated test maintenance",
+    stackRationale: [
+      {
+        tech: "Playwright",
+        reason:
+          "The fastest, most reliable headless browser automation tool with native support for Chromium, WebKit, and Firefox.",
+      },
+      {
+        tech: "k6",
+        reason:
+          "Developer-centric load testing written in JavaScript, generating tens of thousands of concurrent virtual users.",
+      },
+      {
+        tech: "GitHub Actions",
+        reason:
+          "Runs tests automatically on every pull request with visual diff artifacts and test run videos.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Can you automate tests for our existing live application?",
+        answer:
+          "Yes. End-to-end tests run from the outside like real users in real browsers, so we can build a complete test suite without touching your source code.",
+      },
+      {
+        question: "How do you avoid flaky tests that fail randomly?",
+        answer:
+          "We enforce auto-waiting locators, deterministic test data seeding, and test isolation, eliminating arbitrary sleep timers that cause flakiness.",
+      },
+    ],
+  },
+  "software-maintenance": {
+    deliverables: [
+      "24/7 automated uptime, health, and error telemetry with real-time alerting",
+      "Guaranteed response-time SLA for critical production incidents",
+      "Monthly security patch updates, library dependency upgrades, and vulnerability remediation",
+      "Continuous database query optimization, log rotation, and cloud cost management",
+      "Dedicated monthly engineering hours for feature enhancements, bug fixes, and UI polish",
+      "Comprehensive monthly operational reports detailing uptime, performance, and completed tasks",
+    ],
+    process: [
+      {
+        title: "System onboarding & security audit",
+        description:
+          "We review your repository, server architecture, dependencies, and environment configurations, resolving immediate security vulnerabilities.",
+      },
+      {
+        title: "Observability & alert wiring",
+        description:
+          "We install telemetry probes (Datadog, Sentry, CloudWatch) with thresholds routed to on-call engineering alerts.",
+      },
+      {
+        title: "Proactive monthly maintenance cycles",
+        description:
+          "We update dependencies, patch OS and runtime security vulnerabilities, tune database indexes, and trim unused cloud resources.",
+      },
+      {
+        title: "Sprint feature delivery & reporting",
+        description:
+          "We use allocated maintenance hours to implement backlog improvements and deliver a monthly health summary to your leadership.",
+      },
+    ],
+    idealFor: [
+      "Businesses needing dependable technical coverage without hiring full-time internal DevOps/sysadmins",
+      "Companies with live revenue-generating applications that cannot afford downtime",
+      "Founders who outsourced their original build and now need ongoing technical stewardship",
+      "Organizations seeking predictable monthly software maintenance expenses",
+    ],
+    timeline: "Immediate onboarding within 48-72 hours; ongoing monthly engagement",
+    support: "Continuous monthly SLA with 15–30 minute emergency response times",
+    stackRationale: [
+      {
+        tech: "Datadog / Sentry",
+        reason:
+          "Provides instant stack-trace error capture and performance anomaly detection before users report issues.",
+      },
+      {
+        tech: "AWS / Cloudflare",
+        reason:
+          "Provides enterprise-grade CDN caching, DDoS mitigation, and SSL certificate management.",
+      },
+      {
+        tech: "Docker & GitHub Actions",
+        reason:
+          "Automates safe staging deployments and zero-downtime production releases.",
+      },
+    ],
+    faqs: [
+      {
+        question: "What if a critical bug happens on a weekend or holiday?",
+        answer:
+          "Our on-call engineering team monitors high-severity alerts 24/7/365 with guaranteed response times under our support agreements.",
+      },
+      {
+        question: "Can unused monthly maintenance hours roll over?",
+        answer:
+          "Yes, up to 50% of unused hours can roll over into the following month for larger feature sprints.",
+      },
+    ],
+  },
 };
 
 export function getServiceContent(slug: string): ServiceContent | undefined {

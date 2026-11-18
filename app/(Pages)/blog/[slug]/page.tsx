@@ -10,6 +10,7 @@ import {
   parseDisplayDate,
   resolveLastModified,
 } from "@/app/lib/firestore-content";
+import { getBlogSocialImage } from "@/app/lib/blog-covers";
 
 export const revalidate = 3600;
 
@@ -36,9 +37,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const title = `${post.title} | LayerNLooms Tech Blog`;
   const description = pickMetaDescription(undefined, post.excerpt);
   const url = `${site.url}/blog/${post.slug}`;
-  const image = post.image?.startsWith("http")
-    ? post.image
-    : `${site.url}${post.image || "/og-image.png"}`;
+  const coverImage = getBlogSocialImage(post.slug, post.image);
+  const image = coverImage.startsWith("http")
+    ? coverImage
+    : `${site.url}${coverImage}`;
   const modified = resolveLastModified(post);
 
   return {
@@ -80,6 +82,7 @@ export default async function BlogPostPage({ params }: PageProps) {
   if (!post) notFound();
 
   const modified = resolveLastModified(post);
+  const coverImage = getBlogSocialImage(post.slug, post.image);
 
   const schemas: Record<string, unknown>[] = [
     getBreadcrumbSchema([
@@ -93,17 +96,26 @@ export default async function BlogPostPage({ params }: PageProps) {
       slug: post.slug,
       date: post.date,
       author: post.author,
-      image: post.image,
+      image: coverImage,
       category: post.category,
       tags: post.tags,
       ...(modified ? { dateModified: modified.toISOString().slice(0, 10) } : {}),
     }),
   ];
 
+  const allPosts = await getPublishedPosts();
+  const relatedPosts = allPosts
+    .filter((p) => p.slug !== post.slug && p.category === post.category)
+    .slice(0, 3);
+
   return (
     <>
       <JsonLd data={schemas} />
-      <BlogPostClient slug={post.slug} initialPost={post} />
+      <BlogPostClient
+        slug={post.slug}
+        initialPost={post}
+        initialRelatedPosts={relatedPosts}
+      />
     </>
   );
 }

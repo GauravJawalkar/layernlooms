@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
 
@@ -17,9 +17,23 @@ export default function CustomCursor() {
   const [isHovered, setIsHovered] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
   const [isInput, setIsInput] = useState(false);
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return (
+      'ontouchstart' in window ||
+      navigator.maxTouchPoints > 0 ||
+      window.matchMedia('(pointer: coarse)').matches
+    );
+  });
 
   const [hoveredElement, setHoveredElement] = useState<HTMLElement | null>(null);
+  const hoveredElRef = useRef<HTMLElement | null>(null);
+  const isVisibleRef = useRef(false);
+  const pointerEffectsRef = useRef(pointerEffects);
+  useEffect(() => {
+    pointerEffectsRef.current = pointerEffects;
+  }, [pointerEffects]);
+
   const [elementRect, setElementRect] = useState<{
     x: number;
     y: number;
@@ -43,35 +57,37 @@ export default function CustomCursor() {
   const ringSpringConfig = { stiffness: 250, damping: 30, mass: 0.5 };
   const ringX = useSpring(ringTargetX, ringSpringConfig);
   const ringY = useSpring(ringTargetY, ringSpringConfig);
+  const tailX = useSpring(mouseX, { stiffness: 90, damping: 24, mass: 0.8 });
+  const tailY = useSpring(mouseY, { stiffness: 90, damping: 24, mass: 0.8 });
 
   useEffect(() => {
-    const detectTouch = () => {
-      setIsTouchDevice(
-        'ontouchstart' in window ||
-          navigator.maxTouchPoints > 0 ||
-          window.matchMedia('(pointer: coarse)').matches
-      );
-    };
-    detectTouch();
-
     if (isTouchDevice || !pointerEnabled) return;
 
     const moveMouse = (e: MouseEvent) => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
-      if (!hoveredElement || !pointerEffects) {
+      if (!hoveredElRef.current || !pointerEffectsRef.current) {
         ringTargetX.set(e.clientX);
         ringTargetY.set(e.clientY);
       }
-      if (!isVisible) setIsVisible(true);
+      if (!isVisibleRef.current) {
+        isVisibleRef.current = true;
+        setIsVisible(true);
+      }
     };
 
-    const handleMouseLeave = () => setIsVisible(false);
-    const handleMouseEnter = () => setIsVisible(true);
+    const handleMouseLeave = () => {
+      isVisibleRef.current = false;
+      setIsVisible(false);
+    };
+    const handleMouseEnter = () => {
+      isVisibleRef.current = true;
+      setIsVisible(true);
+    };
 
     const handleMouseDown = (e: MouseEvent) => {
       setIsClicked(true);
-      if (pointerEffects) {
+      if (pointerEffectsRef.current) {
         setRipples((prev) => [...prev, { id: Date.now(), x: e.clientX, y: e.clientY }]);
       }
     };
@@ -92,13 +108,12 @@ export default function CustomCursor() {
       if (clickable) {
         const elem = clickable instanceof Element ? clickable : target;
         const shouldSnap = !elem.closest('.no-snap');
-        if (shouldSnap) {
-          setHoveredElement(elem as HTMLElement);
-        } else {
-          setHoveredElement(null);
-        }
+        const nextHovered = shouldSnap ? (elem as HTMLElement) : null;
+        hoveredElRef.current = nextHovered;
+        setHoveredElement(nextHovered);
         setIsHovered(true);
       } else {
+        hoveredElRef.current = null;
         setHoveredElement(null);
         setIsHovered(false);
       }
@@ -121,7 +136,10 @@ export default function CustomCursor() {
       setIsInput(!!isInputField);
     };
 
-    window.addEventListener('mousemove', moveMouse);
+    const handleTouchStart = () => setIsTouchDevice(true);
+
+    window.addEventListener('mousemove', moveMouse, { passive: true });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true, once: true });
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('mouseenter', handleMouseEnter);
     window.addEventListener('mousedown', handleMouseDown);
@@ -130,13 +148,14 @@ export default function CustomCursor() {
 
     return () => {
       window.removeEventListener('mousemove', moveMouse);
+      window.removeEventListener('touchstart', handleTouchStart);
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('mouseenter', handleMouseEnter);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);
       document.removeEventListener('mouseover', handleMouseOver);
     };
-  }, [pointerEnabled, isTouchDevice, isVisible, mouseX, mouseY, hoveredElement, pointerEffects, ringTargetX, ringTargetY]);
+  }, [pointerEnabled, isTouchDevice, mouseX, mouseY, ringTargetX, ringTargetY]);
 
   // Handle position snapping calculations on scroll, resize, or intervals
   useEffect(() => {
@@ -495,6 +514,237 @@ export default function CustomCursor() {
                 opacity: showCursor ? 1 : 0,
                 scale: isClicked ? 0.5 : 1,
                 transition: 'opacity 0.2s ease',
+              }}
+            />
+          </>
+        );
+
+      case 'minimal':
+        return (
+          <>
+            <motion.div
+              className="absolute left-0 top-0 z-[99999] -translate-x-1/2 -translate-y-1/2 rounded-full border pointer-events-none"
+              animate={{
+                width: isHovered ? 20 : 14,
+                height: isHovered ? 20 : 14,
+                borderRadius: '9999px',
+              }}
+              transition={{ type: 'spring', stiffness: 400, damping: 28 }}
+              style={{
+                x: ringX,
+                y: ringY,
+                borderColor: 'var(--cursor-color)',
+                opacity: showCursor ? 0.7 : 0,
+              }}
+            />
+            <motion.div
+              className="absolute left-0 top-0 z-[99999] -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none"
+              style={{
+                x: dotX,
+                y: dotY,
+                width: 5,
+                height: 5,
+                backgroundColor: 'var(--cursor-color)',
+                opacity: showCursor ? 1 : 0,
+              }}
+            />
+          </>
+        );
+
+      case 'trail':
+        return (
+          <>
+            <motion.div
+              className="absolute left-0 top-0 z-[99998] -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none blur-[2px]"
+              style={{
+                x: tailX,
+                y: tailY,
+                width: 12,
+                height: 12,
+                backgroundColor: 'var(--cursor-color)',
+                opacity: showCursor ? 0.2 : 0,
+              }}
+            />
+            <motion.div
+              className="absolute left-0 top-0 z-[99999] -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none"
+              style={{
+                x: ringX,
+                y: ringY,
+                width: 7,
+                height: 7,
+                backgroundColor: 'var(--cursor-color)',
+                opacity: showCursor ? 0.5 : 0,
+              }}
+            />
+            <motion.div
+              className="absolute left-0 top-0 z-[99999] -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none"
+              style={{
+                x: dotX,
+                y: dotY,
+                width: 5,
+                height: 5,
+                backgroundColor: 'var(--cursor-color)',
+                opacity: showCursor ? 1 : 0,
+              }}
+            />
+          </>
+        );
+
+      case 'spotlight':
+        return (
+          <>
+            <motion.div
+              className="absolute left-0 top-0 z-[99998] -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none blur-md"
+              animate={{
+                width: isHovered ? 58 : 42,
+                height: isHovered ? 58 : 42,
+              }}
+              transition={{ type: 'spring', stiffness: 220, damping: 24 }}
+              style={{
+                x: ringX,
+                y: ringY,
+                backgroundColor: 'var(--cursor-glow-color)',
+                opacity: showCursor ? 0.9 : 0,
+              }}
+            />
+            <motion.div
+              className="absolute left-0 top-0 z-[99999] -translate-x-1/2 -translate-y-1/2 rounded-full border pointer-events-none"
+              animate={{
+                width: isHovered ? 38 : 28,
+                height: isHovered ? 38 : 28,
+              }}
+              transition={{ type: 'spring', stiffness: 260, damping: 25 }}
+              style={{
+                x: ringX,
+                y: ringY,
+                borderColor: 'var(--cursor-color)',
+                opacity: showCursor ? 0.55 : 0,
+              }}
+            />
+            <motion.div
+              className="absolute left-0 top-0 z-[99999] -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none"
+              style={{
+                x: dotX,
+                y: dotY,
+                width: 4,
+                height: 4,
+                backgroundColor: 'var(--cursor-color)',
+                opacity: showCursor ? 1 : 0,
+              }}
+            />
+          </>
+        );
+
+      case 'comet':
+        return (
+          <>
+            <motion.div
+              className="absolute left-0 top-0 z-[99998] -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none blur-[3px]"
+              animate={{ width: isHovered ? 30 : 22, height: isHovered ? 9 : 6 }}
+              transition={{ type: 'spring', stiffness: 220, damping: 24 }}
+              style={{
+                x: tailX,
+                y: tailY,
+                backgroundColor: 'var(--cursor-color)',
+                opacity: showCursor ? 0.3 : 0,
+              }}
+            />
+            <motion.div
+              className="absolute left-0 top-0 z-[99999] -translate-x-1/2 -translate-y-1/2 rounded-full border pointer-events-none"
+              style={{
+                x: ringX,
+                y: ringY,
+                width: 13,
+                height: 13,
+                borderColor: 'var(--cursor-color)',
+                opacity: showCursor ? 0.55 : 0,
+              }}
+            />
+            <motion.div
+              className="absolute left-0 top-0 z-[99999] -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none"
+              style={{
+                x: dotX,
+                y: dotY,
+                width: 6,
+                height: 6,
+                backgroundColor: 'var(--cursor-color)',
+                boxShadow: '0 0 12px var(--cursor-color)',
+                opacity: showCursor ? 1 : 0,
+                scale: isClicked ? 0.6 : 1,
+              }}
+            />
+          </>
+        );
+
+      case 'pulse':
+        return (
+          <>
+            {[0, 1].map((wave) => (
+              <motion.div
+                key={wave}
+                className="absolute left-0 top-0 z-[99998] -translate-x-1/2 -translate-y-1/2 rounded-full border pointer-events-none"
+                animate={{
+                  scale: showCursor ? [0.45, 1.8] : 0.45,
+                  opacity: showCursor ? [0.55, 0] : 0,
+                }}
+                transition={{
+                  duration: 1.5,
+                  delay: wave * 0.75,
+                  repeat: showCursor ? Infinity : 0,
+                  ease: 'easeOut',
+                }}
+                style={{
+                  x: ringX,
+                  y: ringY,
+                  width: isHovered ? 32 : 24,
+                  height: isHovered ? 32 : 24,
+                  borderColor: 'var(--cursor-color)',
+                }}
+              />
+            ))}
+            <motion.div
+              className="absolute left-0 top-0 z-[99999] -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none"
+              style={{
+                x: dotX,
+                y: dotY,
+                width: 5,
+                height: 5,
+                backgroundColor: 'var(--cursor-color)',
+                opacity: showCursor ? 1 : 0,
+              }}
+            />
+          </>
+        );
+
+      case 'diamond':
+        return (
+          <>
+            <motion.div
+              className="absolute left-0 top-0 z-[99999] -translate-x-1/2 -translate-y-1/2 border pointer-events-none"
+              animate={{
+                width: isHovered ? 25 : 18,
+                height: isHovered ? 25 : 18,
+                rotate: isHovered ? 135 : 45,
+                scale: isClicked ? 0.8 : 1,
+              }}
+              transition={{ type: 'spring', stiffness: 280, damping: 22 }}
+              style={{
+                x: ringX,
+                y: ringY,
+                borderColor: 'var(--cursor-color)',
+                borderRadius: 3,
+                opacity: showCursor ? 0.75 : 0,
+              }}
+            />
+            <motion.div
+              className="absolute left-0 top-0 z-[99999] -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none"
+              style={{
+                x: dotX,
+                y: dotY,
+                width: 4,
+                height: 4,
+                backgroundColor: 'var(--cursor-color)',
+                opacity: showCursor ? 1 : 0,
               }}
             />
           </>

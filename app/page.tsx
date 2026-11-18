@@ -9,34 +9,32 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://layernlooms.com" },
 };
 
+const BuildWhatsNext = dynamic(() => import("./components/Home/BuildWhatsNext"));
 const WhyChooseUs = dynamic(() => import("./components/Home/WhyChooseUs"));
+const TheWayWeBuild = dynamic(() => import("./components/Home/TheWayWeBuild"));
 const OurServices = dynamic(() => import("./components/Home/OurServices"));
 const ProcessSection = dynamic(() => import("./components/Home/ProcessSection"));
+const TechnologyCore = dynamic(() => import("./components/Home/TechnologyCore"));
 const TechStackSection = dynamic(() => import("./components/Home/TechStackSection"));
 const FAQSection = dynamic(() => import("./components/Home/FAQSection"));
 const CTASection = dynamic(() => import("./components/Home/CTASection"));
 
 export default function Home() {
   return (
-    <div className="space-y-0">
-      <HeroSection />
-      <div>
-        <WhyChooseUs />
-      </div>
-      <div>
-        <OurServices />
-      </div>
-      <div>
-        <ProcessSection />
-      </div>
-      <div>
-        <TechStackSection />
-      </div>
-      <div>
-        <FAQSection />
-      </div>
-      <CTASection />
-    </div>
+    
+<div className="space-y-0">
+  <HeroSection />
+  <BuildWhatsNext />
+  <OurServices />
+  <WhyChooseUs />
+  <TheWayWeBuild />
+  <ProcessSection />
+  <TechnologyCore />
+  <TechStackSection />
+  <FAQSection />
+  <CTASection />
+</div>
+
   );
 }
 

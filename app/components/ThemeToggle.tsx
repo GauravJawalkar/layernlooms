@@ -1,11 +1,9 @@
 'use client';
 
-import { useSyncExternalStore } from 'react';
+import { useId, useSyncExternalStore } from 'react';
 import { motion } from 'framer-motion';
 import { Monitor, Moon, Sun, type LucideIcon } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
-
-type Theme = 'light' | 'dark' | 'system';
+import { useTheme, type Theme } from '../context/ThemeContext';
 
 const emptySubscribe = () => () => {};
 
@@ -15,29 +13,33 @@ interface ThemeToggleProps {
 }
 
 export default function ThemeToggle({ className = '', variant = 'pill' }: ThemeToggleProps) {
-  const { theme, setTheme, toggleTheme } = useTheme();
+  const { theme, resolvedTheme, setTheme, toggleTheme } = useTheme();
   const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
+  const id = useId();
 
   if (!mounted) {
     return variant === 'toggle' ? (
-      <div className={`w-9 h-9 bg-neutral-100/50 dark:bg-neutral-900/50 rounded-full border border-neutral-200/30 dark:border-neutral-800/30 ${className}`} />
+      <div
+        aria-hidden="true"
+        className={`w-9 h-9 bg-neutral-100/50 dark:bg-neutral-900/50 rounded-full border border-neutral-200/30 dark:border-neutral-800/30 ${className}`}
+      />
     ) : (
-      <div className={`w-[110px] h-[38px] bg-neutral-100/50 dark:bg-neutral-900/50 rounded-full border border-neutral-200/30 dark:border-neutral-800/30 ${className}`} />
+      <div
+        aria-hidden="true"
+        className={`w-[110px] h-[38px] bg-neutral-100/50 dark:bg-neutral-900/50 rounded-full border border-neutral-200/30 dark:border-neutral-800/30 ${className}`}
+      />
     );
   }
 
   if (variant === 'toggle') {
-    const isDark =
-      theme === 'dark' ||
-      (theme === 'system' &&
-        typeof window !== 'undefined' &&
-        window.matchMedia('(prefers-color-scheme: dark)').matches);
+    const isDark = resolvedTheme === 'dark';
 
     return (
       <button
+        type="button"
         onClick={(e) => toggleTheme(e)}
         className={`relative p-2 rounded-full border border-neutral-200/60 dark:border-neutral-800/60 bg-neutral-100/80 dark:bg-neutral-900/80 text-neutral-700 dark:text-neutral-200 hover:text-foreground hover:bg-neutral-200/80 dark:hover:bg-neutral-800 transition-colors shadow-xs cursor-pointer ${className}`}
-        aria-label="Toggle theme mode"
+        aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
       >
         {isDark ? (
           <Sun className="w-4 h-4 text-white" />
@@ -64,6 +66,7 @@ export default function ThemeToggle({ className = '', variant = 'pill' }: ThemeT
         return (
           <button
             key={t.name}
+            type="button"
             onClick={(e) => {
               if (active) {
                 toggleTheme(e);
@@ -77,10 +80,11 @@ export default function ThemeToggle({ className = '', variant = 'pill' }: ThemeT
                 : 'text-neutral-400 dark:text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
             }`}
             aria-label={`Switch to ${t.name} theme`}
+            aria-pressed={active}
           >
             {active && (
               <motion.span
-                layoutId="activeTheme"
+                layoutId={`activeTheme-${id}`}
                 className="absolute inset-0 bg-neutral-200/80 dark:bg-neutral-800 rounded-full -z-0"
                 transition={{ type: 'spring', stiffness: 300, damping: 25 }}
               />

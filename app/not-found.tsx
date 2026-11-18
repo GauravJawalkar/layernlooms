@@ -8,25 +8,25 @@ export default function NotFound() {
     <div className="min-h-[70vh] flex flex-col items-center justify-center relative overflow-hidden px-4">
       {/* Background Decorative Element */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 select-none pointer-events-none">
-        <h1 className="text-[20rem] md:text-[30rem] font-black text-foreground/[0.03] leading-none animate-pulse">
+        <h1 className="text-[9rem] sm:text-[16rem] md:text-[24rem] lg:text-[30rem] font-black text-foreground/[0.03] leading-none animate-pulse">
           404
         </h1>
       </div>
 
       {/* Main Content Card */}
-      <div className="max-w-md w-full text-center space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+      <div className="max-w-md w-full text-center space-y-6 sm:space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
         <div className="relative inline-flex">
             <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full scale-150" />
-            <div className="relative bg-background border border-border p-6 rounded-3xl shadow-2xl">
-                <FiSearch className="w-12 h-12 text-primary animate-bounce" />
+            <div className="relative bg-background border border-border p-5 sm:p-6 rounded-3xl shadow-2xl">
+                <FiSearch className="w-10 h-10 sm:w-12 sm:h-12 text-primary animate-bounce" />
             </div>
         </div>
 
-        <div className="space-y-4">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground tracking-tight">
+        <div className="space-y-3 sm:space-y-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground tracking-tight">
             Lost in Space?
           </h2>
-          <p className="text-lg text-muted-foreground max-w-sm mx-auto">
+          <p className="text-base sm:text-lg text-muted-foreground max-w-sm mx-auto">
             The page you are looking for has vanished or never existed. Let&apos;s get you back on track.
           </p>
         </div>

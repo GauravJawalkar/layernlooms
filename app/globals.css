@@ -252,6 +252,9 @@
   html {
     @apply bg-background text-foreground;
     color-scheme: light;
+    width: 100%;
+    min-width: 0;
+    overflow-x: clip;
   }
 
   html.dark {
@@ -260,7 +263,16 @@
 
   body {
     @apply bg-background text-foreground min-h-screen;
-    overflow-x: hidden;
+    overflow-x: clip;
+    width: 100%;
+    min-width: 0;
+  }
+
+  img,
+  picture,
+  video,
+  canvas {
+    max-width: 100%;
   }
 
   /* Custom Scrollbar Styles */
@@ -352,94 +364,12 @@
   display: none !important;
 }
 
-/* ─── Circular View Transition for Theme Toggle ─── */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-
-::view-transition-old(root) {
-  z-index: 1;
-}
-
-::view-transition-new(root) {
-  z-index: 9999;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation: none !important;
-  }
-}
-
-/* ─── Verified Next.js Design System Tokens & Utilities ─── */
-:root {
-  --ds-background-100: #ffffff;
-  --ds-background-200: #fafafa;
-  --ds-gray-100: #f2f2f2;
-  --ds-gray-200: #ebebeb;
-  --ds-gray-300: #e6e6e6;
-  --ds-gray-400: #ebebeb;
-  --ds-gray-600: #a8a8a8;
-  --ds-gray-700: #8f8f8f;
-  --ds-gray-900: #4d4d4d;
-  --ds-gray-1000: #171717;
-  --ds-gray-alpha-100: rgba(0, 0, 0, 0.051);
-  --ds-gray-alpha-200: rgba(0, 0, 0, 0.078);
-  --ds-shadow-border-small: 0 0 0 1px rgba(0, 0, 0, 0.078), 0px 2px 2px rgba(0, 0, 0, 0.039);
-  --color-next-blue: #0057ff;
-  --color-next-blue-hover: #004aeb;
-  --hero-fade-mid: 0.57;
-  --hero-fade-end: 88%;
-}
-
-.dark {
-  --ds-background-100: #0a0a0a;
-  --ds-background-200: #000000;
-  --ds-gray-100: #1a1a1a;
-  --ds-gray-200: #1f1f1f;
-  --ds-gray-300: #292929;
-  --ds-gray-400: #2e2e2e;
-  --ds-gray-600: #878787;
-  --ds-gray-700: #8f8f8f;
-  --ds-gray-900: #a1a1a1;
-  --ds-gray-1000: #ededed;
-  --ds-gray-alpha-100: rgba(255, 255, 255, 0.059);
-  --ds-gray-alpha-200: rgba(255, 255, 255, 0.090);
-  --ds-shadow-border-small: 0 0 0 1px rgba(255, 255, 255, 0.145), 0px 1px 2px rgba(0, 0, 0, 0.16);
-  --color-next-blue: #0057ff;
-  --color-next-blue-hover: #0071ff;
-  --hero-fade-mid: 0.40;
-  --hero-fade-end: 100%;
-}
-
-/* Material small pill (used by Next.js terminal command box) */
-.material-small {
-  background-color: var(--ds-background-100);
-  box-shadow: var(--ds-shadow-border-small);
-}
-
-/* Hero wireframe logo overlay fade gradient */
-.next-hero-fade {
-  background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    color-mix(in srgb, var(--ds-background-200) calc(var(--hero-fade-mid) * 100%), transparent) 50%,
-    var(--ds-background-200) var(--hero-fade-end)
-  );
-}
-
-/* Next.js Horizontal Section Divider */
-.next-divider {
-  background: linear-gradient(
-    to right,
-    transparent 0%,
-    var(--ds-gray-400) 10%,
-    var(--ds-gray-400) 90%,
-    transparent 100%
-  );
+/* Atomic theme switching: pause CSS transitions during the single swap frame
+   so elements with different transition durations switch simultaneously without flashing. */
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after {
+  transition: none !important;
 }
 
 /* ─── Verified Next.js Design System Tokens & Utilities ─── */

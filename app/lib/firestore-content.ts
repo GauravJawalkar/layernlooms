@@ -3,6 +3,8 @@ import { collection, getDocsFromServer } from "firebase/firestore";
 import { db } from "./firebase.server";
 import type { AdminBlogPost } from "./admin/blog";
 import type { AdminProject } from "./admin/portfolio";
+import { blogPosts as fallbackBlogPosts } from "@/app/data/blogs";
+import { projects as fallbackProjects } from "@/app/data/portfolio";
 
 export type PostDoc = AdminBlogPost;
 export type ProjectDoc = AdminProject;
@@ -17,18 +19,50 @@ function isPublished(doc: { slug?: unknown; visible?: unknown }): boolean {
   return typeof doc.slug === "string" && doc.slug.trim().length > 0 && doc.visible !== false;
 }
 
-async function fetchCollection<T>(name: string): Promise<T[]> {
-  const snapshot = await getDocsFromServer(collection(db, name));
-  return snapshot.docs.map((entry) => ({ id: entry.id, ...entry.data() })) as T[];
+function serializeTimestamps(doc: Record<string, unknown>): Record<string, unknown> {
+  const out = { ...doc };
+  for (const key of ["createdAt", "updatedAt"]) {
+    const val = out[key];
+    if (val && typeof val === "object" && typeof (val as { toDate?: unknown }).toDate === "function") {
+      out[key] = (val as { toDate: () => Date }).toDate().toISOString();
+    } else if (val instanceof Date) {
+      out[key] = val.toISOString();
+    }
+  }
+  return out;
 }
 
-export const getPublishedPosts = cache(async (): Promise<PostDoc[]> =>
-  (await fetchCollection<PostDoc>("blog")).filter(isPublished)
-);
+async function fetchCollection<T>(name: string): Promise<T[] | null> {
+  try {
+    const snapshot = await getDocsFromServer(collection(db, name));
+    return snapshot.docs.map((entry) =>
+      serializeTimestamps({ id: entry.id, ...entry.data() })
+    ) as unknown as T[];
+  } catch (err) {
+    console.warn(`Firestore server fetch failed for "${name}", using static fallback:`, err);
+    return null;
+  }
+}
 
-export const getPublishedProjects = cache(async (): Promise<ProjectDoc[]> =>
-  (await fetchCollection<ProjectDoc>("portfolio")).filter(isPublished)
-);
+export const getPublishedPosts = cache(async (): Promise<PostDoc[]> => {
+  const remote = await fetchCollection<PostDoc>("blog");
+  if (remote && remote.length > 0) return remote.filter(isPublished);
+  return fallbackBlogPosts.map((post, index) => ({
+    id: `static-${index}`,
+    ...post,
+    visible: true,
+  }));
+});
+
+export const getPublishedProjects = cache(async (): Promise<ProjectDoc[]> => {
+  const remote = await fetchCollection<ProjectDoc>("portfolio");
+  if (remote && remote.length > 0) return remote.filter(isPublished);
+  return fallbackProjects.map((project, index) => ({
+    id: `static-${index}`,
+    ...project,
+    visible: true,
+  }));
+});
 
 export const getPublishedPostBySlug = cache(
   async (slug: string): Promise<PostDoc | null> =>
@@ -83,7 +117,13 @@ function coerceDate(value: unknown): Date | null {
     return Number.isNaN(converted.getTime()) ? null : converted;
   }
 
-  if (typeof value === "string") return parseDisplayDate(value);
+  if (typeof value === "string") {
+    const isoParsed = Date.parse(value);
+    if (!Number.isNaN(isoParsed) && value.includes("T")) {
+      return new Date(isoParsed);
+    }
+    return parseDisplayDate(value);
+  }
 
   return null;
 }

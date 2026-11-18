@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import ContactForm from "../../components/Contact/ContactForm";
 import { StepsCard } from "../../components/Contact/ContactCard";
 import { Linkedin, Instagram, Mail, MapPin, Phone, ArrowUpRight } from "lucide-react";
@@ -25,6 +25,7 @@ const contactInfo = [
 ];
 
 export default function ContactPage() {
+    const reduceMotion = useReducedMotion();
     const stagger = {
         hidden: { opacity: 0 },
         visible: {
@@ -39,94 +40,88 @@ export default function ContactPage() {
     };
 
     return (
-        <div className="accent-zinc-scope min-h-screen">
+        <main className=" rounded-2xl relative isolate min-h-screen overflow-hidden bg-background text-foreground">
             <JsonLd data={getBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "Contact", url: "/contact" }])} />
 
-            {/* ── Background: subtle noise only ── */}
-            <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.02] mix-blend-overlay" />
+            <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+                <div className="absolute inset-0 opacity-[0.14] [background-image:linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] [background-size:72px_72px] [mask-image:linear-gradient(to_bottom,black,transparent_88%)]" />
+                <div className="absolute -right-36 -top-32 size-[min(75vw,54rem)] rounded-full bg-accent-current/10 blur-[130px]" />
+                <div className="absolute -bottom-48 -left-40 size-[min(55vw,34rem)] rounded-full bg-accent-current/5 blur-[110px]" />
             </div>
 
-            <main className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 lg:px-16 pt-14 sm:pt-20 pb-16 sm:pb-24">
-                {/* ── Header ── */}
+            <div className="relative mx-auto max-w-7xl px-4 pb-12 pt-8 sm:px-8 sm:pb-20 sm:pt-14 lg:px-12 lg:pb-24 lg:pt-10">
                 <motion.div
-                    initial="hidden"
+                    initial={reduceMotion ? false : "hidden"}
                     animate="visible"
                     variants={stagger}
-                    className="max-w-3xl mb-10 sm:mb-16"
+                    className="mb-8 max-w-4xl sm:mb-14"
                 >
-                    <motion.div variants={fadeUp} className="flex items-center gap-3 mb-5">
-                        <span className="w-8 h-px bg-primary" />
-                        <p className="text-[11px] font-bold tracking-[0.25em] uppercase text-muted-foreground">
+                    <motion.div variants={fadeUp} className="mb-4 sm:mb-5 flex items-center gap-3">
+                        <span aria-hidden="true" className="h-px w-8 bg-accent-current" />
+                        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent-current">
                             Get in Touch
                         </p>
                     </motion.div>
 
                     <motion.h1
                         variants={fadeUp}
-                        className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05]"
+                        className="max-w-4xl text-3xl font-semibold leading-[1.02] tracking-[-0.06em] sm:text-6xl lg:text-7xl"
                     >
-                        <span className="text-reflect">
-                            Let&apos;s build something{" "}
-                            <span>great</span>
-                        </span>
+                        Let&apos;s build something{" "}
+                        <span className="text-accent-current">great.</span>
                     </motion.h1>
 
                     <motion.p
                         variants={fadeUp}
-                        className="text-sm sm:text-base text-muted-foreground max-w-xl mt-5 leading-relaxed"
+                        className="mt-4 max-w-2xl text-sm leading-7 text-muted-foreground sm:mt-6 sm:text-base sm:leading-8"
                     >
                         Have a vision? Tell us about your project and we&apos;ll get back to you within 24 hours.
                     </motion.p>
                 </motion.div>
 
-                {/* ── Main Content Grid ── */}
                 <motion.div
-                    initial="hidden"
+                    initial={reduceMotion ? false : "hidden"}
                     animate="visible"
                     variants={stagger}
-                    className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12"
+                    className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1.25fr)_minmax(18rem,0.75fr)] lg:gap-8"
                 >
-                    {/* ── Left Column: Form ── */}
                     <motion.div
                         variants={fadeUp}
-                        className="lg:col-span-7 order-2 lg:order-1"
+                        className="min-w-0"
                     >
-                        <Suspense fallback={<div className="w-full rounded-2xl border border-border bg-card p-8 animate-pulse h-96" />}>
+                        <Suspense fallback={<div className="h-[34rem] w-full animate-pulse rounded-3xl border border-border/80 bg-card" />}>
                             <ContactForm />
                         </Suspense>
                     </motion.div>
 
-                    {/* ── Right Column: Info ── */}
-                    <div className="lg:col-span-5 order-1 lg:order-2 space-y-6">
-                        {/* Contact Cards */}
-                        <motion.div variants={fadeUp} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
+                    <div className="min-w-0 space-y-4 lg:space-y-5">
+                        <motion.div variants={fadeUp} className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-1">
                             {contactInfo.map((info, i) => {
                                 const Icon = info.icon;
                                 return (
                                     <motion.div
-                                        key={i}
-                                        initial={{ opacity: 0, y: 12 }}
+                                        key={info.label}
+                                        initial={reduceMotion ? false : { opacity: 0, y: 12 }}
                                         whileInView={{ opacity: 1, y: 0 }}
                                         viewport={{ once: true }}
                                         transition={{ delay: i * 0.06 }}
-                                        className="group rounded-xl border border-border bg-card p-4 sm:p-5 hover:border-primary/30 transition-colors duration-300"
+                                        className="group rounded-2xl border border-border/80 bg-card/80 p-4 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-accent-current/30 hover:shadow-lg sm:p-5"
                                     >
-                                        <div className="flex items-center gap-3.5">
-                                            <div className="shrink-0 w-10 h-10 rounded-lg bg-secondary text-muted-foreground flex items-center justify-center group-hover:bg-primary group-hover:text-background transition-colors duration-300">
-                                                <Icon className="w-4 h-4" />
+                                        <div className="flex min-w-0 items-center gap-3.5">
+                                            <div className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-accent-current/15 bg-accent-current/10 text-accent-current transition-colors duration-300 group-hover:bg-accent-current group-hover:text-accent-current-foreground">
+                                                <Icon className="size-4" />
                                             </div>
                                             <div className="min-w-0">
-                                                <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-muted-foreground mb-0.5">{info.label}</p>
+                                                <p className="mb-1 text-[9px] font-bold uppercase tracking-[0.18em] text-muted-foreground">{info.label}</p>
                                                 {info.href ? (
                                                     <Link
                                                         href={info.href}
                                                         target={info.href.startsWith("http") ? "_blank" : undefined}
                                                         rel={info.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                                                        className="text-sm font-semibold text-foreground hover:text-primary transition-colors flex items-center gap-1.5 break-all"
+                                                        className="flex items-center gap-1.5 break-words text-sm font-semibold text-foreground transition-colors hover:text-accent-current"
                                                     >
                                                         {info.value}
-                                                        <ArrowUpRight className="w-3.5 h-3.5 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                                        <ArrowUpRight className="size-3.5 shrink-0 text-accent-current opacity-0 transition-opacity group-hover:opacity-100" />
                                                     </Link>
                                                 ) : (
                                                     <p className="text-sm font-semibold text-foreground">{info.value}</p>
@@ -138,10 +133,9 @@ export default function ContactPage() {
                             })}
                         </motion.div>
 
-                        {/* Social Links */}
-                        <motion.div variants={fadeUp} className="rounded-xl border border-border bg-card p-4 sm:p-5">
-                            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-muted-foreground mb-3.5">Follow Us</p>
-                            <div className="flex flex-wrap gap-2.5">
+                        <motion.div variants={fadeUp} className="rounded-2xl border border-border/80 bg-card/80 p-5 shadow-sm sm:p-6">
+                            <p className="mb-4 text-[9px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Follow Us</p>
+                            <div className="flex flex-wrap gap-2">
                                 {socialLinks.map((social) => (
                                     <Link
                                         key={social.name}
@@ -149,21 +143,20 @@ export default function ContactPage() {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         aria-label={social.name}
-                                        className="w-10 h-10 flex items-center justify-center rounded-lg bg-secondary border border-border text-foreground hover:bg-primary hover:text-background transition-colors duration-300"
+                                        className="flex size-10 items-center justify-center rounded-xl border border-border/80 bg-background text-muted-foreground transition-all duration-300 hover:border-accent-current/30 hover:bg-accent-current/10 hover:text-accent-current"
                                     >
-                                        <social.icon className="w-4 h-4" />
+                                        <social.icon className="size-4" />
                                     </Link>
                                 ))}
                             </div>
                         </motion.div>
 
-                        {/* Steps / Process */}
                         <motion.div variants={fadeUp}>
                             <StepsCard />
                         </motion.div>
                     </div>
                 </motion.div>
-            </main>
-        </div>
+            </div>
+        </main>
     );
 }
