@@ -35,9 +35,9 @@ const partnerFaqs = [
       "Our programme is open to technology consultants, enterprise architects, digital marketing agencies, UI/UX design studios, freelance software engineers, startup advisors, and business network leaders. Anyone who regularly engages with companies requiring custom software, web platforms, mobile apps, or AI engineering can join. Participation is completely free, non-exclusive, and requires zero upfront fees or minimum quotas.",
   },
   {
-    question: "How is the 10% partner commission calculated?",
+    question: "How is the commission calculated, and can it increase beyond 10%?",
     answer:
-      "Partner commission is calculated as 10% on the net eligible service fee after separating the 18% statutory GST component (Eligible Service Fee = Gross Invoice Amount ÷ 1.18). For example, on a ₹10,00,000 project, the GST component (18% Statutory Tax) is ₹1,52,542, the eligible service fee is ₹8,47,458, and your 10% commission is ₹84,746. Internal developer salaries and agency overheads are never deducted.",
+      "Referral commission starts at a guaranteed minimum baseline of 10% on the net eligible service fee after separating the statutory 18% GST component (Eligible Service Fee = Gross Invoice Amount ÷ 1.18). For example, on a ₹10,00,000 project, the GST component (18% Statutory Tax) is ₹1,52,542, the eligible fee base is ₹8,47,458, and the minimum 10% commission is ₹84,746. Furthermore, commission rates can scale higher according to the scale, deal size, recurring retainers, and technical complexity/scope of the project, as confirmed in your written Lead Acceptance Notice. Internal developer salaries and agency overheads are never deducted.",
   },
   {
     question: "What are the two payout options (Turnkey vs. Milestone)?",
@@ -96,9 +96,12 @@ export default function PartnerPage() {
   // ── Calculator State ──
   const [projectAmount, setProjectAmount] = useState<number>(1000000);
   const [customInputValue, setCustomInputValue] = useState<string>("1000000");
+  const [commissionRate, setCommissionRate] = useState<number>(10);
+  const [customCommissionRate, setCustomCommissionRate] = useState<string>("10");
+
   const eligibleServiceFee = Math.round(projectAmount / 1.18);
   const gstComponent = projectAmount - eligibleServiceFee;
-  const partnerCommission = Math.round(eligibleServiceFee * 0.1);
+  const partnerCommission = Math.round(eligibleServiceFee * (commissionRate / 100));
 
   const handleSelectPreset = (value: number) => {
     setProjectAmount(value);
@@ -128,6 +131,31 @@ export default function PartnerPage() {
     } else if (parsed > 20000000) {
       setProjectAmount(20000000);
       setCustomInputValue("20000000");
+    }
+  };
+
+  const handleSelectCommissionRate = (rate: number) => {
+    setCommissionRate(rate);
+    setCustomCommissionRate(rate.toString());
+  };
+
+  const handleCommissionRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value.replace(/[^0-9]/g, "");
+    setCustomCommissionRate(raw);
+    const parsed = parseInt(raw, 10);
+    if (!isNaN(parsed) && parsed > 0) {
+      setCommissionRate(Math.min(parsed, 50));
+    }
+  };
+
+  const handleCommissionRateBlur = () => {
+    const parsed = parseInt(customCommissionRate, 10);
+    if (isNaN(parsed) || parsed < 10) {
+      setCommissionRate(10);
+      setCustomCommissionRate("10");
+    } else if (parsed > 50) {
+      setCommissionRate(50);
+      setCustomCommissionRate("50");
     }
   };
 
@@ -253,8 +281,7 @@ export default function PartnerPage() {
               </h1>
 
               <p className="mt-6 text-base sm:text-lg text-muted-foreground max-w-xl leading-relaxed">
-                Earn a flat 10% commission on every qualified referral. Introduce ambitious brands to LayerNlooms and
-                let us handle technical scoping, architecture, and full-stack software delivery.
+                Earn a guaranteed minimum 10% commission on every qualified referral—scaling higher based on project scope, deal size, and enterprise complexity. Introduce ambitious brands to LayerNlooms and let us handle technical scoping, architecture, and delivery.
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-3 sm:gap-4">
@@ -290,12 +317,12 @@ export default function PartnerPage() {
               transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
               className="rounded-3xl border border-border/90 bg-card/80 dark:bg-neutral-950/80 backdrop-blur-md p-6 sm:p-8 shadow-xl shadow-black/5 dark:shadow-black/50 divide-y divide-border/80"
             >
-              {/* Row 1: 10% */}
+              {/* Row 1: Min. 10% */}
               <div className="pb-6">
-                <p className="text-4xl sm:text-5xl font-extrabold font-mono text-accent-current">10%</p>
-                <p className="text-sm font-bold text-foreground mt-1">Flat Referral Commission</p>
+                <p className="text-4xl sm:text-5xl font-extrabold font-mono text-accent-current">Min. 10%</p>
+                <p className="text-sm font-bold text-foreground mt-1">Guaranteed Referral Base</p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Calculated directly on eligible project service fees with zero overhead deductions.
+                  10% guaranteed baseline on net eligible fees, scaling upwards with enterprise contract scale and technical scope.
                 </p>
               </div>
 
@@ -337,14 +364,13 @@ export default function PartnerPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
-            {/* Card 1: 10% */}
+            {/* Card 1: Min. 10% */}
             <div className="p-7 sm:p-9 rounded-2xl border border-border/80 bg-card/60 backdrop-blur-sm hover:border-accent-current/40 transition-all duration-300 flex flex-col justify-between">
               <div>
-                <span className="text-3xl sm:text-4xl font-extrabold font-mono text-accent-current">10%</span>
-                <h3 className="text-lg font-bold text-foreground mt-3">10% Referral Reward</h3>
+                <span className="text-3xl sm:text-4xl font-extrabold font-mono text-accent-current">Min. 10%</span>
+                <h3 className="text-lg font-bold text-foreground mt-3">Scalable Referral Reward</h3>
                 <p className="mt-2 text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                  Earn 10% directly on net project service fees after statutory 18% GST. Internal operational overhead,
-                  engineering team salaries, and delivery margins are never deducted.
+                  Guaranteed minimum 10% baseline earned on net eligible service fees after statutory 18% GST. Rates can scale higher based on contract scale, enterprise requirements, and technical scope.
                 </p>
               </div>
               <div className="mt-4 pt-3 border-t border-border/70">
@@ -409,25 +435,24 @@ export default function PartnerPage() {
             {/* Left Column: Title & Key Principles */}
             <div>
               <div className="text-[11px] sm:text-xs font-mono font-bold uppercase tracking-[0.2em] text-accent-current mb-2">
-                COMMISSION CALCULATOR
+                COMMISSION CALCULATOR — CALCULATE EARNINGS
               </div>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
                 Estimate Your <br />
                 Referral Earnings
               </h2>
               <p className="mt-4 text-sm sm:text-base text-muted-foreground leading-relaxed">
-                See how much you can earn by introducing clients to LayerNlooms. Our commission structure is simple, direct,
-                and completely transparent.
+                Calculate your potential referral earnings with LayerNlooms. Start with our guaranteed 10% minimum baseline, or select an optional elevated rate tailored to larger project scope and scale.
               </p>
 
               <div className="mt-8 space-y-4 text-xs sm:text-sm text-muted-foreground">
                 <div className="flex items-start gap-3">
                   <Check className="size-4 text-accent-current shrink-0 mt-0.5" />
-                  <span><strong>10% Commission Model:</strong> 10% calculated on net eligible service fee after statutory 18% GST (Gross ÷ 1.18).</span>
+                  <span><strong>Minimum 10% Baseline:</strong> Guaranteed 10% minimum calculated on net eligible service fee after statutory 18% GST (Gross ÷ 1.18).</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <Check className="size-4 text-accent-current shrink-0 mt-0.5" />
-                  <span><strong>Zero Minimum Threshold:</strong> Payouts wired directly with no accumulation wait.</span>
+                  <span><strong>Optional Commission %:</strong> Test scalable rates (10%, 12%, 15%, 20% or custom) to preview earnings for high-scale or complex scopes.</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <Check className="size-4 text-accent-current shrink-0 mt-0.5" />
@@ -509,6 +534,59 @@ export default function PartnerPage() {
                 />
               </div>
 
+              {/* Optional Partner Commission % Selector */}
+              <div className="pt-4 pb-2 border-t border-border/80">
+                <div className="flex items-center justify-between mb-2">
+                  <label
+                    htmlFor="custom-commission-rate"
+                    className="block text-[11px] font-mono font-semibold uppercase tracking-wider text-muted-foreground"
+                  >
+                    Partner Commission % <span className="text-accent-current font-bold">(Optional Scale)</span>
+                  </label>
+                  <span className="text-[11px] font-mono text-muted-foreground">Min. 10% Guaranteed</span>
+                </div>
+
+                <div className="grid grid-cols-4 sm:grid-cols-5 gap-2">
+                  {[
+                    { label: "10% (Base)", value: 10 },
+                    { label: "12%", value: 12 },
+                    { label: "15%", value: 15 },
+                    { label: "20%", value: 20 },
+                  ].map((tier) => {
+                    const isActive = commissionRate === tier.value;
+                    return (
+                      <button
+                        key={tier.value}
+                        type="button"
+                        onClick={() => handleSelectCommissionRate(tier.value)}
+                        className={`py-2 px-1.5 rounded-xl text-xs font-semibold transition-all duration-200 cursor-pointer text-center ${
+                          isActive
+                            ? "bg-accent-current text-accent-current-foreground font-bold shadow-sm scale-[1.02]"
+                            : "border border-border/80 bg-secondary/50 text-muted-foreground hover:text-foreground hover:bg-secondary hover:border-accent-current/30"
+                        }`}
+                      >
+                        {tier.label}
+                      </button>
+                    );
+                  })}
+
+                  {/* Custom Rate Input */}
+                  <div className="flex items-center px-2.5 py-1.5 rounded-xl border border-border bg-background focus-within:border-accent-current focus-within:ring-1 focus-within:ring-accent-current">
+                    <input
+                      id="custom-commission-rate"
+                      type="text"
+                      inputMode="numeric"
+                      value={customCommissionRate}
+                      onChange={handleCommissionRateChange}
+                      onBlur={handleCommissionRateBlur}
+                      placeholder="10"
+                      className="w-full bg-transparent border-none outline-none text-xs font-mono font-bold text-foreground text-center focus:ring-0 p-0"
+                    />
+                    <span className="text-xs font-mono text-muted-foreground font-bold ml-1">%</span>
+                  </div>
+                </div>
+              </div>
+
               {/* Summary Rows */}
               <div className="space-y-2.5 py-4 border-t border-border/80 text-xs sm:text-sm font-mono">
                 <div className="flex justify-between text-muted-foreground">
@@ -523,15 +601,26 @@ export default function PartnerPage() {
                   <span>Eligible Service Fee</span>
                   <span className="text-foreground font-semibold">{formatINR(eligibleServiceFee)}</span>
                 </div>
+                <div className="flex justify-between text-muted-foreground">
+                  <span>Partner Commission %</span>
+                  <span className="text-accent-current font-bold">
+                    {commissionRate}% {commissionRate === 10 ? "(Base Guaranteed)" : "(Optional Scale)"}
+                  </span>
+                </div>
               </div>
 
               {/* Big Highlighted Commission Output Box */}
               <div className="mt-2 p-5 rounded-2xl border border-border/80 bg-secondary/40 text-center">
                 <p className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground mb-1">
-                  Partner Commission (10%)
+                  Partner Commission ({commissionRate}%)
                 </p>
                 <p className="text-4xl sm:text-5xl font-extrabold font-mono text-accent-current">
                   {formatINR(partnerCommission)}
+                </p>
+                <p className="text-[11px] text-muted-foreground mt-2 font-mono">
+                  {commissionRate === 10
+                    ? "* Guaranteed minimum baseline. Scalable higher for enterprise scope & larger contract volumes."
+                    : `* Calculated with optional ${commissionRate}% rate tailored to project scope & scale.`}
                 </p>
               </div>
 
@@ -980,7 +1069,7 @@ export default function PartnerPage() {
                     <Link href="/privacy" target="_blank" className="text-accent-current hover:underline font-semibold">
                       Privacy Policy
                     </Link>
-                    . I acknowledge the 10% commission calculation and introduction-only scope.
+                    . I acknowledge the minimum 10% commission framework (scalable based on scale & scope) and introduction-only scope.
                   </label>
                 </div>
 
@@ -1019,7 +1108,7 @@ export default function PartnerPage() {
               Ready to Get Started?
             </h2>
             <p className="mt-4 text-sm sm:text-base text-muted-foreground leading-relaxed">
-              Monetize your network by introducing high-value software and AI opportunities to LayerNlooms.
+              Monetize your network by introducing high-value software and AI opportunities to LayerNlooms. Earn a guaranteed minimum 10% commission, scalable upward for enterprise scopes and larger contracts.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4">

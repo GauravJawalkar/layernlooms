@@ -3,12 +3,13 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Partner Programme Terms & Conditions",
   description:
-    "Official Referral & Strategic Partner Programme Terms & Conditions for LayerNlooms. Review our 10% commission model, statutory 18% GST calculation, turnkey and milestone payout timelines, and 90-day lead protection.",
+    "Official Referral & Strategic Partner Programme Terms & Conditions for LayerNlooms. Review our minimum 10% commission model (scalable with project scale and scope), statutory 18% GST calculation, turnkey and milestone payout timelines, and 90-day lead protection.",
   keywords: [
     "LayerNlooms partner terms",
     "partner programme agreement",
     "referral commission terms",
-    "software partner terms",
+    "minimum 10% software commission",
+    "scalable partner terms",
     "agency referral policy",
   ],
   alternates: {

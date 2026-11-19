@@ -92,15 +92,15 @@ export default function PartnerTermsPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm text-muted-foreground">
               <div className="flex items-start gap-2">
                 <CheckCircle2 className="size-4 text-emerald-500 shrink-0 mt-0.5" />
-                <span><strong>10% Referral Commission:</strong> Earned on net eligible software & AI engineering service fees.</span>
+                <span><strong>Min. 10% Referral Base:</strong> Guaranteed minimum 10% baseline on net eligible engineering service fees.</span>
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle2 className="size-4 text-emerald-500 shrink-0 mt-0.5" />
-                <span><strong>GST Component (18% Statutory Tax):</strong> Standard statutory formulation: <code>Gross ÷ 1.18 × 10%</code>.</span>
+                <span><strong>Scalable Scope & Scale:</strong> Commission percentages scale higher for enterprise scale, retainers & complex AI scope.</span>
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle2 className="size-4 text-emerald-500 shrink-0 mt-0.5" />
-                <span><strong>Dual Settlement Tracks:</strong> Turnkey (14 business days) or Milestone (7 business days).</span>
+                <span><strong>GST Component (18% Statutory Tax):</strong> Standard statutory formulation: <code>Gross ÷ 1.18 × Commission %</code>.</span>
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle2 className="size-4 text-emerald-500 shrink-0 mt-0.5" />
@@ -153,18 +153,32 @@ export default function PartnerTermsPage() {
 
             {/* Section 3 */}
             <div className="p-6 sm:p-8 rounded-2xl border border-border/80 bg-card/60 backdrop-blur-sm shadow-sm prose prose-sm sm:prose-base dark:prose-invert max-w-none">
-              <h2 className="text-xl font-bold text-foreground mb-3">3. Commission Rate, GST Component (18% Statutory Tax) & Calculation Base</h2>
+              <h2 className="text-xl font-bold text-foreground mb-3">3. Commission Rate, Scalable Scope Structure, GST Component (18% Statutory Tax) & Calculation Base</h2>
               <p>
-                LayerNlooms pays a referral commission of <strong>10%</strong> on net eligible service fees that are collected and retained by the Company from an accepted client referral:
+                LayerNlooms pays a referral commission starting at a guaranteed minimum baseline of <strong>10%</strong> on net eligible service fees collected and retained by the Company from an accepted client referral:
               </p>
+
               <div className="my-4 p-4 rounded-xl border border-border bg-secondary/50 font-mono text-xs sm:text-sm">
                 <p className="font-semibold text-foreground mb-1">Standard Calculation Formulation:</p>
-                <p className="text-muted-foreground">1. Eligible Service Fee = Gross Project Invoice Amount ÷ 1.18</p>
-                <p className="text-muted-foreground">2. GST Component (18% Statutory Tax) = Gross Project Invoice Amount − Eligible Service Fee</p>
-                <p className="text-accent-current font-bold">3. Partner Referral Commission (10%) = Eligible Service Fee × 10%</p>
+                <p className="text-muted-foreground">1. Eligible Service Fee Base = Gross Project Invoice Amount ÷ 1.18</p>
+                <p className="text-muted-foreground">2. GST Component (18% Statutory Tax) = Gross Project Invoice Amount − Eligible Service Fee Base</p>
+                <p className="text-accent-current font-bold">3. Minimum Baseline Referral Commission (10%) = Eligible Service Fee Base × 10%</p>
+                <p className="text-xs text-muted-foreground mt-1">*(Or higher agreed scaled commission % for eligible enterprise/custom scopes)*</p>
               </div>
+
+              <h3 className="text-base font-bold text-foreground mt-4 mb-2">Scope & Scale Upward Scalability</h3>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                While <strong>10%</strong> serves as the strict minimum guaranteed baseline for all qualifying engagements, commission rates can scale higher according to the scale, deal size, recurring retainers, and technical complexity/scope of the project:
+              </p>
+              <ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm text-muted-foreground mb-4">
+                <li><strong>Enterprise Scale:</strong> High-ticket contracts (e.g. ₹25,00,000+ or multi-phase turnkey platforms) qualify for elevated tiered rates.</li>
+                <li><strong>Complex Technical Scope:</strong> Custom generative AI models, autonomous agent frameworks, multi-tenant SaaS engines, or legacy system overhauls.</li>
+                <li><strong>Long-Term Engineering Retainers:</strong> Multi-quarter or ongoing developer retainers qualify for custom tiered payout structures.</li>
+                <li><strong>Formal Written Confirmation:</strong> Any agreed elevated commission percentage above the 10% baseline is formally documented and confirmed in the written <em>Lead Acceptance Notice</em> or Partner SOW issued by LayerNlooms.</li>
+              </ul>
+
               <p>
-                <strong>Worked Benchmark Example:</strong>
+                <strong>Worked Benchmark Example (10% Minimum Baseline):</strong>
               </p>
               <div className="overflow-x-auto my-3">
                 <table className="w-full text-left text-xs sm:text-sm border-collapse border border-border">
@@ -192,15 +206,16 @@ export default function PartnerTermsPage() {
                       <td className="p-2.5 border border-border font-semibold text-foreground">₹8,47,458</td>
                     </tr>
                     <tr className="bg-accent-current/10 font-bold text-foreground">
-                      <td className="p-2.5 border border-border">Partner 10% Commission</td>
+                      <td className="p-2.5 border border-border">Minimum 10% Commission Base</td>
                       <td className="p-2.5 border border-border">₹8,47,458 × 10%</td>
-                      <td className="p-2.5 border border-border text-accent-current font-bold">₹84,746</td>
+                      <td className="p-2.5 border border-border text-accent-current font-bold">₹84,746*</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
+
               <p className="mt-4 font-semibold text-foreground">
-                Commission Schedule across Key Project Presets:
+                Minimum Guaranteed Commission Across Standard Presets:
               </p>
               <div className="overflow-x-auto my-3">
                 <table className="w-full text-left text-xs sm:text-sm border-collapse border border-border">
@@ -209,7 +224,7 @@ export default function PartnerTermsPage() {
                       <th className="p-2.5 border border-border">Project Amount</th>
                       <th className="p-2.5 border border-border">GST Component (18%)</th>
                       <th className="p-2.5 border border-border">Eligible Service Fee</th>
-                      <th className="p-2.5 border border-border font-semibold text-accent-current">10% Commission</th>
+                      <th className="p-2.5 border border-border font-semibold text-accent-current">Min. 10% Commission</th>
                     </tr>
                   </thead>
                   <tbody className="text-muted-foreground">
@@ -235,19 +250,19 @@ export default function PartnerTermsPage() {
                       <td className="p-2.5 border border-border font-semibold text-foreground">₹25,00,000 (25 Lakhs)</td>
                       <td className="p-2.5 border border-border">₹3,81,356</td>
                       <td className="p-2.5 border border-border">₹21,18,644</td>
-                      <td className="p-2.5 border border-border font-bold text-foreground">₹2,11,864</td>
+                      <td className="p-2.5 border border-border font-bold text-foreground">₹2,11,864*</td>
                     </tr>
                     <tr>
                       <td className="p-2.5 border border-border font-semibold text-foreground">₹50,00,000 (50 Lakhs)</td>
                       <td className="p-2.5 border border-border">₹7,62,712</td>
                       <td className="p-2.5 border border-border">₹42,37,288</td>
-                      <td className="p-2.5 border border-border font-bold text-foreground">₹4,23,729</td>
+                      <td className="p-2.5 border border-border font-bold text-foreground">₹4,23,729*</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
               <p className="text-xs text-muted-foreground mt-2">
-                * Note on Deductions: Internal LayerNlooms employee salaries, project management overhead, software engineering costs, and general operating expenditures are <strong>never</strong> deducted from the eligible fee base.
+                * Note on Deductions & Scalability: Internal LayerNlooms employee salaries, overheads, and operating expenditures are <strong>never</strong> deducted from the eligible fee base. Contracts with large scale or expanded technical scope may qualify for elevated commission rates exceeding the 10% minimum.
               </p>
             </div>
 

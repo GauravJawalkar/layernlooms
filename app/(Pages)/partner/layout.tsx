@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Partner Programme | 10% Referral Commission",
+  title: "Partner Programme | Min. 10% Referral Commission (Scalable)",
   description:
-    "Join the LayerNLooms Partner Programme. Earn a transparent 10% referral commission introducing clients for custom software development, web applications, mobile apps, and enterprise AI engineering. Featuring direct commission calculation, two flexible payout models, and 90-day lead protection.",
+    "Join the LayerNlooms Partner Programme. Earn a guaranteed minimum 10% referral commission (scalable upward with project scope and scale) introducing clients for custom software development, web applications, mobile apps, and enterprise AI engineering. Featuring two flexible payout models and 90-day lead protection.",
   keywords: [
-    "LayerNLooms partner programme",
+    "LayerNlooms partner programme",
     "software referral partner",
     "software development affiliate",
     "AI agency partner",
-    "10% software commission",
+    "minimum 10% software commission",
     "tech consultancy partner",
     "software referral commission",
-    "LayerNLooms partners",
+    "LayerNlooms partners",
   ],
   alternates: {
     canonical: "https://layernlooms.com/partner",
@@ -20,23 +20,23 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "https://layernlooms.com/partner",
-    title: "Partner Programme | 10% Referral Commission | LayerNLooms",
+    title: "Partner Programme | Min. 10% Referral Commission | LayerNlooms",
     description:
-      "Earn 10% referral commission on custom software and AI projects. Direct commission calculation, turnkey & milestone payouts, and 90-day lead protection.",
+      "Earn a minimum 10% referral commission (scalable based on project scale & scope) on custom software and AI projects. Turnkey & milestone payouts with 90-day lead protection.",
     images: [
       {
         url: "https://layernlooms.com/og-image.png",
         width: 1200,
         height: 630,
-        alt: "LayerNLooms Partner Programme",
+        alt: "LayerNlooms Partner Programme",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Partner Programme | 10% Referral Commission | LayerNLooms",
+    title: "Partner Programme | Min. 10% Referral Commission | LayerNlooms",
     description:
-      "Introduce high-ticket software and AI projects to LayerNLooms and earn 10% referral commission with 90-day lead protection.",
+      "Introduce high-ticket software and AI projects to LayerNlooms and earn a minimum 10% commission (scalable with scope) with 90-day lead protection.",
     images: ["https://layernlooms.com/twitter-image.png"],
   },
 };
