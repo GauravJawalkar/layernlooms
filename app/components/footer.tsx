@@ -36,6 +36,7 @@ const footerData = {
     { name: "Case Studies / Portfolio", href: "/portfolio" },
     { name: "Tech Blog", href: "/blog" },
     { name: "Pricing Models", href: "/pricing" },
+    { name: "Partner Programme", href: "/partner" },
     { name: "Careers", href: "/careers" },
     { name: "Contact Us", href: "/contact" },
   ],
@@ -278,6 +279,13 @@ export default function Footer() {
                   className="hover:text-foreground transition-colors"
                 >
                   Terms & Conditions
+                </Link>
+                <span className="opacity-30">•</span>
+                <Link
+                  href="/partner-terms"
+                  className="hover:text-foreground transition-colors"
+                >
+                  Partner Terms
                 </Link>
               </div>
             </div>
