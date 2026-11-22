@@ -4,7 +4,7 @@ import { useRef } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-/* ── Top and bottom vertical animated letter component ── */
+/* ── Top and bottom animated letter component (Vertical 180° X-axis flip with pause) ── */
 function AnimatedLetter({
   char,
   delay = 0,
@@ -14,13 +14,14 @@ function AnimatedLetter({
 }) {
   return (
     <motion.span
-      className="inline-block relative"
+      className="inline-block relative origin-center [transform-style:preserve-3d] [perspective:1000px]"
       animate={{
-        y: [-8, 8, -8],
+        rotateX: [0, 180, 0],
       }}
       transition={{
         repeat: Infinity,
-        duration: 2.6,
+        repeatDelay: 1.8,
+        duration: 2,
         delay,
         ease: "easeInOut",
       }}
@@ -89,7 +90,7 @@ export default function HeroSection() {
             transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-7 xl:col-span-7"
           >
-            <h1 className="text-[2.35rem] sm:text-7xl md:text-8xl lg:text-[5.6rem] xl:text-[6.8rem] 2xl:text-[7.6rem] font-bold tracking-[-0.045em] leading-[0.94] sm:leading-[0.89] text-white">
+            <h1 className="text-[2.35rem] sm:text-7xl md:text-4xl lg:text-[7rem] font-bold tracking-[-0.045em] leading-[0.94] sm:leading-[0.89] text-white">
               {/* Line 1: Build Digital */}
               <span className="block">
                 Build Digital
