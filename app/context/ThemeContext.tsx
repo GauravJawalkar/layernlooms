@@ -3,8 +3,24 @@
 import React, { createContext, useContext, useEffect, useMemo, useSyncExternalStore } from 'react';
 
 export type Theme = 'light' | 'dark' | 'system';
-export type ScrollbarTheme = 'zinc' | 'purple' | 'green' | 'cyan' | 'amber' | 'pink';
-export type PointerTheme = 'zinc' | 'purple' | 'green' | 'cyan' | 'amber' | 'pink';
+export type ScrollbarTheme =
+  | 'zinc'
+  | 'purple'
+  | 'green'
+  | 'cyan'
+  | 'blue'
+  | 'amber'
+  | 'red'
+  | 'pink';
+export type PointerTheme =
+  | 'zinc'
+  | 'purple'
+  | 'green'
+  | 'cyan'
+  | 'blue'
+  | 'amber'
+  | 'red'
+  | 'pink';
 export type PointerStyle =
   | 'classic'
   | 'glowing'
@@ -23,7 +39,16 @@ export type ThemeTransitionEvent =
   | { clientX?: number; clientY?: number; currentTarget?: HTMLElement | null };
 
 const VALID_THEMES = new Set<Theme>(['light', 'dark', 'system']);
-const VALID_PALETTES = new Set<ScrollbarTheme>(['zinc', 'purple', 'green', 'cyan', 'amber', 'pink']);
+const VALID_PALETTES = new Set<ScrollbarTheme>([
+  'zinc',
+  'purple',
+  'green',
+  'cyan',
+  'blue',
+  'amber',
+  'red',
+  'pink',
+]);
 const VALID_POINTER_STYLES = new Set<PointerStyle>([
   'classic',
   'glowing',
@@ -47,7 +72,9 @@ const scrollbarThemes: Record<
   purple: { light: '#8b5cf6', dark: '#a78bfa', hoverLight: '#7c3aed', hoverDark: '#c084fc' },
   green: { light: '#059669', dark: '#34d399', hoverLight: '#047857', hoverDark: '#6ee7b7' },
   cyan: { light: '#0891b2', dark: '#22d3ee', hoverLight: '#0e7490', hoverDark: '#67e8f9' },
+  blue: { light: '#2563eb', dark: '#60a5fa', hoverLight: '#1d4ed8', hoverDark: '#93c5fd' },
   amber: { light: '#ea580c', dark: '#fb923c', hoverLight: '#c2410c', hoverDark: '#fdba74' },
+  red: { light: '#dc2626', dark: '#f87171', hoverLight: '#b91c1c', hoverDark: '#fca5a5' },
   pink: { light: '#db2777', dark: '#f472b6', hoverLight: '#be185d', hoverDark: '#f9a8d4' },
 };
 
@@ -59,7 +86,9 @@ const pointerThemes: Record<
   purple: { light: '#8b5cf6', dark: '#a78bfa', glowLight: 'rgba(139,92,246,0.2)', glowDark: 'rgba(167,139,250,0.2)' },
   green: { light: '#059669', dark: '#34d399', glowLight: 'rgba(5,150,105,0.2)', glowDark: 'rgba(52,211,153,0.2)' },
   cyan: { light: '#0891b2', dark: '#22d3ee', glowLight: 'rgba(8,145,178,0.2)', glowDark: 'rgba(34,211,238,0.2)' },
+  blue: { light: '#0057ff', dark: '#0071ff', glowLight: 'rgba(0,87,255,0.2)', glowDark: 'rgba(0,113,255,0.2)' },
   amber: { light: '#ea580c', dark: '#fb923c', glowLight: 'rgba(234,88,12,0.2)', glowDark: 'rgba(251,146,60,0.2)' },
+  red: { light: '#ef4444', dark: '#f87171', glowLight: 'rgba(239,68,68,0.2)', glowDark: 'rgba(248,113,113,0.2)' },
   pink: { light: '#db2777', dark: '#f472b6', glowLight: 'rgba(219,39,119,0.2)', glowDark: 'rgba(244,114,182,0.2)' },
 };
 
@@ -68,7 +97,9 @@ export const themeAccentColors: Record<PointerTheme, { light: string; dark: stri
   purple: { light: '#7c3aed', dark: '#a78bfa' },
   green: { light: '#059669', dark: '#34d399' },
   cyan: { light: '#0891b2', dark: '#22d3ee' },
+  blue: { light: '#0057ff', dark: '#52a8ff' },
   amber: { light: '#d97706', dark: '#fb923c' },
+  red: { light: '#dc2626', dark: '#f87171' },
   pink: { light: '#db2777', dark: '#f472b6' },
 };
 

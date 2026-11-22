@@ -10,7 +10,6 @@ import {
   Palette,
   Settings2,
   SlidersHorizontal,
-  Sparkles,
   Sun,
   X,
   type LucideIcon,
@@ -37,7 +36,9 @@ const colorOptions: {
   { id: "purple", label: "Violet", color: "#8b5cf6" },
   { id: "green", label: "Emerald", color: "#10b981" },
   { id: "cyan", label: "Cyan", color: "#06b6d4" },
+  { id: "blue", label: "Blue", color: "#0057ff" },
   { id: "amber", label: "Amber", color: "#f59e0b" },
+  { id: "red", label: "Crimson", color: "#ef4444" },
   { id: "pink", label: "Rose", color: "#ec4899" },
 ];
 
@@ -68,9 +69,9 @@ function SectionLabel({
   children: ReactNode;
 }) {
   return (
-    <div className="mb-3 flex items-center gap-2">
+    <div className="mb-2.5 sm:mb-3 flex items-center gap-2">
       <Icon className="size-3.5 text-accent-current" aria-hidden="true" />
-      <h4 className="text-[11px] font-bold uppercase tracking-[0.16em] text-foreground">
+      <h4 className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.16em] text-foreground">
         {children}
       </h4>
     </div>
@@ -87,7 +88,7 @@ function ColorSwatches({
   label: string;
 }) {
   return (
-    <div className="flex flex-wrap gap-2.5">
+    <div className="grid grid-cols-4 sm:grid-cols-8 gap-2 sm:gap-2.5 w-full place-items-center py-1">
       {colorOptions.map((option) => {
         const active = selected === option.id;
         return (
@@ -98,12 +99,14 @@ function ColorSwatches({
             aria-label={`${label}: ${option.label}`}
             aria-pressed={active}
             title={option.label}
-            className={`group relative grid size-8 place-items-center rounded-full transition-transform hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-current ${
-              active ? "ring-2 ring-accent-current ring-offset-2 ring-offset-card" : ""
+            className={`group relative grid size-7 sm:size-8 place-items-center rounded-full transition-transform hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-current ${
+              active
+                ? "ring-2 ring-accent-current ring-offset-2 ring-offset-card shadow-sm"
+                : "opacity-90 hover:opacity-100"
             }`}
             style={{ backgroundColor: option.color }}
           >
-            {active && <Check className="size-4 text-white drop-shadow" />}
+            {active && <Check className="size-3.5 sm:size-4 text-white drop-shadow" />}
           </button>
         );
       })}
@@ -129,7 +132,7 @@ export default function ThemeCustomizer() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="fixed bottom-20 right-4 z-40 hidden flex-col items-end md:flex md:bottom-24 md:right-6 lg:bottom-8">
+    <div className="fixed bottom-20 right-3 z-40 flex flex-col items-end sm:bottom-24 sm:right-6 lg:bottom-8">
       <AnimatePresence>
         {isOpen && (
           <motion.aside
@@ -139,16 +142,16 @@ export default function ThemeCustomizer() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 12, scale: 0.97 }}
             transition={{ duration: 0.2, ease: [0.2, 0.8, 0.2, 1] }}
-            className="mb-3 flex max-h-[min(82vh,48rem)] w-[min(24rem,92vw)] origin-bottom-right flex-col overflow-hidden rounded-[1.5rem] border border-border/70 bg-card/95 text-card-foreground shadow-2xl shadow-black/15 backdrop-blur-2xl"
+            className="no-snap mb-3 flex max-h-[min(82vh,44rem)] w-[calc(100vw-1.5rem)] max-w-sm sm:w-96 origin-bottom-right flex-col overflow-hidden rounded-2xl sm:rounded-[1.5rem] border border-border/70 bg-card/95 text-card-foreground shadow-2xl shadow-black/20 backdrop-blur-2xl"
           >
-            <header className="flex items-center justify-between border-b border-border/70 px-5 py-4">
-              <div className="flex items-center gap-3">
-                <div className="grid size-9 place-items-center rounded-xl bg-accent-current/10 text-accent-current">
+            <header className="flex items-center justify-between border-b border-border/70 px-4 py-3 sm:px-5 sm:py-4">
+              <div className="flex items-center gap-2.5 sm:gap-3">
+                <div className="grid size-8 sm:size-9 place-items-center rounded-xl bg-accent-current/10 text-accent-current">
                   <Palette className="size-4" aria-hidden="true" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold tracking-tight">Appearance</h3>
-                  <p className="mt-0.5 text-[10px] text-muted-foreground">
+                  <h3 className="text-xs sm:text-sm font-bold tracking-tight">Appearance</h3>
+                  <p className="mt-0.5 text-[9.5px] sm:text-[10px] text-muted-foreground">
                     Make the interface yours
                   </p>
                 </div>
@@ -157,16 +160,16 @@ export default function ThemeCustomizer() {
                 type="button"
                 onClick={() => setIsOpen(false)}
                 aria-label="Close appearance settings"
-                className="grid size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-current"
+                className="grid size-7.5 sm:size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-current"
               >
                 <X className="size-4" />
               </button>
             </header>
 
-            <div className="overflow-y-auto px-5 py-4">
+            <div className="overflow-y-auto px-4 py-3 sm:px-5 sm:py-4 space-y-4 sm:space-y-5">
               <section>
                 <SectionLabel icon={Sun}>Color mode</SectionLabel>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
                   {themeModes.map(({ id, label, icon: Icon }) => {
                     const active = theme === id;
                     return (
@@ -175,13 +178,13 @@ export default function ThemeCustomizer() {
                         type="button"
                         onClick={(event) => setTheme(id, event)}
                         aria-pressed={active}
-                        className={`flex min-h-16 flex-col items-center justify-center gap-1.5 rounded-xl border text-[11px] font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-current ${
+                        className={`flex min-h-14 sm:min-h-16 flex-col items-center justify-center gap-1 sm:gap-1.5 rounded-xl border text-[10px] sm:text-[11px] font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-current ${
                           active
-                            ? "border-accent-current/40 bg-accent-current/10 text-accent-current"
+                            ? "border-accent-current/40 bg-accent-current/10 text-accent-current shadow-xs"
                             : "border-border/70 bg-background/50 text-muted-foreground hover:border-border hover:bg-secondary/70 hover:text-foreground"
                         }`}
                       >
-                        <Icon className="size-4" aria-hidden="true" />
+                        <Icon className="size-3.5 sm:size-4" aria-hidden="true" />
                         {label}
                       </button>
                     );
@@ -189,19 +192,7 @@ export default function ThemeCustomizer() {
                 </div>
               </section>
 
-              <section className="mt-5 border-t border-border/70 pt-4">
-                <SectionLabel icon={Sparkles}>Interface accent</SectionLabel>
-                <p className="mb-3 text-[10px] leading-relaxed text-muted-foreground">
-                  Choose the highlight color used across the site and cursor.
-                </p>
-                <ColorSwatches
-                  label="Accent color"
-                  selected={pointerTheme}
-                  onSelect={setPointerTheme}
-                />
-              </section>
-
-              <section className="mt-5 border-t border-border/70 pt-4">
+              <section className="border-t border-border/70 pt-3.5 sm:pt-4">
                 <SectionLabel icon={Settings2}>Scrollbar color</SectionLabel>
                 <ColorSwatches
                   label="Scrollbar color"
@@ -210,16 +201,16 @@ export default function ThemeCustomizer() {
                 />
               </section>
 
-              <section className="mt-5 border-t border-border/70 pt-4">
+              <section className="border-t border-border/70 pt-3.5 sm:pt-4">
                 <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-2.5">
+                  <div className="flex items-center gap-2 sm:gap-2.5">
                     <MousePointer2
-                      className="size-4 text-accent-current"
+                      className="size-3.5 sm:size-4 text-accent-current"
                       aria-hidden="true"
                     />
                     <div>
-                      <h4 className="text-[11px] font-bold">Custom cursor</h4>
-                      <p className="mt-0.5 text-[10px] text-muted-foreground">
+                      <h4 className="text-[10.5px] sm:text-[11px] font-bold">Custom cursor</h4>
+                      <p className="mt-0.5 text-[9.5px] sm:text-[10px] text-muted-foreground">
                         Personalize pointer effects
                       </p>
                     </div>
@@ -230,13 +221,13 @@ export default function ThemeCustomizer() {
                     aria-checked={pointerEnabled}
                     aria-label="Custom cursor"
                     onClick={() => setPointerEnabled(!pointerEnabled)}
-                    className={`relative h-6 w-11 shrink-0 rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-current ${
+                    className={`relative h-5.5 sm:h-6 w-10 sm:w-11 shrink-0 rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-current ${
                       pointerEnabled ? "bg-accent-current" : "bg-secondary"
                     }`}
                   >
                     <span
-                      className={`absolute top-1 size-4 rounded-full bg-white shadow-sm transition-transform ${
-                        pointerEnabled ? "left-1 translate-x-5" : "left-1"
+                      className={`absolute top-0.5 sm:top-1 size-4 rounded-full bg-white shadow-sm transition-transform ${
+                        pointerEnabled ? "left-1 translate-x-4 sm:translate-x-5" : "left-1"
                       }`}
                     />
                   </button>
@@ -251,8 +242,8 @@ export default function ThemeCustomizer() {
                       transition={{ duration: 0.2 }}
                       className="overflow-hidden"
                     >
-                      <div className="mt-4">
-                        <p className="mb-2.5 text-[10px] font-medium text-muted-foreground">
+                      <div className="mt-3.5 sm:mt-4">
+                        <p className="mb-2 text-[10px] font-medium text-muted-foreground">
                           Cursor color
                         </p>
                         <ColorSwatches
@@ -262,8 +253,8 @@ export default function ThemeCustomizer() {
                         />
                       </div>
 
-                      <div className="mt-4">
-                        <p className="mb-2.5 text-[10px] font-medium text-muted-foreground">
+                      <div className="mt-3.5 sm:mt-4">
+                        <p className="mb-2 text-[10px] font-medium text-muted-foreground">
                           Cursor style
                         </p>
                         <div className="grid grid-cols-3 gap-1.5">
@@ -276,7 +267,7 @@ export default function ThemeCustomizer() {
                                 onClick={() => setPointerStyle(style.id)}
                                 aria-pressed={active}
                                 title={style.description}
-                                className={`min-h-9 rounded-lg border px-1.5 text-[10px] font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-current ${
+                                className={`min-h-8 sm:min-h-9 rounded-lg border px-1 sm:px-1.5 text-[9.5px] sm:text-[10px] font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-current truncate ${
                                   active
                                     ? "border-accent-current/40 bg-accent-current/10 text-accent-current"
                                     : "border-border/60 text-muted-foreground hover:bg-secondary/70 hover:text-foreground"
@@ -287,16 +278,15 @@ export default function ThemeCustomizer() {
                             );
                           })}
                         </div>
-                        <p className="mt-2 text-[10px] text-muted-foreground">
-                          {cursorStyles.find((style) => style.id === pointerStyle)
-                            ?.description}
+                        <p className="mt-2 text-[9.5px] sm:text-[10px] text-muted-foreground">
+                          {cursorStyles.find((style) => style.id === pointerStyle)?.description}
                         </p>
                       </div>
 
-                      <div className="mt-4 flex items-center justify-between border-t border-border/60 pt-3">
+                      <div className="mt-3.5 sm:mt-4 flex items-center justify-between border-t border-border/60 pt-3">
                         <div>
                           <p className="text-[10px] font-semibold">Snap & ripple</p>
-                          <p className="mt-0.5 text-[10px] text-muted-foreground">
+                          <p className="mt-0.5 text-[9.5px] sm:text-[10px] text-muted-foreground">
                             Add click feedback
                           </p>
                         </div>
@@ -323,11 +313,11 @@ export default function ThemeCustomizer() {
               </section>
             </div>
 
-            <footer className="flex items-center justify-between border-t border-border/70 bg-background/50 px-5 py-3">
+            <footer className="flex items-center justify-between border-t border-border/70 bg-background/50 px-4 py-2.5 sm:px-5 sm:py-3">
               <span className="text-[9px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
                 Live preview
               </span>
-              <span className="flex items-center gap-1.5 text-[10px] font-semibold text-accent-current">
+              <span className="flex items-center gap-1.5 text-[9.5px] sm:text-[10px] font-semibold text-accent-current">
                 <span className="size-1.5 rounded-full bg-accent-current" />
                 Changes saved automatically
               </span>
@@ -343,7 +333,7 @@ export default function ThemeCustomizer() {
         aria-label={isOpen ? "Close appearance settings" : "Open appearance settings"}
         aria-expanded={isOpen}
         aria-controls="appearance-controls"
-        className={`grid size-12 place-items-center rounded-2xl border shadow-lg backdrop-blur-xl transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-current ${
+        className={`grid size-11 sm:size-12 place-items-center rounded-xl sm:rounded-2xl border shadow-lg backdrop-blur-xl transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-current ${
           isOpen
             ? "border-accent-current/30 bg-accent-current text-accent-current-foreground"
             : "border-border/70 bg-card/90 text-foreground hover:border-accent-current/40 hover:text-accent-current"
@@ -358,7 +348,7 @@ export default function ThemeCustomizer() {
               exit={{ opacity: 0, rotate: 45 }}
               transition={{ duration: 0.15 }}
             >
-              <X className="size-5" aria-hidden="true" />
+              <X className="size-4.5 sm:size-5" aria-hidden="true" />
             </motion.span>
           ) : (
             <motion.span
@@ -368,7 +358,7 @@ export default function ThemeCustomizer() {
               exit={{ opacity: 0, rotate: -45 }}
               transition={{ duration: 0.15 }}
             >
-              <SlidersHorizontal className="size-5" aria-hidden="true" />
+              <SlidersHorizontal className="size-4.5 sm:size-5" aria-hidden="true" />
             </motion.span>
           )}
         </AnimatePresence>

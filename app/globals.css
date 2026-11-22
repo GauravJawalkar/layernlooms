@@ -75,6 +75,12 @@
   --accent-blue-muted: #e6eeff;
   --accent-blue-muted-foreground: #004aeb;
 
+  /* Red Accent */
+  --accent-red: oklch(0.55 0.22 25);
+  --accent-red-foreground: var(--neutral-0);
+  --accent-red-muted: oklch(0.96 0.04 25);
+  --accent-red-muted-foreground: oklch(0.45 0.16 25);
+
   /* Default accent = zinc */
   --accent-current: var(--accent-zinc);
   --accent-current-foreground: var(--accent-zinc-foreground);
@@ -150,6 +156,12 @@
   --accent-blue-foreground: var(--neutral-950);
   --accent-blue-muted: #002566;
   --accent-blue-muted-foreground: #52a8ff;
+
+  /* Red Accent (Dark) */
+  --accent-red: oklch(0.70 0.22 25);
+  --accent-red-foreground: var(--neutral-950);
+  --accent-red-muted: oklch(0.25 0.08 25);
+  --accent-red-muted-foreground: oklch(0.85 0.15 25);
 
   /* Default accent = zinc */
   --accent-current: var(--accent-zinc);
@@ -228,6 +240,11 @@
   --color-accent-blue-foreground: var(--accent-blue-foreground);
   --color-accent-blue-muted: var(--accent-blue-muted);
   --color-accent-blue-muted-foreground: var(--accent-blue-muted-foreground);
+
+  --color-accent-red: var(--accent-red);
+  --color-accent-red-foreground: var(--accent-red-foreground);
+  --color-accent-red-muted: var(--accent-red-muted);
+  --color-accent-red-muted-foreground: var(--accent-red-muted-foreground);
   --color-next-blue: #0057ff;
 
   /* Text color aliases */
