@@ -44,8 +44,8 @@ export default function Preloader() {
     const reduce =
       typeof window.matchMedia === "function" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const duration = reduce ? 150 : 900;
-    const hold = reduce ? 0 : 60;
+    const duration = reduce ? 150 : 1200;
+    const hold = reduce ? 0 : 120;
 
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -67,18 +67,24 @@ export default function Preloader() {
     const tick = (now: number) => {
       const t = Math.min(1, (now - start) / duration);
       const eased = 1 - Math.pow(1 - t, 3);
-      const value = Math.round(eased * 100);
+      // Strictly map 1 to 100
+      const value = Math.min(100, Math.max(1, Math.round(1 + eased * 99)));
+      const percent = Math.min(100, Math.max(1, 1 + eased * 99));
+
       if (numRef.current) numRef.current.textContent = String(value);
-      if (barRef.current) barRef.current.style.width = `${eased * 100}%`;
+      if (barRef.current) barRef.current.style.width = `${percent}%`;
       if (progressRef.current) {
         progressRef.current.setAttribute("aria-valuenow", String(value));
       }
       if (progressDotRef.current) {
-        progressDotRef.current.style.left = `${eased * 100}%`;
+        progressDotRef.current.style.left = `${percent}%`;
       }
       if (t < 1) {
         raf = requestAnimationFrame(tick);
       } else {
+        if (numRef.current) numRef.current.textContent = "100";
+        if (barRef.current) barRef.current.style.width = "100%";
+        if (progressDotRef.current) progressDotRef.current.style.left = "100%";
         finish();
       }
     };
@@ -120,7 +126,7 @@ export default function Preloader() {
           ref={numRef}
           className="text-[clamp(4.5rem,18vw,11rem)] font-black leading-none tabular-nums text-foreground"
         >
-          0
+          1
         </span>
         <span className="text-xl sm:text-2xl font-black text-muted-foreground">%</span>
       </div>
@@ -130,20 +136,20 @@ export default function Preloader() {
         ref={progressRef}
         role="progressbar"
         aria-label="Loading progress"
-        aria-valuemin={0}
+        aria-valuemin={1}
         aria-valuemax={100}
-        aria-valuenow={0}
+        aria-valuenow={1}
         className="relative mt-8 h-[3px] w-56 max-w-[70vw] rounded-full bg-foreground/10 sm:w-72"
       >
         <div
           ref={barRef}
-          className="h-full w-0 rounded-full bg-accent-current shadow-[0_0_10px_var(--accent-current)]"
+          className="h-full w-[1%] rounded-full bg-accent-current shadow-[0_0_10px_var(--accent-current)]"
         />
         <span
           ref={progressDotRef}
           aria-hidden="true"
           className="absolute top-1/2 size-2 rounded-full bg-accent-current shadow-[0_0_12px_var(--accent-current)]"
-          style={{ left: 0, transform: "translate(-50%, -50%)" }}
+          style={{ left: "1%", transform: "translate(-50%, -50%)" }}
         />
       </div>
 
