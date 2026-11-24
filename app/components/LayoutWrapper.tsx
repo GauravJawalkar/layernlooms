@@ -7,6 +7,7 @@ import Footer from "./footer";
 
 const CustomCursor = dynamic(() => import("./CustomCursor"), { ssr: false });
 const ThemeCustomizer = dynamic(() => import("./ThemeCustomizer"), { ssr: false });
+const PartnerModal = dynamic(() => import("./PartnerModal"), { ssr: false });
 
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -24,6 +25,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
       </div>
       <CustomCursor />
       <ThemeCustomizer />
+      <PartnerModal />
     </div>
   );
 }
